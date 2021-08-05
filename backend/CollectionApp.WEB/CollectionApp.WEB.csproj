@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CollectionApp.DAL\CollectionApp.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
