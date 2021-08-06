@@ -4,102 +4,22 @@ using CollectionApp.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CollectionApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210806223458_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CollectionApp.DAL.Entities.Collection", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("FirstBoolVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FirstDateFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstFieldName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("FirstIntegerFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FirstStringFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FirstTextFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("SecondBoolVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SecondDateFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecondFieldName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("SecondIntegerFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SecondStringFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SecondTextFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ThirdBoolVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ThirdDateFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ThirdFieldName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("ThirdIntegerFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ThirdStringFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ThirdTextFieldVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Topic")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Collections");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -160,9 +80,6 @@ namespace CollectionApp.DAL.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CollectionId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -208,8 +125,6 @@ namespace CollectionApp.DAL.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CollectionId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -311,13 +226,6 @@ namespace CollectionApp.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.HasOne("CollectionApp.DAL.Entities.Collection", null)
-                        .WithMany("Users")
-                        .HasForeignKey("CollectionId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
@@ -358,11 +266,6 @@ namespace CollectionApp.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CollectionApp.DAL.Entities.Collection", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
