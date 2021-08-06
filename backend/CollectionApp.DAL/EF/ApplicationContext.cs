@@ -8,6 +8,7 @@ namespace CollectionApp.DAL.EF
     public class ApplicationContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Collection> Collections { get; set; }
+        public DbSet<Image> Images { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
     }
 }
