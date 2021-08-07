@@ -13,6 +13,7 @@ using CollectionApp.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using CollectionApp.DAL.Entities;
+using CollectionApp.DAL.Identity;
 
 namespace CollectionApp.WEB
 {
@@ -30,8 +31,9 @@ namespace CollectionApp.WEB
             services.AddDbContext<ApplicationContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("CollectionApp.DAL")));
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>();
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddUserManager<ApplicationUserManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

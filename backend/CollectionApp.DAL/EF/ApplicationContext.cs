@@ -1,11 +1,10 @@
 ﻿using CollectionApp.DAL.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectionApp.DAL.EF
 {
-    public class ApplicationContext : IdentityDbContext<IdentityUser>
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Image> Images { get; set; }
