@@ -4,14 +4,16 @@ using CollectionApp.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CollectionApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210806233637_ChangeImageForeignKey")]
+    partial class ChangeImageForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,7 +116,7 @@ namespace CollectionApp.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CollectionId")
+                    b.Property<int?>("CollectionId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImagePath")
@@ -126,91 +128,6 @@ namespace CollectionApp.DAL.Migrations
                     b.HasIndex("CollectionId");
 
                     b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("CollectionApp.DAL.Entities.Item", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("FirstBoolean")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("FirstDate")
-                        .HasColumnType("date");
-
-                    b.Property<int?>("FirstInteger")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstString")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool?>("SecondBoolean")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("SecondDate")
-                        .HasColumnType("date");
-
-                    b.Property<int?>("SecondInteger")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SecondString")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("ThirdBoolean")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("ThirdInteger")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ThirdString")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ThirdtDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("ThirdtText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("likes")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CollectionId");
-
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("ItemUser", b =>
-                {
-                    b.Property<int>("LikedItemsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersLikedId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LikedItemsId", "UsersLikedId");
-
-                    b.HasIndex("UsersLikedId");
-
-                    b.ToTable("ItemUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -276,10 +193,6 @@ namespace CollectionApp.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -331,8 +244,6 @@ namespace CollectionApp.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -415,17 +326,10 @@ namespace CollectionApp.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CollectionApp.DAL.Entities.User", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.HasDiscriminator().HasValue("User");
-                });
-
             modelBuilder.Entity("CollectionApp.DAL.Entities.Collection", b =>
                 {
-                    b.HasOne("CollectionApp.DAL.Entities.User", "User")
-                        .WithMany("Collections")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -435,39 +339,9 @@ namespace CollectionApp.DAL.Migrations
 
             modelBuilder.Entity("CollectionApp.DAL.Entities.Image", b =>
                 {
-                    b.HasOne("CollectionApp.DAL.Entities.Collection", "Collection")
+                    b.HasOne("CollectionApp.DAL.Entities.Collection", null)
                         .WithMany("Images")
-                        .HasForeignKey("CollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Collection");
-                });
-
-            modelBuilder.Entity("CollectionApp.DAL.Entities.Item", b =>
-                {
-                    b.HasOne("CollectionApp.DAL.Entities.Collection", "Collection")
-                        .WithMany()
-                        .HasForeignKey("CollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Collection");
-                });
-
-            modelBuilder.Entity("ItemUser", b =>
-                {
-                    b.HasOne("CollectionApp.DAL.Entities.Item", null)
-                        .WithMany()
-                        .HasForeignKey("LikedItemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CollectionApp.DAL.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersLikedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CollectionId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -524,11 +398,6 @@ namespace CollectionApp.DAL.Migrations
             modelBuilder.Entity("CollectionApp.DAL.Entities.Collection", b =>
                 {
                     b.Navigation("Images");
-                });
-
-            modelBuilder.Entity("CollectionApp.DAL.Entities.User", b =>
-                {
-                    b.Navigation("Collections");
                 });
 #pragma warning restore 612, 618
         }

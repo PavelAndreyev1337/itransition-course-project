@@ -4,14 +4,16 @@ using CollectionApp.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CollectionApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210807005114_AddLikesRelation")]
+    partial class AddLikesRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,13 +140,13 @@ namespace CollectionApp.DAL.Migrations
                     b.Property<int>("CollectionId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("FirstBoolean")
+                    b.Property<bool>("FirstBoolean")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("FirstDate")
+                    b.Property<DateTime>("FirstDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("FirstInteger")
+                    b.Property<int>("FirstInteger")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstString")
@@ -158,13 +160,13 @@ namespace CollectionApp.DAL.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool?>("SecondBoolean")
+                    b.Property<bool>("SecondBoolean")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SecondDate")
+                    b.Property<DateTime>("SecondDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("SecondInteger")
+                    b.Property<int>("SecondInteger")
                         .HasColumnType("int");
 
                     b.Property<string>("SecondString")
@@ -173,16 +175,16 @@ namespace CollectionApp.DAL.Migrations
                     b.Property<string>("SecondText")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("ThirdBoolean")
+                    b.Property<bool>("ThirdBoolean")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ThirdInteger")
+                    b.Property<int>("ThirdInteger")
                         .HasColumnType("int");
 
                     b.Property<string>("ThirdString")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ThirdtDate")
+                    b.Property<DateTime>("ThirdtDate")
                         .HasColumnType("date");
 
                     b.Property<string>("ThirdtText")

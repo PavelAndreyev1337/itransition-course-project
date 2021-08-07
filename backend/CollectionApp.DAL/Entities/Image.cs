@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CollectionApp.DAL.Entities
 {
@@ -9,6 +8,7 @@ namespace CollectionApp.DAL.Entities
         public int Id { get; set; }
         [Required]
         public string ImagePath { get; set; }
-        public ICollection<Collection> Collections { get; set; }
+        public int CollectionId { get; set; }
+        public Collection Collection { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using CollectionApp.DAL.Attributes;
-using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CollectionApp.DAL.Entities
 {
@@ -17,7 +17,10 @@ namespace CollectionApp.DAL.Entities
         [Required]
         [Topic(new string[] { "Alcohol", "Books" })]
         public string Topic { get; set; }
-        public ICollection<IdentityUser> Users { get; set; }
+        [Required]
+        [Column(TypeName = "nvarchar(450)")]
+        public string UserId { get; set; }
+        public User User { get; set; }
         [StringLength(50)]
         public string FirstFieldName { get; set; }
         [StringLength(50)]
@@ -39,5 +42,6 @@ namespace CollectionApp.DAL.Entities
         public bool FirstBoolVisible { get; set; }
         public bool SecondBoolVisible { get; set; }
         public bool ThirdBoolVisible { get; set; }
+        public ICollection<Image> Images { get; set; }
     }
 }

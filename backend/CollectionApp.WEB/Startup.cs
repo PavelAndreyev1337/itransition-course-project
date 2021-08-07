@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using CollectionApp.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using CollectionApp.DAL.Entities;
 
 namespace CollectionApp.WEB
 {
@@ -29,7 +30,7 @@ namespace CollectionApp.WEB
             services.AddDbContext<ApplicationContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("CollectionApp.DAL")));
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
         }
 
