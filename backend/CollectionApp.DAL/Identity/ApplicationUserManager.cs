@@ -17,9 +17,11 @@ namespace CollectionApp.DAL.Identity
             ILookupNormalizer keyNormalizer,
             IdentityErrorDescriber errors,
             IServiceProvider services,
-            ILogger<UserManager<User>> logger)
-            : base(store, optionsAccessor,passwordHasher, userValidators,
-                  passwordValidators, keyNormalizer, errors, services, logger)
+            ILogger<UserManager<User>> logger) :
+                base(store, optionsAccessor,
+                    passwordHasher, userValidators,
+                    passwordValidators, keyNormalizer,
+                    errors, services, logger)
         {
 
         }

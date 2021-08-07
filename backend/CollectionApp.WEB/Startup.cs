@@ -4,14 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CollectionApp.WEB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CollectionApp.DAL.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using CollectionApp.DAL.Entities;
 using CollectionApp.DAL.Identity;
 
@@ -33,7 +27,8 @@ namespace CollectionApp.WEB
                 b => b.MigrationsAssembly("CollectionApp.DAL")));
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext>()
-                .AddUserManager<ApplicationUserManager>();
+                .AddUserManager<ApplicationUserManager>()
+                .AddRoleManager<ApplicationRoleManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
