@@ -34,5 +34,6 @@ namespace CollectionApp.DAL.Entities
         public ICollection<User> UsersLiked { get; set; }
         public int CollectionId { get; set; }
         public Collection Collection { get; set; }
+        public ICollection<Tag> Tags { get; set; }
     }
 }
