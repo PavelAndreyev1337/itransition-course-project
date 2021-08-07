@@ -9,7 +9,7 @@ namespace CollectionApp.DAL.Interfaces
         Task<IEnumerable<TEntity>> GetAll();
         Task<TEntity> Get(int id);
         IEnumerable<TEntity> Find(Func<TEntity, Boolean> predicate);
-        Task<TEntity> Add(TEntity entity);
+        TEntity Add(TEntity entity);
         TEntity Update(TEntity entity);
         Task<TEntity> Delete(int id);
     }

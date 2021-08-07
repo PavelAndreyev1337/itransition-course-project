@@ -1,11 +1,12 @@
 ﻿using CollectionApp.DAL.EF;
 using CollectionApp.DAL.Entities;
 using CollectionApp.DAL.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace CollectionApp.DAL.Repositories
 {
-    class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private ApplicationContext _context;
         private IRepository<Collection> _collectionRepository;
@@ -13,6 +14,9 @@ namespace CollectionApp.DAL.Repositories
         private IRepository<Image> _imageRepository;
         private IRepository<Item> _itemRepository;
         private IRepository<Tag> _tagRepository;
+        private UserManager<User> _userManager;
+        private RoleManager<Role> _roleManager;
+
         public IRepository<Collection> Collections
         {
             get
@@ -59,9 +63,27 @@ namespace CollectionApp.DAL.Repositories
             }
         }
 
-        public UnitOfWork(ApplicationContext context)
+        public UserManager<User> UserManager
+        {
+            get
+            {
+                return _userManager;
+            }
+        }
+
+        public RoleManager<Role> RoleManager
+        {
+            get
+            {
+                return _roleManager;
+            }
+        }
+
+        public UnitOfWork(ApplicationContext context, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public void Dispose()

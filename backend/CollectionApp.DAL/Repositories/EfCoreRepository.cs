@@ -17,7 +17,7 @@ namespace CollectionApp.DAL.Repositories
         {
             _context = context;
         }
-        public async Task<TEntity> Add(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
             return entity;

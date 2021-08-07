@@ -1,5 +1,5 @@
 ﻿using CollectionApp.DAL.Entities;
-using CollectionApp.DAL.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 
@@ -12,6 +12,8 @@ namespace CollectionApp.DAL.Interfaces
         IRepository<Image> Images { get; }
         IRepository<Item> Items { get; }
         IRepository<Tag> Tags { get; }
+        UserManager<User> UserManager { get; }
+        RoleManager<Role> RoleManager { get; }
         Task SaveAsync();
     }
 }
