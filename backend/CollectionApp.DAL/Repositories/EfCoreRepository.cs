@@ -20,7 +20,6 @@ namespace CollectionApp.DAL.Repositories
         public async Task<TEntity> Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -30,7 +29,6 @@ namespace CollectionApp.DAL.Repositories
             if (entity != null)
             {
                 _context.Set<TEntity>().Remove(entity);
-                await _context.SaveChangesAsync();
             }
             return entity;
         }
@@ -50,10 +48,9 @@ namespace CollectionApp.DAL.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> Update(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
             return entity;
         }
     }
