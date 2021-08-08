@@ -1,4 +1,5 @@
-﻿using CollectionApp.DAL.Interfaces;
+﻿using CollectionApp.DAL.DTO;
+using CollectionApp.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace CollectionApp.DAL.Repositories
 
         public IEnumerable<TEntity> Find(Func<TEntity, bool> predicate)
         {
-            return _context.Set<TEntity>().Where<TEntity>(predicate).ToList();
+            return _context.Set<TEntity>().Where(predicate).ToList();
         }
 
         public async Task<TEntity> Get(int id)
@@ -46,6 +47,26 @@ namespace CollectionApp.DAL.Repositories
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await _context.Set<TEntity>().ToListAsync();
+        }
+
+        public async Task<EntityPageDTO<TEntity>> Paginate(int pageSize = 10,
+            int page = 1,
+            Func<TEntity, bool> predicate = null)
+        {
+            var dbSet = _context.Set<TEntity>();
+            var count = await dbSet.CountAsync();
+            Func<TEntity, bool> defaultPredicate = entity => true;
+            var entities = _context.Set<TEntity>()
+                .Where(predicate ?? defaultPredicate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+            return new EntityPageDTO<TEntity>
+            {
+                Page = new Page(count, page, page),
+                Entities = entities
+            };
+
         }
 
         public TEntity Update(TEntity entity)
