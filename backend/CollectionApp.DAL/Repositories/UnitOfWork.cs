@@ -15,7 +15,8 @@ namespace CollectionApp.DAL.Repositories
         private IRepository<Item> _itemRepository;
         private IRepository<Tag> _tagRepository;
         private UserManager<User> _userManager;
-        private RoleManager<Role> _roleManager;
+        private RoleManager<IdentityRole> _roleManager;
+        private SignInManager<User> _signInManager;
 
         public IRepository<Collection> Collections
         {
@@ -71,7 +72,7 @@ namespace CollectionApp.DAL.Repositories
             }
         }
 
-        public RoleManager<Role> RoleManager
+        public RoleManager<IdentityRole> RoleManager
         {
             get
             {
@@ -79,11 +80,24 @@ namespace CollectionApp.DAL.Repositories
             }
         }
 
-        public UnitOfWork(ApplicationContext context, UserManager<User> userManager, RoleManager<Role> roleManager)
+        public SignInManager<User> SignInManager
+        {
+            get
+            {
+                return _signInManager;
+            }
+        }
+
+        public UnitOfWork(
+            ApplicationContext context,
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<User> signInManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         public void Dispose()

@@ -13,7 +13,8 @@ namespace CollectionApp.DAL.Interfaces
         IRepository<Item> Items { get; }
         IRepository<Tag> Tags { get; }
         UserManager<User> UserManager { get; }
-        RoleManager<Role> RoleManager { get; }
+        RoleManager<IdentityRole> RoleManager { get; }
+        SignInManager<User> SignInManager { get; }
         Task SaveAsync();
     }
 }

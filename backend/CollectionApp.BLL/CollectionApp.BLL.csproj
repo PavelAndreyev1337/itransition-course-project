@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>7e6d26a9-813f-44e6-920f-ef3679b886c8</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CollectionApp.DAL\CollectionApp.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

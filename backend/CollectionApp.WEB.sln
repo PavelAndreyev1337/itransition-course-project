@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionApp.WEB", "CollectionApp.WEB\CollectionApp.WEB.csproj", "{1060A22B-B6B7-4E19-9AEA-1DBE5F8266E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionApp.DAL", "CollectionApp.DAL\CollectionApp.DAL.csproj", "{B380BF59-3CED-453C-B189-1C1BB0F3C5FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionApp.DAL", "CollectionApp.DAL\CollectionApp.DAL.csproj", "{B380BF59-3CED-453C-B189-1C1BB0F3C5FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionApp.BLL", "CollectionApp.BLL\CollectionApp.BLL.csproj", "{8A924C84-6C87-4444-B46E-792AD730972F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B380BF59-3CED-453C-B189-1C1BB0F3C5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B380BF59-3CED-453C-B189-1C1BB0F3C5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B380BF59-3CED-453C-B189-1C1BB0F3C5FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A924C84-6C87-4444-B46E-792AD730972F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A924C84-6C87-4444-B46E-792AD730972F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A924C84-6C87-4444-B46E-792AD730972F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A924C84-6C87-4444-B46E-792AD730972F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
