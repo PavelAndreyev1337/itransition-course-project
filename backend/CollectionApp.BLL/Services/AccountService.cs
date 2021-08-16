@@ -35,7 +35,7 @@ namespace CollectionApp.BLL.Services
             var userInfo = new AccountDTO
             {
                 Name = info.Principal.FindFirst(ClaimTypes.Name).Value,
-                Email = info.Principal.FindFirst(ClaimTypes.Email).Value
+                Email = info.Principal.FindFirst(ClaimTypes.Email)?.Value
             };
             if (result.Succeeded)
             {
@@ -45,14 +45,14 @@ namespace CollectionApp.BLL.Services
             {
                 var user = new User
                 {
-                    Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
-                    UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
+                    UserName = info.Principal.FindFirst(ClaimTypes.Name).Value,
+                    Email = info.Principal.FindFirst(ClaimTypes.Email)?.Value
                 };
-                var identResult = await Database.UserManager.CreateAsync(user);
-                if (identResult.Succeeded)
+                var identityResult = await Database.UserManager.CreateAsync(user);
+                if (identityResult.Succeeded)
                 {
-                    identResult = await Database.UserManager.AddLoginAsync(user, info);
-                    if (identResult.Succeeded)
+                    identityResult = await Database.UserManager.AddLoginAsync(user, info);
+                    if (identityResult.Succeeded)
                     {
                         await Database.SignInManager.SignInAsync(user, false);
                         return userInfo;

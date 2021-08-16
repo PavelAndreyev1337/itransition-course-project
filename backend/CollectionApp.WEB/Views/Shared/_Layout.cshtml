@@ -20,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        @if(!User.Identity.IsAuthenticated)
+                        @if (!User.Identity.IsAuthenticated)
                         {
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Sign in / Sign up
@@ -28,7 +28,11 @@
                         }
                         else
                         {
-                            <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a> 
+                            @if (!(ViewContext.ActionDescriptor.AttributeRouteInfo?.Name == "Profile"))
+                            {
+                                <a class="nav-link d-inline" asp-controller="Account" asp-action="Index">Profile</a>
+                            }
+                            <a class="nav-link d-inline" asp-controller="Account" asp-action="Logout">Logout</a>
                         }
                     </li>
                 </ul>
@@ -50,10 +54,13 @@
                         <i class="bi bi-facebook"></i>
                         Facebook
                     </a>
-                    <button class="btn btn-danger w-75 my-1 mx-auto oauth-btn">
+                    <a class="btn btn-danger w-75 my-1 mx-auto oauth-btn"
+                       asp-controller="Account"
+                       asp-action="SetLogin"
+                       asp-route-provider="Reddit">
                         <i class="bi bi-reddit"></i>
                         Reddit
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

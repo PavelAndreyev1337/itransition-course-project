@@ -28,7 +28,10 @@ namespace CollectionApp.WEB
             services.AddDbContext<ApplicationContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("CollectionApp.DAL")));
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options => 
+            {
+                options.User.AllowedUserNameCharacters = string.Empty;
+            })
                 .AddEntityFrameworkStores<ApplicationContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAccountService, AccountService>();
@@ -40,6 +43,11 @@ namespace CollectionApp.WEB
                     facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                     facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
                     facebookOptions.SignInScheme = IdentityConstants.ExternalScheme;
+                }).AddReddit(redditOptions =>
+                {
+                    redditOptions.ClientId = Configuration["Authentication:Reddit:ClientId"];
+                    redditOptions.ClientSecret = Configuration["Authentication:Reddit:ClientSecret"];
+                    redditOptions.SignInScheme = IdentityConstants.ExternalScheme;
                 });
         }
 

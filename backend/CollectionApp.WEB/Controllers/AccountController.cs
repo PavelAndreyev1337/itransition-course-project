@@ -1,5 +1,4 @@
-﻿using CollectionApp.BLL.Exceptions;
-using CollectionApp.BLL.Interfaces;
+﻿using CollectionApp.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,6 +16,7 @@ namespace CollectionApp.WEB.Controllers
             _accountService = accountService;
         }
 
+        [Route("/Profile", Name = "Profile")]
         public IActionResult Index()
         {
             return View();
@@ -36,7 +36,7 @@ namespace CollectionApp.WEB.Controllers
             try
             {
                 await _accountService.Login();
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index");
             }
             catch (Exception)
             {
