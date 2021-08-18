@@ -1,0 +1,33 @@
+﻿@using CollectionApp.BLL.Enums
+@model string
+
+@functions{ 
+    public int ConvertFieldType(FieldType fieldType)
+    {
+        return (int)fieldType;
+    }
+}
+
+<div class="row align-baseline">
+    <div class="d-inline-block mb-3 mt-1 col-6">
+        <label for="firstFieldName" class="form-label">@Model field name</label>
+        <input type="text" class="form-control" id="firstFieldName" name="@Model.ToLower()FieldName" required />
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            @Model field is required
+        </div>
+    </div>
+    <div class="d-inline-block mb-3 mt-1 col-6">
+        <label for="firstFieldType" class="form-label">@Model field type</label>
+        <select class="form-control" id="firstFieldType" name="@Model.ToLower()FieldType" required>
+            <option value="@ConvertFieldType(FieldType.Integer)">Integer</option>
+            <option value="@ConvertFieldType(FieldType.String)">String</option>
+            <option value="@ConvertFieldType(FieldType.Markdown)">Markdown</option>
+            <option value="@ConvertFieldType(FieldType.Date)">Date</option>
+            <option value="@ConvertFieldType(FieldType.Boolean)">Boolean</option>
+        </select>
+
+    </div>
+</div>

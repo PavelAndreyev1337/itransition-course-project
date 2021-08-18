@@ -1,0 +1,79 @@
+﻿@model IEnumerable<string>
+
+@{
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/lib/filepond/filepond.min.css" />
+<link rel="stylesheet" href="~/lib/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" />
+<link rel="stylesheet" href="~/lib/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.min.css" />
+
+<nav class="mt-2">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Account"
+               asp-action="Index">
+                Profile
+            </a>
+        </li>
+        <li class="breadcrumb-item active">Add collection</li>
+    </ol>
+</nav>
+<div class="col-8 mx-auto">
+    <form id="collectionForm" class="my-2 needs-validation" asp-controller="Collection" asp-action="Create" enctype="multipart/form-data" novalidate>
+        <div class="mb-3">
+            <label for="nameInput" class="form-label">Name</label>
+            <input type="text" class="form-control" id="nameInput" required name="name" />
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Name is required
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="descriptionTextarea">Description</label>
+            <textarea class="form-control" placeholder="Write descriptions using a Markdown" id="descriptionTextarea" name="description" required></textarea>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Description is required
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="topicSelect" class="form-label">Topic</label>
+            <select class="form-control" id="topicSelect" name="topic" required>
+                @foreach (var topic in Model)
+                {
+                    <option value="@topic">@topic</option>
+                }
+            </select>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Topic is required
+            </div>
+        </div>
+        <input type="file"
+               class="filepond"
+               name="files"
+               multiple
+               data-max-file-size="3MB">
+        @await Html.PartialAsync("_GetExtraField", "First")
+        @await Html.PartialAsync("_GetExtraField", "Second")
+        @await Html.PartialAsync("_GetExtraField", "Third")
+        <div class="mb-3">
+            <button id="submitAll" class="btn btn-primary d-block mx-auto w-50" type="submit">Create collection</button>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/filepond/filepond.min.js"></script>
+<script src="~/lib/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<script src="~/lib/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+<script src="~/lib/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js"></script>
+<script src="~/lib/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.min.js"></script>
+<script src="~/lib/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+<script src="~/js/collection.js"></script>

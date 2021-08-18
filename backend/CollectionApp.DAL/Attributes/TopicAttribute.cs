@@ -4,9 +4,17 @@ using System.Linq;
 
 namespace CollectionApp.DAL.Attributes
 {
-    class TopicAttribute : ValidationAttribute
+    public class TopicAttribute : ValidationAttribute
     {
         private string[] _topics;
+
+        public string[] Topics
+        { 
+            get
+            {
+                return _topics;
+            }
+        }
 
         public TopicAttribute(string[] topics)
         {

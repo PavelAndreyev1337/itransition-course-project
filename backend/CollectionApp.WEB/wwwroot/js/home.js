@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", (event) => {
+﻿document.addEventListener('DOMContentLoaded', (event) => {
     Array.from(document.getElementsByClassName('oauth-btn')).forEach(element => {
         element.addEventListener("click", (event) => {
             let modal = document.getElementById('modalContent');

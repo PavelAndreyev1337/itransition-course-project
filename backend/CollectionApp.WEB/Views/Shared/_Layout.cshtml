@@ -28,7 +28,13 @@
                         }
                         else
                         {
-                            @if (!(ViewContext.ActionDescriptor.AttributeRouteInfo?.Name == "Profile"))
+                            @if (ViewContext.ActionDescriptor.AttributeRouteInfo?.Name == "Profile")
+                            {
+                                <a class="nav-link d-inline" asp-controller="Collection" asp-action="Create">
+                                    Add collection
+                                </a>
+                            }
+                            else
                             {
                                 <a class="nav-link d-inline" asp-controller="Account" asp-action="Index">Profile</a>
                             }
@@ -67,11 +73,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer class="text-center">
-            <p>© 2021</p>
-        </footer>
     </div>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/index.js"></script>
 </body>
 </html>
