@@ -2,6 +2,7 @@
 using CollectionApp.DAL.Entities;
 using CollectionApp.DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading.Tasks;
 
 namespace CollectionApp.DAL.Repositories
@@ -17,6 +18,15 @@ namespace CollectionApp.DAL.Repositories
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole> _roleManager;
         private SignInManager<User> _signInManager;
+        private bool disposed = false;
+
+        public ApplicationContext Context
+        { 
+            get
+            {
+                return _context;
+            }
+        }
 
         public IRepository<Collection> Collections
         {
@@ -100,14 +110,27 @@ namespace CollectionApp.DAL.Repositories
             _signInManager = signInManager;
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
-
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

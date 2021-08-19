@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CollectionApp.DAL\CollectionApp.DAL.csproj" />
   </ItemGroup>
 

@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using CollectionApp.BLL.Enums;
+﻿using CollectionApp.BLL.Enums;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
-namespace CollectionApp.WEB.ViewModels
+namespace CollectionApp.BLL.DTO
 {
-    public class CollectionViewModel
+    public class CollectionDTO
     {
-        [StringLength(50)]
         public string Name { get; set; }
         public string Description { get; set; }
         public string Topic { get; set; }
