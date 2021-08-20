@@ -15,12 +15,6 @@ namespace CollectionApp.WEB.Controllers
         {
             _accountService = accountService;
         }
-
-        [Route("/Profile", Name = "Profile")]
-        public IActionResult Index()
-        {
-            return View();
-        }
         
         [AllowAnonymous]
         public IActionResult SetLogin(string provider)
@@ -36,7 +30,7 @@ namespace CollectionApp.WEB.Controllers
             try
             {
                 await _accountService.Login();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Collection");
             }
             catch (Exception)
             {

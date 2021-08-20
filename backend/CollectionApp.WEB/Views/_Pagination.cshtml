@@ -1,0 +1,12 @@
+﻿@model CollectionApp.DAL.DTO.Page
+
+<nav>
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" asp-controller="Collection" asp-action="Index" asp-route-page="@(Model.PageNumber-1)">Previous</a>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link" asp-controller="Collection" asp-action="Index" asp-route-page="@(Model.PageNumber+1)">Next</a>
+        </li>
+    </ul>
+</nav>

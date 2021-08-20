@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
 using Microsoft.Extensions.Configuration;
+using CollectionApp.DAL.DTO;
 
 namespace CollectionApp.BLL.Services
 {
@@ -86,7 +87,7 @@ namespace CollectionApp.BLL.Services
             {
                 var uploadResult = cloudinary.Upload(new ImageUploadParams()
                 {
-                    File = new FileDescription(file.FileName, file.OpenReadStream())
+                    File = new FileDescription(file.FileName, file.OpenReadStream()),
                 });
                 UnitOfWork.Images.Add(new Image
                 {
@@ -97,11 +98,16 @@ namespace CollectionApp.BLL.Services
             }
         }
 
+        private async Task<User> GetCurrentUser(ClaimsPrincipal userPrincipal)
+        {
+            return await UnitOfWork.UserManager.GetUserAsync(userPrincipal);
+        }
+
         public async Task CreateCollection(ClaimsPrincipal userPrincipal, CollectionDTO collectionDto)
         {
             using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
             {
-                var user = await UnitOfWork.UserManager.GetUserAsync(userPrincipal);
+                var user = await GetCurrentUser(userPrincipal);
                 var collection = UnitOfWork.Collections.Add(new Collection
                 {
                     Name = collectionDto.Name,
@@ -124,6 +130,16 @@ namespace CollectionApp.BLL.Services
                 await UploadImages(collection, collectionDto.Files);
                 await transaction.CommitAsync();
             }
+        }
+
+        public async Task<EntityPageDTO<Collection>> GetUserCollection(ClaimsPrincipal claimsPrincipal, int page=1)
+        {
+            var user = await GetCurrentUser(claimsPrincipal);
+            return await UnitOfWork.Collections
+                .Paginate(
+                page: page,
+                predicate: (collection) => collection.User == user,
+                includes: collection => collection.Images);
         }
 
         public void Dispose()

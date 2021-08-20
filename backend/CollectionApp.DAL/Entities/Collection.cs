@@ -42,6 +42,6 @@ namespace CollectionApp.DAL.Entities
         public bool FirstBoolVisible { get; set; }
         public bool SecondBoolVisible { get; set; }
         public bool ThirdBoolVisible { get; set; }
-        public ICollection<Image> Images { get; set; }
+        public ICollection<Image> Images { get; set; } = new List<Image>();
     }
 }

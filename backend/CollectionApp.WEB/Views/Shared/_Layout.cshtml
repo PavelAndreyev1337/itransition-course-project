@@ -6,6 +6,7 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,7 +37,7 @@
                             }
                             else
                             {
-                                <a class="nav-link d-inline" asp-controller="Account" asp-action="Index">Profile</a>
+                                <a class="nav-link d-inline" asp-controller="Collection" asp-action="Index">Profile</a>
                             }
                             <a class="nav-link d-inline" asp-controller="Account" asp-action="Logout">Logout</a>
                         }

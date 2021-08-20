@@ -1,9 +1,11 @@
 ﻿using CollectionApp.DAL.DTO;
+using CollectionApp.DAL.Extensions;
 using CollectionApp.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CollectionApp.DAL.Repositories
@@ -51,19 +53,22 @@ namespace CollectionApp.DAL.Repositories
 
         public async Task<EntityPageDTO<TEntity>> Paginate(int pageSize = 10,
             int page = 1,
-            Func<TEntity, bool> predicate = null)
+            Func<TEntity, bool> predicate = null,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             var dbSet = _context.Set<TEntity>();
             var count = await dbSet.CountAsync();
             Func<TEntity, bool> defaultPredicate = entity => true;
             var entities = _context.Set<TEntity>()
+                .IncludeMultiple(includes)
                 .Where(predicate ?? defaultPredicate)
+                .Reverse()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
             return new EntityPageDTO<TEntity>
             {
-                Page = new Page(count, page, page),
+                Page = new Page(count, page, pageSize),
                 Entities = entities
             };
 

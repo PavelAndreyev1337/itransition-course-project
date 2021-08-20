@@ -1,6 +1,7 @@
 ﻿using CollectionApp.DAL.DTO;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CollectionApp.DAL.Interfaces
@@ -10,7 +11,8 @@ namespace CollectionApp.DAL.Interfaces
         Task<IEnumerable<TEntity>> GetAll();
         Task<EntityPageDTO<TEntity>> Paginate(int pageSize = 10,
             int page = 1,
-            Func<TEntity, bool> predicate = null);
+            Func<TEntity, bool> predicate = null,
+            params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity> Get(int id);
         IEnumerable<TEntity> Find(Func<TEntity, Boolean> predicate);
         TEntity Add(TEntity entity);
