@@ -15,6 +15,7 @@ namespace CollectionApp.BLL.Interfaces
         public Task<CollectionDTO> GetUserCollection(ClaimsPrincipal claimsPrincipal, int collectionId);
         public IEnumerable<string> GetImages(int collectionId);
         public Task EditCollection(ClaimsPrincipal claimsPrincipal, CollectionDTO collectionDto);
+        public Task DeleteCollection(ClaimsPrincipal claimsPrincipal, int collectionId);
         void Dispose();
     }
 }

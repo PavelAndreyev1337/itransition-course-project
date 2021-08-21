@@ -46,9 +46,21 @@
                             </h5>
                             <p title="Topic"><i class="collection-topic">Topic @collection.Topic</i></p>
                             <p class="card-text">@Html.Raw(collection.ShortDescription)</p>
-                            <a href="#" class="card-link">View</a>
-                            <a class="card-link text-warning" asp-controller="Collection" asp-action="Edit" asp-route-collectionId="@collection.Id">Edit</a>
-                            <a href="#" class="card-link text-danger delete-btn">Delete</a>
+                            <a href="#" class="btn btn-link p-0">View</a>
+                            <a class="btn btn-link text-warning p-0" 
+                               asp-controller="Collection"
+                               asp-action="Edit"
+                               asp-route-collectionId="@collection.Id">
+                                Edit
+                            </a>
+                            <form asp-controller="Collection"
+                                asp-action="Delete"
+                                asp-route-collectionId="@collection.Id"
+                                class="d-inline">
+                                <button class="btn btn-link text-danger delete-btn p-0" type="submit">
+                                    Delete
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

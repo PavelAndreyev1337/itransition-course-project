@@ -157,6 +157,19 @@ namespace CollectionApp.BLL.Services
             }
         }
 
+        public async Task DeleteCollection(ClaimsPrincipal claimsPrincipal, int collectionId)
+        {
+            var collection = await UnitOfWork.Collections.Get(collectionId);
+            var user = await GetCurrentUser(claimsPrincipal);
+            if (!CheckRights(collection, user))
+            {
+                throw new UserNoRightsException();
+            }
+            await UploadImages(collection, new List<IFormFile>());
+            await UnitOfWork.Collections.Delete(collectionId);
+            await UnitOfWork.SaveAsync();
+        }
+
         public void Dispose()
         {
             UnitOfWork.Dispose();

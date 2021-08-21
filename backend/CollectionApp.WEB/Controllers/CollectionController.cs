@@ -92,6 +92,20 @@ namespace CollectionApp.WEB.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromQuery(Name = "collectionId")] int collectionId)
+        {
+            try
+            {
+                await _collectionService.DeleteCollection(User, collectionId);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             _collectionService.Dispose();
