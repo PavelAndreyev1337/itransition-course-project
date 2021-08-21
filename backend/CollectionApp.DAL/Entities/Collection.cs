@@ -1,4 +1,5 @@
 ﻿using CollectionApp.DAL.Attributes;
+using CollectionApp.DAL.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,21 +28,9 @@ namespace CollectionApp.DAL.Entities
         public string SecondFieldName { get; set; }
         [StringLength(50)]
         public string ThirdFieldName { get; set; }
-        public bool FirstIntegerFieldVisible { get; set; }
-        public bool SecondIntegerFieldVisible { get; set; }
-        public bool ThirdIntegerFieldVisible { get; set; }
-        public bool FirstStringFieldVisible { get; set; }
-        public bool SecondStringFieldVisible { get; set; }
-        public bool ThirdStringFieldVisible { get; set; }
-        public bool FirstTextFieldVisible { get; set; }
-        public bool SecondTextFieldVisible { get; set; }
-        public bool ThirdTextFieldVisible { get; set; }
-        public bool FirstDateFieldVisible { get; set; }
-        public bool SecondDateFieldVisible { get; set; }
-        public bool ThirdDateFieldVisible { get; set; }
-        public bool FirstBoolVisible { get; set; }
-        public bool SecondBoolVisible { get; set; }
-        public bool ThirdBoolVisible { get; set; }
-        public ICollection<Image> Images { get; set; } = new List<Image>();
+        public FieldType FirstFieldType { get; set; }
+        public FieldType SecondFieldType { get; set; }
+        public FieldType ThirdFieldType { get; set; }
+        public ICollection<Image> Images { get; set; }
     }
 }

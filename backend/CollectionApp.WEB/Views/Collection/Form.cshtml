@@ -1,4 +1,5 @@
-﻿@model IEnumerable<string>
+﻿@using CollectionApp.WEB.ViewModels
+@model CollectionApp.WEB.ViewModels.CollectionViewModel
 
 @{
     Layout = "_Layout";
@@ -12,7 +13,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a asp-controller="Collection"
-               asp-action="Index">
+               asp-action="Index"
+               asp-route-page="@Context.Request.Cookies["page"]">
                 Profile
             </a>
         </li>
@@ -20,10 +22,10 @@
     </ol>
 </nav>
 <div class="col-8 mx-auto">
-    <form id="collectionForm" class="my-2 needs-validation" asp-controller="Collection" asp-action="Create" enctype="multipart/form-data" novalidate>
+    <form id="collectionForm" class="my-2 needs-validation" method="post" enctype="multipart/form-data" novalidate>
         <div class="mb-3">
-            <label for="nameInput" class="form-label">Name</label>
-            <input type="text" class="form-control" id="nameInput" required name="name" />
+            <label class="form-label" asp-for="Name">Name</label>
+            <input type="text" class="form-control" asp-for="Name" required />
             <div class="valid-feedback">
                 Looks good!
             </div>
@@ -32,8 +34,8 @@
             </div>
         </div>
         <div class="mb-3">
-            <label for="descriptionTextarea">Description</label>
-            <textarea class="form-control" placeholder="Write descriptions using a Markdown" id="descriptionTextarea" name="description" required></textarea>
+            <label asp-for="ShortDescription">Description</label>
+            <textarea class="form-control" placeholder="Write descriptions using a Markdown" asp-for="ShortDescription" required></textarea>
             <div class="valid-feedback">
                 Looks good!
             </div>
@@ -42,9 +44,9 @@
             </div>
         </div>
         <div class="mb-3">
-            <label for="topicSelect" class="form-label">Topic</label>
-            <select class="form-control" id="topicSelect" name="topic" required>
-                @foreach (var topic in Model)
+            <label class="form-label" asp-for="Topic">Topic</label>
+            <select class="form-control" asp-for="Topic" required>
+                @foreach (var topic in Model.Topics)
                 {
                     <option value="@topic">@topic</option>
                 }
@@ -58,12 +60,12 @@
         </div>
         <input type="file"
                class="filepond"
-               name="files"
+               asp-for="Files"
                multiple
                data-max-file-size="3MB">
-        @await Html.PartialAsync("_GetExtraField", "First")
-        @await Html.PartialAsync("_GetExtraField", "Second")
-        @await Html.PartialAsync("_GetExtraField", "Third")
+        @await Html.PartialAsync( "_GetExtraField", new ExtraFieldViewModel{Prefix = "First", Name = Model.FirstFieldName, FieldType = Model.FirstFieldType })
+        @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Second", Name = Model.SecondFieldName, FieldType = Model.SecondFieldType })
+        @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Third", Name = Model.ThirdFieldName, FieldType = Model.ThirdFieldType })
         <div class="mb-3">
             <button id="submitAll" class="btn btn-primary d-block mx-auto w-50" type="submit">Create collection</button>
         </div>

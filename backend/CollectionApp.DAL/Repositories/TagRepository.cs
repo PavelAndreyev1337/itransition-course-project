@@ -7,7 +7,6 @@ namespace CollectionApp.DAL.Repositories
     {
         public TagRepository(ApplicationContext context) : base(context)
         {
-
         }
     }
 }

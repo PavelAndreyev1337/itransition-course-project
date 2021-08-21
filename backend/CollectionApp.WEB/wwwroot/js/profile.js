@@ -6,5 +6,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 event.stopPropagation();
             }
         })
-    })
+    });
 });

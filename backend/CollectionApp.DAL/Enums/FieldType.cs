@@ -1,4 +1,4 @@
-﻿namespace CollectionApp.BLL.Enums
+﻿namespace CollectionApp.DAL.Enums
 {
     public enum FieldType
     {

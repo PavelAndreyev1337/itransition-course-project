@@ -7,7 +7,6 @@ namespace CollectionApp.DAL.Repositories
     {
         public CommentRepository(ApplicationContext context) : base(context)
         {
-            
         }
     }
 }

@@ -1,32 +1,41 @@
-﻿@using CollectionApp.BLL.Enums
-@model string
+﻿@using CollectionApp.DAL.Enums
+@model CollectionApp.WEB.ViewModels.ExtraFieldViewModel
 
 @functions{ 
     public int ConvertFieldType(FieldType fieldType)
     {
         return (int)fieldType;
     }
+    public bool CheckOption(FieldType choice, FieldType option)
+    {
+        return choice == option;
+    }
 }
 
 <div class="row align-baseline">
     <div class="d-inline-block mb-3 mt-1 col-6">
-        <label for="firstFieldName" class="form-label">@Model field name</label>
-        <input type="text" class="form-control" id="firstFieldName" name="@Model.ToLower()FieldName" required />
+        <label class="form-label">@Model.Prefix Field</label>
+        <input type="text" class="form-control" name="@Model.Prefix.ToLower()FieldName" value="@Model.Name" required />
         <div class="valid-feedback">
             Looks good!
         </div>
         <div class="invalid-feedback">
-            @Model field is required
+            @Model.Prefix field is required
         </div>
     </div>
     <div class="d-inline-block mb-3 mt-1 col-6">
-        <label for="firstFieldType" class="form-label">@Model field type</label>
-        <select class="form-control" id="firstFieldType" name="@Model.ToLower()FieldType" required>
-            <option value="@ConvertFieldType(FieldType.Integer)">Integer</option>
-            <option value="@ConvertFieldType(FieldType.String)">String</option>
-            <option value="@ConvertFieldType(FieldType.Markdown)">Markdown</option>
-            <option value="@ConvertFieldType(FieldType.Date)">Date</option>
-            <option value="@ConvertFieldType(FieldType.Boolean)">Boolean</option>
+        <label class="form-label">@Model.Prefix field type</label>
+        <select class="form-control" name="@Model.Prefix.ToLower()FieldType" required>
+            <option value="@ConvertFieldType(FieldType.Integer)" 
+                    selected="@CheckOption(Model.FieldType, FieldType.Integer)">Integer</option>
+            <option value="@ConvertFieldType(FieldType.String)"
+                    selected="@CheckOption(Model.FieldType, FieldType.String)">String</option>
+            <option value="@ConvertFieldType(FieldType.Markdown)"
+                    selected="@CheckOption(Model.FieldType, FieldType.Markdown)">Markdown</option>
+            <option value="@ConvertFieldType(FieldType.Date)"
+                    selected="@CheckOption(Model.FieldType, FieldType.Date)">Date</option>
+            <option value="@ConvertFieldType(FieldType.Boolean)"
+                    selected="@CheckOption(Model.FieldType, FieldType.Boolean)">Boolean</option>
         </select>
 
     </div>

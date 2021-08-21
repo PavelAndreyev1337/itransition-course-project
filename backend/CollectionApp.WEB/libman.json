@@ -67,6 +67,13 @@
         "dist/filepond-plugin-image-preview.min.css",
         "dist/filepond-plugin-image-preview.min.js"
       ]
+    },
+    {
+      "library": "js-cookie@2.2.1",
+      "destination": "wwwroot/lib/js-cookie/",
+      "files": [
+        "js.cookie.min.js"
+      ]
     }
   ]
 }

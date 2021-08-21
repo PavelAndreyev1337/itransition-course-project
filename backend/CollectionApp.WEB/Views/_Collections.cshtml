@@ -1,0 +1,59 @@
+﻿@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Collection>
+
+@{int i = 0;}
+@foreach (var collection in Model.Entities)
+{
+    <div class="row">
+        <div class="col-8 mx-auto">
+            <div class="card my-2">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        @if (collection.Images.Count > 0)
+                        {
+                            <div id="carouselControls@(i)" class="carousel carousel-dark slide" data-interval="false">
+                                <div class="carousel-inner">
+                                    @{int j = 0;}
+                                    @foreach (var image in collection.Images)
+                                    {
+                                        <div class="carousel-item @(j == 0 ? "active" : "")">
+                                            <img src="@image.ImagePath" class="img-fluid rounded-start" alt="Collection image" />
+                                        </div>
+                                        j++;
+                                    }
+                                </div>
+                                @if (collection.Images.Count > 1)
+                                {
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls@(i)" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselControls@(i)" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/300?text=No photo" class="img-fluid rounded-start" alt="Image placeholder" />
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @collection.Name
+                            </h5>
+                            <p title="Topic"><i class="collection-topic">Topic @collection.Topic</i></p>
+                            <p class="card-text">@Html.Raw(collection.ShortDescription)</p>
+                            <a href="#" class="card-link">View</a>
+                            <a class="card-link text-warning" asp-controller="Collection" asp-action="Edit" asp-route-collectionId="@collection.Id">Edit</a>
+                            <a href="#" class="card-link text-danger delete-btn">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    i++;
+}
