@@ -52,7 +52,7 @@ namespace CollectionApp.BLL.Services
             var images = UnitOfWork.Images.Find(image => image.CollectionId == collection.Id).ToList();
             foreach (var image in images)
             {
-                var deletionParams = new DeletionParams(image.ImagePath);
+                var deletionParams = new DeletionParams(image.PublicId);
                 cloudinary.Destroy(deletionParams);
                 await UnitOfWork.Images.Delete(image.Id);
             }
@@ -76,6 +76,7 @@ namespace CollectionApp.BLL.Services
                 UnitOfWork.Images.Add(new Image
                 {
                     ImagePath = uploadResult.SecureUrl.AbsoluteUri,
+                    PublicId = uploadResult.PublicId,
                     Collection = collection
                 });
                 await UnitOfWork.SaveAsync();

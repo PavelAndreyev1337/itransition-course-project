@@ -1,7 +1,6 @@
 ﻿using CollectionApp.BLL.DTO;
 using CollectionApp.BLL.Interfaces;
 using CollectionApp.BLL.Utils;
-using CollectionApp.DAL.Entities;
 using CollectionApp.WEB.ViewModels;
 using HeyRed.MarkdownSharp;
 using Microsoft.AspNetCore.Authorization;
