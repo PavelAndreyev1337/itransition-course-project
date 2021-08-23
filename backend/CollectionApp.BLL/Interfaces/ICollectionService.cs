@@ -11,8 +11,9 @@ namespace CollectionApp.BLL.Interfaces
     {
         public IEnumerable<string> GetTopics();
         public Task CreateCollection(ClaimsPrincipal user, CollectionDTO collectionDto);
+        public Task<Collection> CheckRights(ClaimsPrincipal claimsPrincipal, int collectionId);
         public Task<EntityPageDTO<Collection>> GetUserCollections(ClaimsPrincipal claimsPrincipal, int page=1);
-        public Task<CollectionDTO> GetUserCollection(ClaimsPrincipal claimsPrincipal, int collectionId);
+        public Task<CollectionDTO> GetCollection(int collectionId);
         public IEnumerable<string> GetImages(int collectionId);
         public Task EditCollection(ClaimsPrincipal claimsPrincipal, CollectionDTO collectionDto);
         public Task DeleteCollection(ClaimsPrincipal claimsPrincipal, int collectionId);

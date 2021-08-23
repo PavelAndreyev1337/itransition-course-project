@@ -41,26 +41,37 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                @collection.Name
-                            </h5>
-                            <p title="Topic"><i class="collection-topic">Topic @collection.Topic</i></p>
-                            <p class="card-text">@Html.Raw(collection.ShortDescription)</p>
-                            <a href="#" class="btn btn-link p-0">View</a>
-                            <a class="btn btn-link text-warning p-0" 
-                               asp-controller="Collection"
-                               asp-action="Edit"
-                               asp-route-collectionId="@collection.Id">
-                                Edit
-                            </a>
-                            <form asp-controller="Collection"
-                                asp-action="Delete"
-                                asp-route-collectionId="@collection.Id"
-                                class="d-inline">
-                                <button class="btn btn-link text-danger delete-btn p-0" type="submit">
-                                    Delete
-                                </button>
-                            </form>
+                            <div>
+                                <h5 class="card-title">
+                                    @collection.Name
+                                </h5>
+                                <div>
+                                    <a class="btn btn-warning btn-sm text-white"
+                                       asp-controller="Collection"
+                                       asp-action="Edit"
+                                       asp-route-collectionId="@collection.Id">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form asp-controller="Collection"
+                                          asp-action="Delete"
+                                          asp-route-collectionId="@collection.Id"
+                                          class="d-inline">
+                                        <button class="btn btn-danger btn-sm delete-btn" type="submit">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                <p title="Topic"><i class="collection-topic">Topic @collection.Topic</i></p>
+                                <p class="card-text">
+                                    @Html.Raw(collection.ShortDescription)
+                                    <a asp-controller="Item"
+                                       asp-action="Index"
+                                       asp-route-collectionId="@collection.Id"
+                                       asp-route-page="@Model.Page.PageNumber">
+                                        View more...
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

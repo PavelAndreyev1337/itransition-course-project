@@ -20,7 +20,7 @@ namespace CollectionApp.WEB.Controllers
             _collectionService = collectionService;
         }
 
-        [Route("/Profile", Name = "Profile")]
+        [Route("/Collections", Name = "Profile")]
         public async Task<IActionResult> Index(int page = 1)
         {
             var collections = await _collectionService.GetUserCollections(User, page);
@@ -29,7 +29,7 @@ namespace CollectionApp.WEB.Controllers
             {
                 entity.ShortDescription = markdown.Transform(entity.ShortDescription);
             }
-            Response.Cookies.Append("page", page.ToString());
+            Response.Cookies.Append("collectionPage", page.ToString());
             return View(collections);
         }
 
@@ -57,9 +57,11 @@ namespace CollectionApp.WEB.Controllers
         {
             try
             {
-                var collectionDto = await _collectionService.GetUserCollection(User, collectionId);
+                var collectionDto = await _collectionService.GetCollection(collectionId);
                 Response.Cookies.Append("collectionId", collectionId.ToString());
-                return View("Form", MapperUtil.Map<CollectionDTO, CollectionViewModel>(collectionDto));
+                var collection = MapperUtil.Map<CollectionDTO, CollectionViewModel>(collectionDto);
+                await _collectionService.CheckRights(User, collectionId);
+                return View("Form",collection);
             }
             catch
             {

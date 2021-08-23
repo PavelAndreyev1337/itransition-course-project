@@ -74,6 +74,14 @@
       "files": [
         "js.cookie.min.js"
       ]
+    },
+    {
+      "library": "tagify@4.7.1",
+      "destination": "wwwroot/lib/tagify/",
+      "files": [
+        "tagify.min.js",
+        "tagify.min.css"
+      ]
     }
   ]
 }

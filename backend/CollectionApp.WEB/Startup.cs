@@ -36,6 +36,7 @@ namespace CollectionApp.WEB
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICollectionService, CollectionService>();
+            services.AddScoped<IItemService, ItemService>();
             services.AddControllersWithViews();
             services.AddAuthentication()
                 .AddCookie()

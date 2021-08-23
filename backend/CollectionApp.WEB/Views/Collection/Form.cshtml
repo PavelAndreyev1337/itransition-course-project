@@ -14,11 +14,11 @@
         <li class="breadcrumb-item">
             <a asp-controller="Collection"
                asp-action="Index"
-               asp-route-page="@Context.Request.Cookies["page"]">
-                Profile
+               asp-route-page="@Context.Request.Cookies["collectionPage"]">
+                Collections
             </a>
         </li>
-        <li class="breadcrumb-item active">Add collection</li>
+        <li class="breadcrumb-item active">Collection</li>
     </ol>
 </nav>
 <div class="col-8 mx-auto">
@@ -67,7 +67,7 @@
         @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Second", Name = Model.SecondFieldName, FieldType = Model.SecondFieldType })
         @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Third", Name = Model.ThirdFieldName, FieldType = Model.ThirdFieldType })
         <div class="mb-3">
-            <button id="submitAll" class="btn btn-primary d-block mx-auto w-50" type="submit">Create collection</button>
+            <button id="submitAll" class="btn btn-primary d-block mx-auto w-50" type="submit">Submit</button>
         </div>
     </form>
 </div>

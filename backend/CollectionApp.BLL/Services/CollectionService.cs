@@ -22,7 +22,6 @@ namespace CollectionApp.BLL.Services
         IUnitOfWork UnitOfWork { get; set; }
         public IConfiguration Configuration { get; set; }
 
-
         public CollectionService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             UnitOfWork = unitOfWork;
@@ -88,9 +87,15 @@ namespace CollectionApp.BLL.Services
             return await UnitOfWork.UserManager.GetUserAsync(userPrincipal);
         }
 
-        private bool CheckRights(Collection collection, User user)
+        public async Task<Collection> CheckRights(ClaimsPrincipal claimsPrincipal, int collectionId)
         {
-            return collection.User.Id == user.Id;
+            var collection = await UnitOfWork.Collections.Get(collectionId);
+            var user = await GetCurrentUser(claimsPrincipal);
+            if (!(collection.User.Id == user.Id))
+            {
+                throw new UserNoRightsException();
+            }
+            return collection;
         }
 
         public async Task CreateCollection(ClaimsPrincipal userPrincipal, CollectionDTO collectionDto)
@@ -117,11 +122,10 @@ namespace CollectionApp.BLL.Services
                 includes: collection => collection.Images);
         }
 
-        public async Task<CollectionDTO> GetUserCollection(ClaimsPrincipal claimsPrincipal, int collectionId)
+        public async Task<CollectionDTO> GetCollection(int collectionId)
         {
-            var user = await GetCurrentUser(claimsPrincipal);
             var collection = await UnitOfWork.Collections.Get(collectionId);
-            if (collection == null || !CheckRights(collection, user))
+            if (collection == null)
             {
                 throw new CollectionNotFound();
             }
@@ -139,13 +143,8 @@ namespace CollectionApp.BLL.Services
         }
 
         public async Task EditCollection(ClaimsPrincipal claimsPrincipal, CollectionDTO collectionDto)
-        {
-            var collection = await UnitOfWork.Collections.Get((int)collectionDto.Id);
-            var user = await GetCurrentUser(claimsPrincipal);
-            if (!CheckRights(collection, user))
-            {
-                throw new UserNoRightsException();
-            }
+        {       
+            var collection = await CheckRights(claimsPrincipal,(int)collectionDto.Id);
             using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
             {
                 collectionDto.User = collection.User;
@@ -159,15 +158,14 @@ namespace CollectionApp.BLL.Services
 
         public async Task DeleteCollection(ClaimsPrincipal claimsPrincipal, int collectionId)
         {
-            var collection = await UnitOfWork.Collections.Get(collectionId);
-            var user = await GetCurrentUser(claimsPrincipal);
-            if (!CheckRights(collection, user))
+            using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
             {
-                throw new UserNoRightsException();
+                var collection = await CheckRights(claimsPrincipal, collectionId);
+                await UploadImages(collection, new List<IFormFile>());
+                await UnitOfWork.Collections.Delete(collectionId);
+                await UnitOfWork.SaveAsync();
+                await transaction.CommitAsync();
             }
-            await UploadImages(collection, new List<IFormFile>());
-            await UnitOfWork.Collections.Delete(collectionId);
-            await UnitOfWork.SaveAsync();
         }
 
         public void Dispose()

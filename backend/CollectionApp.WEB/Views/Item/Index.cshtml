@@ -1,0 +1,33 @@
+﻿@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Item>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="row mt-3">
+    <div class="col-8 mx-auto">
+        <nav class="mt-2">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Collection"
+                       asp-action="Index"
+                       asp-route-page="@Context.Request.Cookies["collectionPage"]">
+                        Collections
+                    </a>
+                </li>
+                <li class="breadcrumb-item active">Items</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+@if (Model.Entities.Count() == 0 && Model.Page.PageNumber == 1)
+{
+    <div class="col-md-12 text-center mt-5">
+        <h5>No items</h5>
+    </div>
+}
+else
+{
+    @await Html.PartialAsync("../_Pagination", Model.Page)
+}

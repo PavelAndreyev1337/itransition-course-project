@@ -4,7 +4,16 @@
     Layout = "_Layout";
 }
 
-@await Html.PartialAsync("../_Collections", Model)
-@await Html.PartialAsync("../_Pagination", Model.Page)
+@if (Model.Entities.Count() == 0 && Model.Page.PageNumber == 1)
+{
+    <div class="col-md-12 text-center mt-5">
+        <h5>No collections</h5>
+    </div>
+}
+else
+{
+    @await Html.PartialAsync("../_Collections", Model)
+    @await Html.PartialAsync("../_Pagination", Model.Page)
+}
 
 <script src="~/js/profile.js"></script>

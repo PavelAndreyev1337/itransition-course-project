@@ -26,7 +26,6 @@ xhr.onload = function () {
                 source: imageUri
             });
         }
-        console.log(files)
     }
     FilePond.setOptions({
         files: files

@@ -1,3 +1,7 @@
 .collection-topic {
     font-size: 0.9rem;
 }
+iframe {
+    display: block;
+    width: 100%;
+}
