@@ -68,5 +68,12 @@ namespace CollectionApp.WEB.Controllers
                 MapperUtil.Map<ItemViewModel, ItemDTO>(model));
             return RedirectToAction("Index", new { collectionId = model.CollectionId, page = 1 });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int itemId)
+        {
+            var collectionId = await _itemService.DeleteItem(User, itemId);
+            return RedirectToAction("Index", new { collectionId = collectionId, page = 1 });
+        }
     }
 }

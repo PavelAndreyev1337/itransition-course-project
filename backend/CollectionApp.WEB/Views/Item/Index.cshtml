@@ -5,7 +5,7 @@
 }
 
 <div class="row mt-3">
-    <div class="col-8 mx-auto">
+    <div class="col-12">
         <nav class="mt-2">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -32,3 +32,5 @@ else
     @await Html.PartialAsync("../_Items", Model)
     @await Html.PartialAsync("../_Pagination", Model.Page)
 }
+
+<script src="~/js/profile.js"></script>

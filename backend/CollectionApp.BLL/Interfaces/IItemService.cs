@@ -10,10 +10,11 @@ namespace CollectionApp.BLL.Interfaces
     public interface IItemService
     {
         IUnitOfWork UnitOfWork { get; set; }
-        public Task<EntityPageDTO<Item>> GetItems(int collectionId);
-        public Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto);
-        public Task<EntityPageDTO<Tag>> GetTags(string input);
-        public Task<ItemDTO> GetItem(int itemId);
-        public Task EditItem(ClaimsPrincipal claimsPrincipal, ItemDTO itemDto);
+        Task<EntityPageDTO<Item>> GetItems(int collectionId);
+        Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto);
+        Task<EntityPageDTO<Tag>> GetTags(string input);
+        Task<ItemDTO> GetItem(int itemId);
+        Task EditItem(ClaimsPrincipal claimsPrincipal, ItemDTO itemDto);
+        Task<int> DeleteItem(ClaimsPrincipal claimsPrincipal, int itemId);
     }
 }

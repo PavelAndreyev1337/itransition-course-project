@@ -101,5 +101,15 @@ namespace CollectionApp.BLL.Services
                 await transaction.CommitAsync();
             }
         }
+
+        public async Task<int> DeleteItem(ClaimsPrincipal claimsPrincipal, int itemId)
+        {
+            var item = await GetItem(itemId);
+            var collectionId = (int)item.CollectionId;
+            await _collectionService.CheckRights(claimsPrincipal, collectionId);
+            await UnitOfWork.Items.Delete(itemId);
+            await UnitOfWork.SaveAsync();
+            return collectionId;
+        }
     }
 }
