@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CollectionApp.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CollectionApp.DAL.Entities
 {
-    public class Item
+    public class Item : IEntityWithId
     {
         [Key]
         public int Id { get; set; }

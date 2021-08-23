@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace CollectionApp.DAL.Repositories
 {
     public abstract class EfCoreRepository<TEntity, TContext> : IRepository<TEntity>
-        where TEntity : class
+        where TEntity : class, IEntityWithId
         where TContext : DbContext
     {
         private readonly TContext _context;
@@ -36,19 +36,31 @@ namespace CollectionApp.DAL.Repositories
             return entity;
         }
 
-        public IEnumerable<TEntity> Find(Func<TEntity, bool> predicate)
+        public IEnumerable<TEntity> Find(
+            Func<TEntity, bool> predicate,
+            params Expression<Func<TEntity, object>>[] includes)
         {
-            return _context.Set<TEntity>().Where(predicate).ToList();
+            return _context.Set<TEntity>()
+                .IncludeMultiple(includes)
+                .Where(predicate)
+                .ToList();
         }
 
-        public async Task<TEntity> Get(int id)
+        public async Task<TEntity> Get(
+            int id,
+            params Expression<Func<TEntity, object>>[] includes)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            return await _context.Set<TEntity>()
+                .IncludeMultiple(includes)
+                .SingleOrDefaultAsync(entity => entity.Id == id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll(
+            params Expression<Func<TEntity, object>>[] includes)
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            return await _context.Set<TEntity>()
+                .IncludeMultiple(includes)
+                .ToListAsync();
         }
 
         public async Task<EntityPageDTO<TEntity>> Paginate(int pageSize = 10,

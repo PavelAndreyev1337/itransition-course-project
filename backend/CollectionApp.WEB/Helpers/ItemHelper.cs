@@ -3,6 +3,7 @@ using CollectionApp.DAL.Enums;
 using CollectionApp.WEB.ViewModels;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.IO;
 using System.Text.Encodings.Web;
 
@@ -10,23 +11,26 @@ namespace CollectionApp.WEB.Helpers
 {
     public static class ItemHelper
     {
-        private static ExtraField CheckOrder(int index, Collection collection)
+        private static ExtraField CheckOrder(int index, Collection collection, string[] values)
         {
             var extraField = new ExtraField();
             if (index == 0)
             {
                 extraField.Label = collection.FirstFieldName;
                 extraField.Name = "First";
+                extraField.Value = values[index];
             }
             else if (index == 1)
             {
                 extraField.Label = collection.SecondFieldName;
                 extraField.Name = "Second";
+                extraField.Value = values[index];
             }
             else if (index == 2)
             {
                 extraField.Label = collection.ThirdFieldName;
                 extraField.Name = "Third";
+                extraField.Value = values[index];
             }
             return extraField;
         }
@@ -46,21 +50,139 @@ namespace CollectionApp.WEB.Helpers
             label.InnerHtml.Append(extraField.Label);
             label.AddCssClass(labelCssClass);
             var input = new TagBuilder(element);
-            input.MergeAttribute("required", string.Empty);
+            if (type != "checkbox")
+            {
+                input.MergeAttribute("required", string.Empty);
+            }
             input.MergeAttribute("name", extraField.Name);
             input.AddCssClass(inputCssClass);
             input.MergeAttribute("type", type);
-            input.MergeAttribute("value", extraField.Value);
+            if (element == "textarea")
+            {
+                input.InnerHtml.Append(extraField.Value);
+            }
+            else if (type == "checkbox")
+            {
+                input.MergeAttribute("value", "true");
+                if (extraField.Value.Length > 0)
+                {
+                    input.MergeAttribute(extraField.Value, "");
+                }
+            }
+            else
+            {
+                input.MergeAttribute("value", extraField.Value);
+            }
             container.InnerHtml.AppendHtml(label);
             container.InnerHtml.AppendHtml(input);
             container.WriteTo(writer, HtmlEncoder.Default);
+        }
+
+        private static void AddStringInput(
+            int index,
+            ItemViewModel model,
+            StringWriter writer)
+        {
+            var stringField = CheckOrder(index, model.Collection, new string[]
+            {
+                model.FirstString,
+                model.SecondString,
+                model.ThirdString
+            });
+            stringField.Name += "String";
+            CreateInput(writer, "input", stringField);
+        }
+
+        private static void AddIntegerInput(
+           int index,
+           ItemViewModel model,
+           StringWriter writer)
+        {
+            var integerField = CheckOrder(index, model.Collection, new string[]
+            {
+                model.FirstInteger.ToString(),
+                model.SecondInteger.ToString(),
+                model.ThirdInteger.ToString()
+            });
+            integerField.Name += "Integer";
+            CreateInput(writer, "input", integerField, "number");
+        }
+
+
+        private static void AddMarkdownInput(
+           int index,
+           ItemViewModel model,
+           StringWriter writer)
+        {
+            var markdownField = CheckOrder(index, model.Collection, new string[]
+            {
+                model.FirstText,
+                model.SecondText,
+                model.ThirdText
+            });
+            markdownField.Name += "Text";
+            CreateInput(writer, "textarea", markdownField);
+        }
+
+        private static void AddBoleanInput(
+           int index,
+           ItemViewModel model,
+           StringWriter writer)
+        {
+            Func<bool?, string> booleanToString = value =>
+            {
+                return value != null && (bool)value ? "checked" : "";
+            };
+            var booleanField = CheckOrder(index, model.Collection, new string[]
+            {
+                booleanToString(model.FirstBoolean),
+                booleanToString(model.SecondBoolean),
+                booleanToString(model.ThirdBoolean)
+            });
+            booleanField.Name += "Boolean";
+            CreateInput(writer, "input", booleanField, "checkbox", "form-check",
+                "form-check-input", "form-check-label");
+        }
+
+        private static void AddDateInput(
+           int index,
+           ItemViewModel model,
+           StringWriter writer)
+        {
+            Func<DateTime?, string> dateToString = value =>
+            {
+                if (value != null)
+                {
+                    return String.Format("{0:yyyy-MM-dd}", (DateTime)value);
+                }
+                return "";
+            };
+            var dateField = CheckOrder(index, model.Collection, new string[]
+            {
+                            dateToString(model.FirstDate),
+                            dateToString(model.SecondDate),
+                            dateToString(model.SecondDate),
+            });
+            dateField.Name += "Date";
+            CreateInput(writer, "input", dateField, "date");
+        }
+
+        private static void AddHiddenInput(ItemViewModel model, StringWriter writer)
+        {
+            CreateInput(writer, "input",
+                new ExtraField()
+                {
+                    Label = "",
+                    Name = "CollectionId",
+                    Value = model.Collection.Id.ToString()
+                }, "hidden");
         }
 
         public static HtmlString AddExtraFields(
             this IHtmlHelper html,
             ItemViewModel model)
         {
-            var writer = new System.IO.StringWriter();
+            var writer = new StringWriter();
             FieldType[] fieldTypes = new FieldType[]
             {
                 model.Collection.FirstFieldType,
@@ -69,39 +191,26 @@ namespace CollectionApp.WEB.Helpers
             };
             for (var i = 0; i < fieldTypes.Length; i++)
             {
-                var extraField = CheckOrder(i, model.Collection);
                 switch (fieldTypes[i])
                 {
                     case FieldType.String:
-                        extraField.Name += "String";
-                        CreateInput(writer, "input", extraField);
+                        AddStringInput(i, model, writer);
                         break;
                     case FieldType.Integer:
-                        extraField.Name += "Integer";
-                        CreateInput(writer, "input", extraField, "number");
+                        AddIntegerInput(i, model, writer);
                         break;
                     case FieldType.Markdown:
-                        extraField.Name += "Markdown";
-                        CreateInput(writer, "textarea", extraField);
+                        AddMarkdownInput(i, model, writer);
                         break;
                     case FieldType.Boolean:
-                        extraField.Name += "Boolean";
-                        CreateInput(writer, "input", extraField, "checkbox", "form-check",
-                            "form-check-input", "form-check-label");
+                        AddBoleanInput(i, model, writer);
                         break;
                     case FieldType.Date:
-                        extraField.Name += "Date";
-                        CreateInput(writer, "input", extraField, "date");
+                        AddDateInput(i, model, writer);
                         break;
                 }
             }
-            CreateInput(writer, "input",
-                new ExtraField() 
-                { 
-                    Label = "",
-                    Name = "CollectionId",
-                    Value = model.Collection.Id.ToString()
-                }, "hidden");
+            AddHiddenInput(model, writer);
             return new HtmlString(writer.ToString());
         }
     }

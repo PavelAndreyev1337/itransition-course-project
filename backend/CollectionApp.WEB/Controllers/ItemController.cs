@@ -54,5 +54,11 @@ namespace CollectionApp.WEB.Controllers
         {
             return await _itemService.GetTags(input);
         }
+
+        public async Task<IActionResult> Edit(int itemId)
+        {
+            var itemDto = await _itemService.GetItem(itemId);
+            return View("Form", MapperUtil.Map<ItemDTO, ItemViewModel>(itemDto));
+        }
     }
 }

@@ -27,7 +27,9 @@ namespace CollectionApp.BLL.Services
         public async Task<EntityPageDTO<Item>> GetItems(int collectionId)
         {
             var collection = await UnitOfWork.Collections.Get(collectionId);
-            return await UnitOfWork.Items.Paginate(predicate: item => item.CollectionId == collection.Id);
+            return await UnitOfWork.Items.Paginate(
+                predicate: item => item.CollectionId == collection.Id,
+                includes: item => item.Tags);
         }
 
         public async Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto)
@@ -59,6 +61,19 @@ namespace CollectionApp.BLL.Services
         public async Task<EntityPageDTO<Tag>> GetTags(string input)
         {
             return await UnitOfWork.Tags.Paginate(predicate: tag => tag.Name.Contains(input));
+        }
+
+        public async Task<ItemDTO> GetItem(int itemId)
+        {
+            var item = await UnitOfWork.Items.Get(
+                itemId,
+                item => item.Collection,
+                item => item.Tags);;
+            var itemDto = MapperUtil.Map<Item, ItemDTO>(item);
+            var tags = item.Tags.ToList().Select(
+                item => new TagBusinessModel() { value = item.Name });
+            itemDto.TagsJson = JsonSerializer.Serialize<IEnumerable<TagBusinessModel>>(tags);
+            return itemDto;
         }
     }
 }

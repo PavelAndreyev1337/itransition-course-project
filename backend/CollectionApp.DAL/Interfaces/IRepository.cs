@@ -8,13 +8,16 @@ namespace CollectionApp.DAL.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetAll();
+        Task<IEnumerable<TEntity>> GetAll(
+            params Expression<Func<TEntity, object>>[] includes);
         Task<EntityPageDTO<TEntity>> Paginate(int pageSize = 10,
             int page = 1,
             Func<TEntity, bool> predicate = null,
             params Expression<Func<TEntity, object>>[] includes);
-        Task<TEntity> Get(int id);
-        IEnumerable<TEntity> Find(Func<TEntity, Boolean> predicate);
+        Task<TEntity> Get(int id, params Expression<Func<TEntity, object>>[] includes);
+        IEnumerable<TEntity> Find(
+            Func<TEntity, bool> predicate,
+            params Expression<Func<TEntity, object>>[] includes);
         TEntity Add(TEntity entity);
         TEntity Update(TEntity entity);
         Task<TEntity> Delete(int id);

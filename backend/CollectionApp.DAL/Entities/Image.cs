@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CollectionApp.DAL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace CollectionApp.DAL.Entities
 {
-    public class Image
+    public class Image : IEntityWithId
     {
         [Key]
         public int Id { get; set; }

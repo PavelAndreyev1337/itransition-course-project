@@ -29,5 +29,6 @@
 }
 else
 {
+    @await Html.PartialAsync("../_Items", Model)
     @await Html.PartialAsync("../_Pagination", Model.Page)
 }
