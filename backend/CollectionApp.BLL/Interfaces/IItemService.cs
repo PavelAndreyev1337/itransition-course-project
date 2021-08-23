@@ -14,5 +14,6 @@ namespace CollectionApp.BLL.Interfaces
         public Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto);
         public Task<EntityPageDTO<Tag>> GetTags(string input);
         public Task<ItemDTO> GetItem(int itemId);
+        public Task EditItem(ClaimsPrincipal claimsPrincipal, ItemDTO itemDto);
     }
 }

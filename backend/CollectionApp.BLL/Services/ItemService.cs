@@ -32,28 +32,38 @@ namespace CollectionApp.BLL.Services
                 includes: item => item.Tags);
         }
 
+        private IEnumerable<TagBusinessModel> DeserializeTags(string json)
+        {
+            return JsonSerializer.Deserialize<IEnumerable<TagBusinessModel>>(json);
+        }
+
+        private async Task AddTags(Item model, IEnumerable<TagBusinessModel> tags)
+        {
+            foreach (var newTag in tags)
+            {
+                var existingTags = UnitOfWork.Tags.Find(tag => tag.Name == newTag.value).ToList();
+                if (existingTags.Count() == 0)
+                {
+                    model.Tags.Add(new Tag() { Name = newTag.value });
+                }
+                else
+                {
+                    model.Tags.Add(existingTags.First());
+                }
+            }
+            await UnitOfWork.SaveAsync();
+        }
+
         public async Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto)
         {
             await _collectionService.CheckRights(userPrincipal, (int)(itemDto.CollectionId));
-            var tags = JsonSerializer.Deserialize<IEnumerable<TagBusinessModel>>(itemDto.TagsJson);
+            var tags = DeserializeTags(itemDto.TagsJson);
             using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
             {
-                var item = MapperUtil.Map<ItemDTO, Item>(itemDto);
-                UnitOfWork.Items.Add(item);
+                var model = MapperUtil.Map<ItemDTO, Item>(itemDto);
+                UnitOfWork.Items.Add(model);
                 await UnitOfWork.SaveAsync();
-                foreach (var newTag in tags)
-                {
-                    var existingTags = UnitOfWork.Tags.Find(tag => tag.Name == newTag.value).ToList();
-                    if (existingTags.Count() == 0)
-                    {
-                        item.Tags.Add(new Tag() { Name = newTag.value });
-                    }
-                    else
-                    {
-                        item.Tags.Add(existingTags.First());
-                    }
-                }
-                await UnitOfWork.SaveAsync();
+                await AddTags(model, tags);
                 await transaction.CommitAsync();
             }
         }
@@ -74,6 +84,22 @@ namespace CollectionApp.BLL.Services
                 item => new TagBusinessModel() { value = item.Name });
             itemDto.TagsJson = JsonSerializer.Serialize<IEnumerable<TagBusinessModel>>(tags);
             return itemDto;
+        }
+
+        public async Task EditItem(ClaimsPrincipal claimsPrincipal, ItemDTO itemDto)
+        {
+            await _collectionService.CheckRights(claimsPrincipal, (int)(itemDto.CollectionId));
+            using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
+            {
+                var model = MapperUtil.Map<ItemDTO, Item>(itemDto);
+                UnitOfWork.Items.Update(model);
+                await UnitOfWork.SaveAsync();
+                model = await UnitOfWork.Items.Get(model.Id, item => item.Tags);
+                var tags = DeserializeTags(itemDto.TagsJson);
+                model.Tags.Clear();
+                await AddTags(model, tags);
+                await transaction.CommitAsync();
+            }
         }
     }
 }

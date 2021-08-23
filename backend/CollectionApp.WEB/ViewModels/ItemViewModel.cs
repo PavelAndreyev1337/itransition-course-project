@@ -21,13 +21,10 @@ namespace CollectionApp.WEB.ViewModels
         public string SecondText { get; set; }
         public string ThirdText { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "yyyy-MM-dd}")]
         public DateTime? FirstDate { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "yyyy-MM-dd}")]
         public DateTime? SecondDate { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "yyyy-MM-dd}")]
         public DateTime? ThirdDate { get; set; }
         public bool? FirstBoolean { get; set; }
         public bool? SecondBoolean { get; set; }

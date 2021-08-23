@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using CollectionApp.BLL.Utils;
 using System.Threading.Tasks;
 using CollectionApp.DAL.Entities;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using CollectionApp.DAL.DTO;
 
@@ -59,6 +58,15 @@ namespace CollectionApp.WEB.Controllers
         {
             var itemDto = await _itemService.GetItem(itemId);
             return View("Form", MapperUtil.Map<ItemDTO, ItemViewModel>(itemDto));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ItemViewModel model)
+        {
+            await _itemService.EditItem(
+                User,
+                MapperUtil.Map<ItemViewModel, ItemDTO>(model));
+            return RedirectToAction("Index", new { collectionId = model.CollectionId, page = 1 });
         }
     }
 }

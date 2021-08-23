@@ -46,6 +46,10 @@ namespace CollectionApp.WEB.Helpers
         {
             var container = new TagBuilder("div");
             container.AddCssClass(containerCssClass);
+            if (type == "hidden")
+            {
+                container.AddCssClass("d-none");
+            }
             var label = new TagBuilder("label");
             label.InnerHtml.Append(extraField.Label);
             label.AddCssClass(labelCssClass);
@@ -73,8 +77,22 @@ namespace CollectionApp.WEB.Helpers
             {
                 input.MergeAttribute("value", extraField.Value);
             }
-            container.InnerHtml.AppendHtml(label);
-            container.InnerHtml.AppendHtml(input);
+            if (type == "number")
+            {
+                input.MergeAttribute("max", Int32.MaxValue.ToString());
+                input.MergeAttribute("min", Int32.MinValue.ToString());
+                container.InnerHtml.AppendHtml(label);
+                container.InnerHtml.AppendHtml(input);
+                var validFeedback = new TagBuilder("div");
+                validFeedback.AddCssClass("invalid-feedback");
+                validFeedback.InnerHtml
+                    .Append($"Range: {Int32.MinValue.ToString()} ... {Int32.MaxValue.ToString()}");
+                container.InnerHtml.AppendHtml(validFeedback);
+            } else
+            {
+                container.InnerHtml.AppendHtml(label);
+                container.InnerHtml.AppendHtml(input);
+            }
             container.WriteTo(writer, HtmlEncoder.Default);
         }
 
@@ -159,15 +177,15 @@ namespace CollectionApp.WEB.Helpers
             };
             var dateField = CheckOrder(index, model.Collection, new string[]
             {
-                            dateToString(model.FirstDate),
-                            dateToString(model.SecondDate),
-                            dateToString(model.SecondDate),
+                dateToString(model.FirstDate),
+                dateToString(model.SecondDate),
+                dateToString(model.SecondDate),
             });
             dateField.Name += "Date";
             CreateInput(writer, "input", dateField, "date");
         }
 
-        private static void AddHiddenInput(ItemViewModel model, StringWriter writer)
+        private static void AddHiddenInputs(ItemViewModel model, StringWriter writer)
         {
             CreateInput(writer, "input",
                 new ExtraField()
@@ -176,6 +194,13 @@ namespace CollectionApp.WEB.Helpers
                     Name = "CollectionId",
                     Value = model.Collection.Id.ToString()
                 }, "hidden");
+            CreateInput(writer, "input",
+               new ExtraField()
+               {
+                   Label = "",
+                   Name = "Id",
+                   Value = model.Id.ToString()
+               }, "hidden");
         }
 
         public static HtmlString AddExtraFields(
@@ -210,7 +235,7 @@ namespace CollectionApp.WEB.Helpers
                         break;
                 }
             }
-            AddHiddenInput(model, writer);
+            AddHiddenInputs(model, writer);
             return new HtmlString(writer.ToString());
         }
     }
