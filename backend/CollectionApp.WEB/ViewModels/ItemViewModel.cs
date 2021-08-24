@@ -29,6 +29,7 @@ namespace CollectionApp.WEB.ViewModels
         public bool? FirstBoolean { get; set; }
         public bool? SecondBoolean { get; set; }
         public bool? ThirdBoolean { get; set; }
+        public IEnumerable<Tag> Tags { get; set; }
         public string TagsJson { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public Collection Collection { get; set; }

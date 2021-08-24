@@ -10,7 +10,7 @@
                     <div class="col-md-4">
                         @if (collection.Images.Count > 0)
                         {
-                            <div id="carouselControls@(i)" class="carousel carousel-dark slide" data-interval="false">
+                            <div id="carouselControls@(i)" class="carousel slide" data-interval="false">
                                 <div class="carousel-inner">
                                     @{int j = 0;}
                                     @foreach (var image in collection.Images)
@@ -61,13 +61,13 @@
                                         </button>
                                     </form>
                                 </div>
-                                <p title="Topic"><i class="collection-topic">Topic @collection.Topic</i></p>
+                                <p title="Topic" class="mb-0"><i class="collection-topic">Topic @collection.Topic</i></p>
                                 <p class="card-text">
                                     @Html.Raw(collection.ShortDescription)
                                     <a asp-controller="Item"
                                        asp-action="Index"
                                        asp-route-collectionId="@collection.Id"
-                                       asp-route-page="@Model.Page.PageNumber">
+                                       asp-route-page="1">
                                         View more...
                                     </a>
                                 </p>

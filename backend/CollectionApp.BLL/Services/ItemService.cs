@@ -24,10 +24,11 @@ namespace CollectionApp.BLL.Services
             _collectionService = collectionService;
         }
 
-        public async Task<EntityPageDTO<Item>> GetItems(int collectionId)
+        public async Task<EntityPageDTO<Item>> GetItems(int collectionId, int page=1)
         {
             var collection = await UnitOfWork.Collections.Get(collectionId);
             return await UnitOfWork.Items.Paginate(
+                page: page,
                 predicate: item => item.CollectionId == collection.Id,
                 includes: item => item.Tags);
         }

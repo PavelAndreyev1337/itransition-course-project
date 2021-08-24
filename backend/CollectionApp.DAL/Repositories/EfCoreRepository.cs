@@ -69,10 +69,9 @@ namespace CollectionApp.DAL.Repositories
             params Expression<Func<TEntity, object>>[] includes)
         {
             var dbSet = _context.Set<TEntity>();
-            var count = await dbSet.CountAsync();
             Func<TEntity, bool> defaultPredicate = entity => true;
-            var entities = _context.Set<TEntity>()
-                .IncludeMultiple(includes)
+            var count = dbSet.Where(predicate ?? defaultPredicate).Count();
+            var entities = dbSet.IncludeMultiple(includes)
                 .Where(predicate ?? defaultPredicate)
                 .Reverse()
                 .Skip((page - 1) * pageSize)

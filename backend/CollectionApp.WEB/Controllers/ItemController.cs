@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CollectionApp.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using CollectionApp.DAL.DTO;
+using HeyRed.MarkdownSharp;
 
 namespace CollectionApp.WEB.Controllers
 {
@@ -24,12 +25,14 @@ namespace CollectionApp.WEB.Controllers
             _collectionService = collectionService;
         }
 
-        [Route("/Collections/{collectionId}/Items/{page}", Name = "Items")]
-        public async Task<IActionResult> Index(int collectionId, int page=1)
+        [Route("/Collections/{collectionId}/Items/", Name = "Items")]
+        public async Task<IActionResult> Index(
+            [FromRoute(Name = "collectionId")] int collectionId,
+            [FromQuery] int page=1)
         {
             Response.Cookies.Append("itemPage", page.ToString());
             Response.Cookies.Append("collectionId", collectionId.ToString());
-            return View(await _itemService.GetItems(collectionId));
+            return View(await _itemService.GetItems(collectionId, page));
         }
 
         public async Task<IActionResult> Create(int collectionId)
@@ -74,6 +77,17 @@ namespace CollectionApp.WEB.Controllers
         {
             var collectionId = await _itemService.DeleteItem(User, itemId);
             return RedirectToAction("Index", new { collectionId = collectionId, page = 1 });
+        }
+
+        public async Task<IActionResult> GetItem(int itemId)
+        {
+            var itemDto = await _itemService.GetItem(itemId);
+            var model = MapperUtil.Map<ItemDTO, ItemViewModel>(itemDto);
+            var markdown = new Markdown();
+            model.FirstText = markdown.Transform(model.FirstText ?? "");
+            model.SecondText = markdown.Transform(model.SecondText ?? "");
+            model.ThirdText = markdown.Transform(model.ThirdText ?? "");
+            return View("Item", model);
         }
     }
 }

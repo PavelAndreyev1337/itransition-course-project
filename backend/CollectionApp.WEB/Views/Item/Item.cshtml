@@ -1,0 +1,71 @@
+﻿@using CollectionApp.WEB.Utils
+@using CollectionApp.DAL.Enums
+@model CollectionApp.WEB.ViewModels.ItemViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<nav class="mt-2">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Collection"
+               asp-action="Index"
+               asp-route-page="@Context.Request.Cookies["collectionPage"]">
+                Collections
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index"
+               asp-route-collectionId="@Context.Request.Cookies["collectionId"]"
+               asp-route-page="@Context.Request.Cookies["itemPage"]">
+                Items
+            </a>
+        </li>
+        <li class="breadcrumb-item active">Item</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-8 mx-auto">
+        <div class="shadow-sm p-3 mb-1 bg-white rounded">
+            <div class="px-5 py-3">
+                <h2 class="mb-1">@Model.Name</h2>
+                <p title="Tags" class="mb-0">
+                    <i class="collection-topic">
+                        Tags:
+                        @foreach (var tag in Model.Tags)
+                        {
+                            @(tag.Name + " ")
+                        }
+                    </i>
+                </p>
+                @foreach (var field in FieldTypeUtil.GetFields(Model, false))
+                {
+                    <h5 class="my-1">@field.Label</h5>
+                    @if (field.FieldType == FieldType.Markdown)
+                    {
+                        @Html.Raw(field.Value)
+                    }
+                    else if (field.FieldType == FieldType.Boolean)
+                    {
+                        <p class="m-0">@(field.Value != null && field.Value == "checked" ? "✔️" : "❌")</p>
+                    }
+                    else
+                    {
+                        <p class="m-0">@field.Value</p>
+                    }
+                }
+            </div>
+        </div>
+        <button class="btn btn-light d-block me-auto my-2 btn-sm px-5">
+            122 <i class="bi bi-suit-heart"></i>
+        </button>
+        <textarea class="form-control mt-2" placeholder="Write comment..." required></textarea>
+        <button class="btn btn-primary d-block ms-auto my-2 btn-sm px-5">Send</button>
+        <div class="shadow-sm p-3 m-1 bg-white rounded">
+            <p class="my-1 text-primary">Username</p>
+            <p class="mb-0">Comment</p>
+        </div>
+    </div>
+</div>

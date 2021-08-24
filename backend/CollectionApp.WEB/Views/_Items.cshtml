@@ -4,50 +4,45 @@
 @foreach (var item in Model.Entities)
 {
     <div class="row">
-        <div class="col-8 mx-auto">
+        <div class="col-7 mx-auto">
             <div class="card my-2">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card-body">
-                            <div>
-                                <h5 class="card-title">
-                                    @item.Name
-                                </h5>
-                                <div>
-                                    <a class="btn btn-warning btn-sm text-white"
-                                       asp-controller="Item"
-                                       asp-action="Edit"
-                                       asp-route-itemId="@item.Id">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form asp-controller="Item"
-                                          asp-action="Delete"
-                                          asp-route-itemId="@item.Id"
-                                          class="d-inline">
-                                        <button class="btn btn-danger btn-sm delete-btn" type="submit">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                                <p title="Topic">
-                                    <i class="collection-topic">
-                                        Tags:
-                                        @foreach (var tag in item.Tags)
-                                        {
-                                            @(tag.Name + " ")
-                                        }
-                                    </i>
-                                </p>
-                                <p class="card-text">
-                                    <a asp-controller="Item"
-                                        asp-action="Index"
-                                        asp-route-collectionId="@item.Id"
-                                        asp-route-page="@Model.Page.PageNumber">
-                                        Read more...
-                                    </a>
-                                </p>
-                            </div>
+                <div class="card-body">
+                    <div>
+                        <h5 class="card-title">
+                            @item.Name
+                        </h5>
+                        <div>
+                            <a class="btn btn-warning btn-sm text-white"
+                                asp-controller="Item"
+                                asp-action="Edit"
+                                asp-route-itemId="@item.Id">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form asp-controller="Item"
+                                    asp-action="Delete"
+                                    asp-route-itemId="@item.Id"
+                                    class="d-inline">
+                                <button class="btn btn-danger btn-sm delete-btn" type="submit">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </div>
+                        <p title="Tags" class="mb-0">
+                            <i class="collection-topic">
+                                Tags:
+                                @foreach (var tag in item.Tags)
+                                {
+                                    @(tag.Name + " ")
+                                }
+                            </i>
+                        </p>
+                        <p class="card-text">
+                            <a asp-controller="Item"
+                                asp-action="GetItem"
+                                asp-route-itemId="@item.Id">
+                                Read more...
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
