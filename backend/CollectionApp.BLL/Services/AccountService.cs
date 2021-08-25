@@ -62,6 +62,11 @@ namespace CollectionApp.BLL.Services
             }
         }
 
+        public async Task<User> GetCurrentUser(ClaimsPrincipal userPrincipal)
+        {
+            return await Database.UserManager.GetUserAsync(userPrincipal);
+        }
+
         public async Task Logout()
         {
             await Database.SignInManager.SignOutAsync();

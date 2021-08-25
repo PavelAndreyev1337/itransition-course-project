@@ -8,6 +8,7 @@ using CollectionApp.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using CollectionApp.DAL.DTO;
 using HeyRed.MarkdownSharp;
+using CollectionApp.BLL.Enums;
 
 namespace CollectionApp.WEB.Controllers
 {
@@ -28,11 +29,19 @@ namespace CollectionApp.WEB.Controllers
         [Route("/Collections/{collectionId}/Items/", Name = "Items")]
         public async Task<IActionResult> Index(
             [FromRoute(Name = "collectionId")] int collectionId,
-            [FromQuery] int page=1)
+            [FromQuery] int page=1,
+            [FromQuery] ItemSort sortOrder = ItemSort.Default,
+            [FromQuery] bool isLiked = false,
+            [FromQuery] bool isCommented = false)
         {
-            Response.Cookies.Append("itemPage", page.ToString());
-            Response.Cookies.Append("collectionId", collectionId.ToString());
-            return View(await _itemService.GetItems(collectionId, page));
+            var cookies = Response.Cookies;
+            cookies.Append("itemPage", page.ToString());
+            cookies.Append("collectionId", collectionId.ToString());
+            cookies.Append("sortOrder", sortOrder.ToString());
+            cookies.Append("isLiked", isLiked.ToString());
+            cookies.Append("isCommented", isCommented.ToString());
+            return View(await _itemService
+                .GetItems(collectionId, User, page, sortOrder, isLiked, isCommented));
         }
 
         public async Task<IActionResult> Create(int collectionId)
@@ -52,9 +61,9 @@ namespace CollectionApp.WEB.Controllers
         }
 
         [Route("/Tags")]
-        public async Task<EntityPageDTO<Tag>> GetTags(string input)
+        public EntityPageDTO<Tag> GetTags(string input)
         {
-            return await _itemService.GetTags(input);
+            return _itemService.GetTags(input);
         }
 
         public async Task<IActionResult> Edit(int itemId)

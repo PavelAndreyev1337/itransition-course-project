@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionApp.WEB", "Collec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionApp.DAL", "CollectionApp.DAL\CollectionApp.DAL.csproj", "{B380BF59-3CED-453C-B189-1C1BB0F3C5FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionApp.BLL", "CollectionApp.BLL\CollectionApp.BLL.csproj", "{8A924C84-6C87-4444-B46E-792AD730972F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionApp.BLL", "CollectionApp.BLL\CollectionApp.BLL.csproj", "{8A924C84-6C87-4444-B46E-792AD730972F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

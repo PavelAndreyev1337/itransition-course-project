@@ -3,10 +3,24 @@
 <nav>
     <ul class="pagination justify-content-center">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber-1)">Previous</a>
+            <a class="page-link"
+               asp-action="Index"
+               asp-route-page="@(Model.PageNumber-1)"
+               asp-route-isLiked = "@(Context.Request.Query["isLiked"])"
+               asp-route-isCommented = "@(Context.Request.Query["isCommented"])"
+               asp-route-sortOrder = "@(Context.Request.Query["sortOrder"])">
+                Previous
+            </a>
         </li>
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber+1)">Next</a>
+            <a class="page-link"
+               asp-action="Index"
+               asp-route-page="@(Model.PageNumber+1)"
+               asp-route-isLiked = "@(Context.Request.Query["isLiked"])"
+               asp-route-isCommented = "@(Context.Request.Query["isCommented"])"
+               asp-route-sortOrder = "@(Context.Request.Query["sortOrder"])">
+                Next
+            </a>
         </li>
     </ul>
 </nav>

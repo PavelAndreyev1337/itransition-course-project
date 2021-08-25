@@ -1,7 +1,13 @@
 .collection-topic {
     font-size: 0.9rem;
 }
+
 iframe {
     display: block;
     width: 100%;
+}
+
+.tagify {
+    overflow: auto;
+    flex-wrap: unset;
 }

@@ -32,10 +32,10 @@ namespace CollectionApp.DAL.Entities
         public bool? FirstBoolean { get; set; }
         public bool? SecondBoolean { get; set; }
         public bool? ThirdBoolean { get; set; }
-        public ICollection<User> UsersLiked { get; set; }
+        public ICollection<User> UsersLiked { get; set; } = new List<User>();
         public int CollectionId { get; set; }
         public Collection Collection { get; set; }
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

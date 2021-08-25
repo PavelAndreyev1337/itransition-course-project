@@ -122,7 +122,7 @@ namespace CollectionApp.WEB.Utils
             {
                 dateToString(model.FirstDate),
                 dateToString(model.SecondDate),
-                dateToString(model.SecondDate),
+                dateToString(model.ThirdDate),
             });
             dateField.Name += "Date";
             dateField.Element = "input";
@@ -195,6 +195,11 @@ namespace CollectionApp.WEB.Utils
                 fields.Add(GetHiddenCollectionInput(model));
             }
             return fields;
+        }
+
+        public static string OutputBoolean(string value)
+        {
+            return value != null && value == "checked" ? "✔️" : "❌";
         }
     }
 }

@@ -49,13 +49,19 @@
                                     <a class="btn btn-warning btn-sm text-white"
                                        asp-controller="Collection"
                                        asp-action="Edit"
-                                       asp-route-collectionId="@collection.Id">
+                                       asp-route-collectionId="@collection.Id"
+                                       data-toggle="tooltip"
+                                       data-placement="bottom"
+                                       title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form asp-controller="Collection"
                                           asp-action="Delete"
                                           asp-route-collectionId="@collection.Id"
-                                          class="d-inline">
+                                          class="d-inline"
+                                          data-toggle="tooltip"
+                                          data-placement="bottom"
+                                          title="Delete">
                                         <button class="btn btn-danger btn-sm delete-btn" type="submit">
                                             <i class="bi bi-trash"></i>
                                         </button>

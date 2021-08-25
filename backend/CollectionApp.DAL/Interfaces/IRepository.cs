@@ -1,4 +1,5 @@
 ﻿using CollectionApp.DAL.DTO;
+using CollectionApp.DAL.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -10,9 +11,12 @@ namespace CollectionApp.DAL.Interfaces
     {
         Task<IEnumerable<TEntity>> GetAll(
             params Expression<Func<TEntity, object>>[] includes);
-        Task<EntityPageDTO<TEntity>> Paginate(int pageSize = 10,
+        EntityPageDTO<TEntity> Paginate(
+            int pageSize = 10,
             int page = 1,
             Func<TEntity, bool> predicate = null,
+            Sort sort = Sort.Asc,
+            Func<TEntity, object> sortPredicate = null,
             params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity> Get(int id, params Expression<Func<TEntity, object>>[] includes);
         IEnumerable<TEntity> Find(

@@ -1,12 +1,16 @@
 ﻿using CollectionApp.BLL.BusinessModels;
 using CollectionApp.BLL.DTO;
+using CollectionApp.BLL.Enums;
 using CollectionApp.BLL.Interfaces;
 using CollectionApp.BLL.Utils;
 using CollectionApp.DAL.DTO;
 using CollectionApp.DAL.Entities;
+using CollectionApp.DAL.Enums;
 using CollectionApp.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,22 +19,56 @@ namespace CollectionApp.BLL.Services
 {
     public class ItemService : IItemService
     {
-        public IUnitOfWork UnitOfWork { get; set; }
-        public ICollectionService _collectionService { get; set; }
+        public IUnitOfWork UnitOfWork { get; }
 
-        public ItemService(IUnitOfWork unitOfWork, ICollectionService collectionService)
+        private IAccountService _accountService;
+
+        private ICollectionService _collectionService;
+
+        public ItemService(
+            IUnitOfWork unitOfWork,
+            IAccountService accountService,
+            ICollectionService collectionService)
         {
             UnitOfWork = unitOfWork;
+            _accountService = accountService;
             _collectionService = collectionService;
         }
 
-        public async Task<EntityPageDTO<Item>> GetItems(int collectionId, int page=1)
+        public async Task<EntityPageDTO<Item>> GetItems(
+            int collectionId,
+            ClaimsPrincipal userPrincipal,
+            int page= 1,
+            ItemSort sortState = ItemSort.Default,
+            bool isLiked = false,
+            bool isCommented = false)
         {
+            var user = await _accountService.GetCurrentUser(userPrincipal);
             var collection = await UnitOfWork.Collections.Get(collectionId);
-            return await UnitOfWork.Items.Paginate(
+            Func<Item, bool> predicate = item => item.CollectionId == collection.Id;
+            if (user != null && isLiked || isCommented)
+            {
+                predicate = item =>
+                {
+                    return item.CollectionId == collection.Id && (isLiked && item.UsersLiked.Contains(user)
+                        || isCommented && item.Comments.Any(
+                            comment => comment.UserId == user.Id));
+                };
+            }
+            Func<Item, object> sortPredicate = null;
+            if (sortState == ItemSort.LikeDesc)
+            {
+                sortPredicate = item => item.UsersLiked.Count();
+            }
+            return UnitOfWork.Items.Paginate(
                 page: page,
-                predicate: item => item.CollectionId == collection.Id,
-                includes: item => item.Tags);
+                predicate: predicate,
+                sort: Sort.Desc,
+                sortPredicate: sortPredicate,
+                includes: new Expression<Func<Item, object>>[] {
+                    item => item.Tags,
+                    item => item.Comments
+                });
         }
 
         private IEnumerable<TagBusinessModel> DeserializeTags(string json)
@@ -69,9 +107,9 @@ namespace CollectionApp.BLL.Services
             }
         }
         
-        public async Task<EntityPageDTO<Tag>> GetTags(string input)
+        public EntityPageDTO<Tag> GetTags(string input)
         {
-            return await UnitOfWork.Tags.Paginate(predicate: tag => tag.Name.Contains(input));
+            return UnitOfWork.Tags.Paginate(predicate: tag => tag.Name.Contains(input));
         }
 
         public async Task<ItemDTO> GetItem(int itemId)

@@ -6,30 +6,12 @@
     Layout = "_Layout";
 }
 
-<nav class="mt-2">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a asp-controller="Collection"
-               asp-action="Index"
-               asp-route-page="@Context.Request.Cookies["collectionPage"]">
-                Collections
-            </a>
-        </li>
-        <li class="breadcrumb-item">
-            <a asp-action="Index"
-               asp-route-collectionId="@Context.Request.Cookies["collectionId"]"
-               asp-route-page="@Context.Request.Cookies["itemPage"]">
-                Items
-            </a>
-        </li>
-        <li class="breadcrumb-item active">Item</li>
-    </ol>
-</nav>
+@await Html.PartialAsync("Breadcrumb")
 
 <div class="row">
     <div class="col-8 mx-auto">
         <div class="shadow-sm p-3 mb-1 bg-white rounded">
-            <div class="px-5 py-3">
+            <div class="px-5 py-3 text-wrap overflow-hidden">
                 <h2 class="mb-1">@Model.Name</h2>
                 <p title="Tags" class="mb-0">
                     <i class="collection-topic">
@@ -49,11 +31,11 @@
                     }
                     else if (field.FieldType == FieldType.Boolean)
                     {
-                        <p class="m-0">@(field.Value != null && field.Value == "checked" ? "✔️" : "❌")</p>
+                        <p class="m-0">@FieldTypeUtil.OutputBoolean(field.Value)</p>
                     }
                     else
                     {
-                        <p class="m-0">@field.Value</p>
+                        <p class="m-0 text-break">@field.Value</p>
                     }
                 }
             </div>

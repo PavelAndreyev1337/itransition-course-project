@@ -1,4 +1,5 @@
 ﻿using CollectionApp.DAL.DTO;
+using CollectionApp.DAL.Enums;
 using CollectionApp.DAL.Extensions;
 using CollectionApp.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -63,9 +64,28 @@ namespace CollectionApp.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<EntityPageDTO<TEntity>> Paginate(int pageSize = 10,
+        private IEnumerable<TEntity> Sort(
+            IEnumerable<TEntity> entities,
+            Sort sort = Enums.Sort.Asc,
+            Func<TEntity, object> sortPredicate = null)
+        {
+            if (sort == Enums.Sort.Asc)
+            {
+                entities = entities.OrderBy(sortPredicate);
+            }
+            else if (sort == Enums.Sort.Desc)
+            {
+                entities = entities.OrderByDescending(sortPredicate);
+            }
+            return entities;
+        }
+
+        public EntityPageDTO<TEntity> Paginate(
+            int pageSize = 10,
             int page = 1,
             Func<TEntity, bool> predicate = null,
+            Sort sort = Enums.Sort.Asc,
+            Func<TEntity, object> sortPredicate = null,
             params Expression<Func<TEntity, object>>[] includes)
         {
             var dbSet = _context.Set<TEntity>();
@@ -73,8 +93,14 @@ namespace CollectionApp.DAL.Repositories
             var count = dbSet.Where(predicate ?? defaultPredicate).Count();
             var entities = dbSet.IncludeMultiple(includes)
                 .Where(predicate ?? defaultPredicate)
-                .Reverse()
-                .Skip((page - 1) * pageSize)
+                .Reverse();
+            if (sortPredicate != null)
+            {
+                entities = Sort(
+                    entities,
+                    sortPredicate: sortPredicate);
+            }
+            entities = entities.Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
             return new EntityPageDTO<TEntity>
@@ -82,7 +108,6 @@ namespace CollectionApp.DAL.Repositories
                 Page = new Page(count, page, pageSize),
                 Entities = entities
             };
-
         }
 
         public TEntity Update(TEntity entity)

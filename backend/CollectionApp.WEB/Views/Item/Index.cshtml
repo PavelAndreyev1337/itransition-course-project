@@ -2,6 +2,7 @@
 
 @{
     Layout = "_Layout";
+    ViewData["pageNotExist"] = Model.Entities.Count() == 0 && Model.Page.PageNumber == 1;
 }
 
 <div class="row mt-3">
@@ -21,15 +22,9 @@
     </div>
 </div>
 
-@if (Model.Entities.Count() == 0 && Model.Page.PageNumber == 1)
+@await Html.PartialAsync("../_Items", Model)
+@if(!(bool)ViewData["pageNotExist"])
 {
-    <div class="col-md-12 text-center mt-5">
-        <h5>No items</h5>
-    </div>
-}
-else
-{
-    @await Html.PartialAsync("../_Items", Model)
     @await Html.PartialAsync("../_Pagination", Model.Page)
 }
 

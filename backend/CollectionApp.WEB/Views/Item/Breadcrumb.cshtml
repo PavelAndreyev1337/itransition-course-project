@@ -1,0 +1,27 @@
+﻿@{
+    var cookies = Context.Request.Cookies;
+
+}
+
+<nav class="mt-2">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Collection"
+               asp-action="Index"
+               asp-route-page="@Context.Request.Cookies["collectionPage"]">
+                Collections
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index"
+               asp-route-collectionId="@cookies["collectionId"]"
+               asp-route-page="@cookies["itemPage"]"
+               asp-route-isLiked="@cookies["isLiked"]"
+               asp-route-isCommented="@cookies["isCommented"]"
+               asp-route-sortOrder="@cookies["sortOrder"]">
+                Items
+            </a>
+        </li>
+        <li class="breadcrumb-item active">Item</li>
+    </ol>
+</nav>

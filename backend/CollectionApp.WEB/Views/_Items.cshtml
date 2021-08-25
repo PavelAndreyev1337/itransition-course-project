@@ -1,52 +1,118 @@
-﻿@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Item>
+﻿@using CollectionApp.BLL.Enums
+@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Item>
 
-@{int i = 0;}
-@foreach (var item in Model.Entities)
-{
-    <div class="row">
-        <div class="col-7 mx-auto">
-            <div class="card my-2">
-                <div class="card-body">
-                    <div>
-                        <h5 class="card-title">
-                            @item.Name
-                        </h5>
-                        <div>
-                            <a class="btn btn-warning btn-sm text-white"
-                                asp-controller="Item"
-                                asp-action="Edit"
-                                asp-route-itemId="@item.Id">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <form asp-controller="Item"
-                                    asp-action="Delete"
-                                    asp-route-itemId="@item.Id"
-                                    class="d-inline">
-                                <button class="btn btn-danger btn-sm delete-btn" type="submit">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </div>
-                        <p title="Tags" class="mb-0">
-                            <i class="collection-topic">
-                                Tags:
-                                @foreach (var tag in item.Tags)
-                                {
-                                    @(tag.Name + " ")
-                                }
-                            </i>
-                        </p>
-                        <p class="card-text">
-                            <a asp-controller="Item"
-                                asp-action="GetItem"
-                                asp-route-itemId="@item.Id">
-                                Read more...
-                            </a>
-                        </p>
-                    </div>
+<div class="row">
+    <div class="col-7 offset-3">
+        <select id="sortOrder" class="form-select w-25 ms-auto" name="sortOrder">
+            <option value="@ItemSort.Default" selected>By creation</option>
+            <option value="@ItemSort.LikeDesc">By likes number</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-3">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="shadow-sm p-3 mb-1 bg-white rounded my-2">
+                <h6 class="text-break">Filters:</h6>
+                <div class="form-check">
+                    <label class="form-check-label text-break"
+                           for="isLiked">
+                        Liked
+                    </label>
+                    <input class="form-check-input" 
+                           type="checkbox" 
+                           id="isLiked"
+                           name="isLiked"/>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label text-break"
+                           for="isCommented">
+                        Commented
+                    </label>
+                    <input class="form-check-input"
+                           type="checkbox"
+                           id="isCommented"
+                           name="isCommented"/>
                 </div>
             </div>
+        }
         </div>
+    <div class="col-7">
+        @if ((bool)ViewData["pageNotExist"])
+        {
+            <div class="col-md-12 text-center mt-5">
+                <h5>No items</h5>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.Entities)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <div>
+                                    <h5 class="card-title">
+                                        @item.Name
+                                    </h5>
+                                    <div>
+                                        <a class="btn btn-warning btn-sm text-white"
+                                           asp-controller="Item"
+                                           asp-action="Edit"
+                                           asp-route-itemId="@item.Id"
+                                           data-toggle="tooltip"
+                                           data-placement="bottom"
+                                           title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-controller="Item"
+                                              asp-action="Delete"
+                                              asp-route-itemId="@item.Id"
+                                              class="d-inline">
+                                            <button class="btn btn-danger btn-sm delete-btn"
+                                                    type="submit"
+                                                    data-toggle="tooltip"
+                                                    data-placement="bottom"
+                                                    title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <p title="Tags" class="mb-0">
+                                        <i class="collection-topic">
+                                            Tags:
+                                            @foreach (var tag in item.Tags)
+                                            {
+                                                @(tag.Name + " ")
+                                            }
+                                        </i>
+                                    </p>
+                                    <p title="Sections" class="mb-0">
+                                        <i class="collection-topic">
+                                            Sections:
+                                            @item.Collection.FirstFieldName,
+                                            @item.Collection.SecondFieldName,
+                                            @item.Collection.ThirdFieldName
+                                        </i>
+                                    </p>
+                                    <p class="card-text">
+                                        <a asp-controller="Item"
+                                           asp-action="GetItem"
+                                           asp-route-itemId="@item.Id">
+                                            Read more...
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
-    i++;
-}
+</div>
+
+<script src="~/js/items.js"></script>

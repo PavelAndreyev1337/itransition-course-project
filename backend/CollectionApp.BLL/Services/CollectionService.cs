@@ -19,13 +19,19 @@ namespace CollectionApp.BLL.Services
 {
     public class CollectionService : ICollectionService
     {
-        IUnitOfWork UnitOfWork { get; set; }
-        public IConfiguration Configuration { get; set; }
+        IUnitOfWork UnitOfWork { get; }
+        public IConfiguration Configuration { get; }
 
-        public CollectionService(IUnitOfWork unitOfWork, IConfiguration configuration)
+        private IAccountService _accountService;
+
+        public CollectionService(
+            IUnitOfWork unitOfWork,
+            IConfiguration configuration,
+            IAccountService accountService)
         {
             UnitOfWork = unitOfWork;
             Configuration = configuration;
+            _accountService = accountService;
         }
 
         public IEnumerable<string> GetTopics()
@@ -82,15 +88,10 @@ namespace CollectionApp.BLL.Services
             }
         }
 
-        private async Task<User> GetCurrentUser(ClaimsPrincipal userPrincipal)
-        {
-            return await UnitOfWork.UserManager.GetUserAsync(userPrincipal);
-        }
-
         public async Task<Collection> CheckRights(ClaimsPrincipal claimsPrincipal, int collectionId)
         {
             var collection = await UnitOfWork.Collections.Get(collectionId);
-            var user = await GetCurrentUser(claimsPrincipal);
+            var user = await _accountService.GetCurrentUser(claimsPrincipal);
             if (!(collection.User.Id == user.Id))
             {
                 throw new UserNoRightsException();
@@ -102,7 +103,7 @@ namespace CollectionApp.BLL.Services
         {
             using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
             {
-                collectionDto.User = await GetCurrentUser(userPrincipal);
+                collectionDto.User = await _accountService.GetCurrentUser(userPrincipal);
                 var collection = UnitOfWork.Collections
                     .Add(MapperUtil.Map<CollectionDTO, Collection>(collectionDto));
                 UnitOfWork.Collections.Add(collection);
@@ -114,8 +115,8 @@ namespace CollectionApp.BLL.Services
 
         public async Task<EntityPageDTO<Collection>> GetUserCollections(ClaimsPrincipal claimsPrincipal, int page = 1)
         {
-            var user = await GetCurrentUser(claimsPrincipal);
-            return await UnitOfWork.Collections
+            var user = await _accountService.GetCurrentUser(claimsPrincipal);
+            return UnitOfWork.Collections
                 .Paginate(
                 page: page,
                 predicate: (collection) => collection.User == user,
