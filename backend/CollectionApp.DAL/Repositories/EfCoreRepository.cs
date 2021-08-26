@@ -66,7 +66,7 @@ namespace CollectionApp.DAL.Repositories
 
         private IEnumerable<TEntity> Sort(
             IEnumerable<TEntity> entities,
-            Sort sort = Enums.Sort.Asc,
+            Sort sort = Enums.Sort.Desc,
             Func<TEntity, object> sortPredicate = null)
         {
             if (sort == Enums.Sort.Asc)

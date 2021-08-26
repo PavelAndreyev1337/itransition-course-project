@@ -11,3 +11,8 @@ iframe {
     overflow: auto;
     flex-wrap: unset;
 }
+
+.like-btn:focus {
+    outline: none;
+    box-shadow: none;
+}

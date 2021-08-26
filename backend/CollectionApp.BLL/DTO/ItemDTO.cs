@@ -35,5 +35,6 @@ namespace CollectionApp.BLL.DTO
         public EntityPageDTO<Comment> Comments { get; set; }
         public Collection Collection { get; set; }
         public int? CollectionId { get; set; }
+        public bool Liked { get; set; } = false;
     }
 }

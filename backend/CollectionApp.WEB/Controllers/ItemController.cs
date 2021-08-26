@@ -90,13 +90,21 @@ namespace CollectionApp.WEB.Controllers
 
         public async Task<IActionResult> GetItem(int itemId)
         {
-            var itemDto = await _itemService.GetItem(itemId);
+            var itemDto = await _itemService.GetItem(itemId, User);
             var model = MapperUtil.Map<ItemDTO, ItemViewModel>(itemDto);
             var markdown = new Markdown();
             model.FirstText = markdown.Transform(model.FirstText ?? "");
             model.SecondText = markdown.Transform(model.SecondText ?? "");
             model.ThirdText = markdown.Transform(model.ThirdText ?? "");
             return View("Item", model);
+        }
+
+        [HttpPost]
+        [Route("/Like")]
+        public async Task<LikeViewModel> LikeItem(int itemId)
+        {
+            var likeDto = await _itemService.LikeItem(User, itemId);
+            return MapperUtil.Map<LikeDTO, LikeViewModel>(likeDto);
         }
     }
 }

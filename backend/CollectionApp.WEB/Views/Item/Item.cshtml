@@ -41,10 +41,12 @@
                 }
             </div>
         </div>
-        <button class="btn btn-light d-block me-auto my-2 btn-sm px-5"
+        <button id="likeBtn"
+                data-item-id="@Model.Id"
+                class="btn @(Model.Liked ? "btn-danger" : "btn-light") d-block me-auto my-2 btn-sm px-5 like-btn"
                 @(authenticated ? "" : "disabled")>
             <i class="bi bi-suit-heart"></i>
-            @Model.likes
+            <span id="likesCount">@Model.likes</span>
         </button>
         @if (authenticated)
         {

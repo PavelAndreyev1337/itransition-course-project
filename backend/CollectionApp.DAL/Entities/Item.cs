@@ -13,7 +13,7 @@ namespace CollectionApp.DAL.Entities
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-        public int likes { get; set; } = 0;
+        public int Likes { get; set; } = 0;
         public int? FirstInteger { get; set; }
         public int? SecondInteger { get; set; }
         public int? ThirdInteger { get; set; }

@@ -2,7 +2,6 @@
 using CollectionApp.BLL.Enums;
 using CollectionApp.DAL.DTO;
 using CollectionApp.DAL.Entities;
-using CollectionApp.DAL.Enums;
 using CollectionApp.DAL.Interfaces;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -21,8 +20,9 @@ namespace CollectionApp.BLL.Interfaces
             bool isCommented = false);
         Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto);
         EntityPageDTO<Tag> GetTags(string input);
-        Task<ItemDTO> GetItem(int itemId);
+        Task<ItemDTO> GetItem(int itemId, ClaimsPrincipal claimsPrincipal=null);
         Task EditItem(ClaimsPrincipal claimsPrincipal, ItemDTO itemDto);
         Task<int> DeleteItem(ClaimsPrincipal claimsPrincipal, int itemId);
+        Task<LikeDTO> LikeItem(ClaimsPrincipal claimsPrincipal, int itemId);
     }
 }

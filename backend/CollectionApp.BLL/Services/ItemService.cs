@@ -51,10 +51,17 @@ namespace CollectionApp.BLL.Services
             {
                 predicate = item =>
                 {
-                    return item.CollectionId == collection.Id 
-                        && (isLiked && item.UsersLiked.Contains(currentUser)
-                        || isCommented && item.Comments.Any(
-                            comment => comment.UserId == currentUser.Id));
+                    var expression = item.CollectionId == collection.Id;
+                    if (isLiked)
+                    {
+                        expression &= item.UsersLiked.Contains(currentUser);
+                    }
+                    if (isCommented)
+                    {
+                        expression &= item.Comments.Any(
+                            comment => comment.UserId == currentUser.Id);
+                    }
+                    return expression;
                 };
             }
             Func<Item, object> sortPredicate = null;
@@ -68,7 +75,8 @@ namespace CollectionApp.BLL.Services
                 sortPredicate: sortPredicate,
                 includes: new Expression<Func<Item, object>>[] {
                     item => item.Tags,
-                    item => item.Comments
+                    item => item.Comments,
+                    item => item.UsersLiked
                 });
         }
 
@@ -113,17 +121,23 @@ namespace CollectionApp.BLL.Services
             return UnitOfWork.Tags.Paginate(predicate: tag => tag.Name.Contains(input));
         }
 
-        public async Task<ItemDTO> GetItem(int itemId)
+        public async Task<ItemDTO> GetItem(int itemId, ClaimsPrincipal claimsPrincipal=null)
         {
             var item = await UnitOfWork.Items.Get(
                 itemId,
-                item => item.Collection);
+                item => item.Collection,
+                item => item.UsersLiked);
             var mapperConf = new MapperConfiguration(
                     cfg => cfg.CreateMap<Item, ItemDTO>()
                     .ForMember(item => item.Comments, opt => opt.Ignore()));
             var itemDto = MapperUtil.Map<Item, ItemDTO>(item, conf: mapperConf);
             itemDto.Comments = UnitOfWork.Comments.Paginate(
                 predicate: comment => item.Comments.Contains(comment));
+            if (claimsPrincipal != null)
+            {
+                var user = await _accountService.GetCurrentUser(claimsPrincipal);
+                itemDto.Liked = item.UsersLiked.Contains(user);
+            }
             var tags = item.Tags.Select(
                 item => new TagBusinessModel() { value = item.Name });
             itemDto.TagsJson = JsonSerializer.Serialize<IEnumerable<TagBusinessModel>>(tags);
@@ -154,6 +168,28 @@ namespace CollectionApp.BLL.Services
             await UnitOfWork.Items.Delete(itemId);
             await UnitOfWork.SaveAsync();
             return collectionId;
+        }
+
+        public async Task<LikeDTO> LikeItem(ClaimsPrincipal claimsPrincipal, int itemId)
+        {
+            var user = await _accountService.GetCurrentUser(claimsPrincipal);
+            var item = await UnitOfWork.Items.Get(itemId, item => item.UsersLiked);
+            var likeDto = new LikeDTO();
+            if (item.UsersLiked.Contains(user))
+            {
+                item.UsersLiked.Remove(user);
+                likeDto.Liked = false;
+                item.Likes -= 1;
+            }
+            else
+            {
+                item.UsersLiked.Add(user);
+                likeDto.Liked = true;
+                item.Likes += 1;
+            }
+            likeDto.Count = item.Likes;
+            await UnitOfWork.SaveAsync();
+            return likeDto;
         }
     }
 }
