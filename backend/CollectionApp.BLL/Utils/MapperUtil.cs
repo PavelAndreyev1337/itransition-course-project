@@ -1,15 +1,23 @@
 ﻿using AutoMapper;
+using System;
 
 namespace CollectionApp.BLL.Utils
 {
     public static class MapperUtil
     {
-        public static TDestination Map<TSource, TDestination>(TSource source, TDestination destination = null)
+        public static TDestination Map<TSource, TDestination>(
+            TSource source,
+            TDestination destination = null,
+            MapperConfiguration conf = null)
             where TSource : class
             where TDestination : class
         {
-            var mapper = new Mapper(new MapperConfiguration(
-                cfg => cfg.CreateMap<TSource, TDestination>()));
+            if (conf == null)
+            {
+                conf = new MapperConfiguration(
+                cfg => cfg.CreateMap<TSource, TDestination>());
+            }
+            var mapper = new Mapper(conf);
             if (destination == null)
             {
                 return mapper.Map<TSource, TDestination>(source);

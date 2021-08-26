@@ -84,7 +84,7 @@ namespace CollectionApp.DAL.Repositories
             int pageSize = 10,
             int page = 1,
             Func<TEntity, bool> predicate = null,
-            Sort sort = Enums.Sort.Asc,
+            Sort sort = Enums.Sort.Desc,
             Func<TEntity, object> sortPredicate = null,
             params Expression<Func<TEntity, object>>[] includes)
         {

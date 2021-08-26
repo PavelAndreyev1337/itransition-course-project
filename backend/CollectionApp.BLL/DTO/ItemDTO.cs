@@ -1,4 +1,5 @@
-﻿using CollectionApp.DAL.Entities;
+﻿using CollectionApp.DAL.DTO;
+using CollectionApp.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,7 +32,7 @@ namespace CollectionApp.BLL.DTO
         public IEnumerable<Tag> Tags { get; set; }
         public bool? ThirdBoolean { get; set; }
         public string TagsJson { get; set; }
-        public IEnumerable<Comment> Comments { get; set; }
+        public EntityPageDTO<Comment> Comments { get; set; }
         public Collection Collection { get; set; }
         public int? CollectionId { get; set; }
     }

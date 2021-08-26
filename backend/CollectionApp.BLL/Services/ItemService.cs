@@ -1,4 +1,5 @@
-﻿using CollectionApp.BLL.BusinessModels;
+﻿using AutoMapper;
+using CollectionApp.BLL.BusinessModels;
 using CollectionApp.BLL.DTO;
 using CollectionApp.BLL.Enums;
 using CollectionApp.BLL.Interfaces;
@@ -43,16 +44,17 @@ namespace CollectionApp.BLL.Services
             bool isLiked = false,
             bool isCommented = false)
         {
-            var user = await _accountService.GetCurrentUser(userPrincipal);
+            var currentUser = await _accountService.GetCurrentUser(userPrincipal);
             var collection = await UnitOfWork.Collections.Get(collectionId);
             Func<Item, bool> predicate = item => item.CollectionId == collection.Id;
-            if (user != null && isLiked || isCommented)
+            if (currentUser != null && isLiked || isCommented)
             {
                 predicate = item =>
                 {
-                    return item.CollectionId == collection.Id && (isLiked && item.UsersLiked.Contains(user)
+                    return item.CollectionId == collection.Id 
+                        && (isLiked && item.UsersLiked.Contains(currentUser)
                         || isCommented && item.Comments.Any(
-                            comment => comment.UserId == user.Id));
+                            comment => comment.UserId == currentUser.Id));
                 };
             }
             Func<Item, object> sortPredicate = null;
@@ -63,7 +65,6 @@ namespace CollectionApp.BLL.Services
             return UnitOfWork.Items.Paginate(
                 page: page,
                 predicate: predicate,
-                sort: Sort.Desc,
                 sortPredicate: sortPredicate,
                 includes: new Expression<Func<Item, object>>[] {
                     item => item.Tags,
@@ -116,10 +117,14 @@ namespace CollectionApp.BLL.Services
         {
             var item = await UnitOfWork.Items.Get(
                 itemId,
-                item => item.Collection,
-                item => item.Tags);;
-            var itemDto = MapperUtil.Map<Item, ItemDTO>(item);
-            var tags = item.Tags.ToList().Select(
+                item => item.Collection);
+            var mapperConf = new MapperConfiguration(
+                    cfg => cfg.CreateMap<Item, ItemDTO>()
+                    .ForMember(item => item.Comments, opt => opt.Ignore()));
+            var itemDto = MapperUtil.Map<Item, ItemDTO>(item, conf: mapperConf);
+            itemDto.Comments = UnitOfWork.Comments.Paginate(
+                predicate: comment => item.Comments.Contains(comment));
+            var tags = item.Tags.Select(
                 item => new TagBusinessModel() { value = item.Name });
             itemDto.TagsJson = JsonSerializer.Serialize<IEnumerable<TagBusinessModel>>(tags);
             return itemDto;

@@ -15,7 +15,7 @@ namespace CollectionApp.DAL.Interfaces
             int pageSize = 10,
             int page = 1,
             Func<TEntity, bool> predicate = null,
-            Sort sort = Sort.Asc,
+            Sort sort = Sort.Desc,
             Func<TEntity, object> sortPredicate = null,
             params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity> Get(int id, params Expression<Func<TEntity, object>>[] includes);

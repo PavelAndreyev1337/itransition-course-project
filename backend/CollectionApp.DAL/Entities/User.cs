@@ -5,7 +5,8 @@ namespace CollectionApp.DAL.Entities
 {
     public class User : IdentityUser
     {
-        public ICollection<Collection> Collections { get; set; }
-        public ICollection<Item> LikedItems { get; set; }
+        public ICollection<Collection> Collections { get; set; } = new List<Collection>();
+        public ICollection<Item> LikedItems { get; set; } = new List<Item>();
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

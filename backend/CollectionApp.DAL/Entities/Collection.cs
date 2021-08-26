@@ -32,6 +32,6 @@ namespace CollectionApp.DAL.Entities
         public FieldType FirstFieldType { get; set; }
         public FieldType SecondFieldType { get; set; }
         public FieldType ThirdFieldType { get; set; }
-        public ICollection<Image> Images { get; set; }
+        public ICollection<Image> Images { get; set; } = new List<Image>();
     }
 }

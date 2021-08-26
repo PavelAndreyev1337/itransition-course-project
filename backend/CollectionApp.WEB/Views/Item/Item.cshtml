@@ -4,6 +4,7 @@
 
 @{
     Layout = "_Layout";
+    var authenticated = User.Identity.IsAuthenticated;
 }
 
 @await Html.PartialAsync("Breadcrumb")
@@ -40,14 +41,32 @@
                 }
             </div>
         </div>
-        <button class="btn btn-light d-block me-auto my-2 btn-sm px-5">
-            122 <i class="bi bi-suit-heart"></i>
+        <button class="btn btn-light d-block me-auto my-2 btn-sm px-5"
+                @(authenticated ? "" : "disabled")>
+            <i class="bi bi-suit-heart"></i>
+            @Model.likes
         </button>
-        <textarea class="form-control mt-2" placeholder="Write comment..." required></textarea>
-        <button class="btn btn-primary d-block ms-auto my-2 btn-sm px-5">Send</button>
-        <div class="shadow-sm p-3 m-1 bg-white rounded">
-            <p class="my-1 text-primary">Username</p>
-            <p class="mb-0">Comment</p>
-        </div>
+        @if (authenticated)
+        {
+            <textarea class="form-control mt-2" placeholder="Write comment..." required></textarea>
+            <button class="btn btn-primary d-block ms-auto my-2 btn-sm px-5">Send</button>
+        }
+        @if (Model.Comments.Entities.Count() > 0)
+        {
+            @foreach(var comment in Model.Comments.Entities)
+            {
+                <div class="shadow-sm p-3 m-1 bg-white rounded">
+                    <p class="my-1 text-primary">@comment.User.UserName</p>
+                    <p class="mb-0">@comment.Text<p>
+                </div>
+            }
+            @await Html.PartialAsync("../_Pagination", Model.Comments.Page)
+        }
+        else
+        {
+            <div class="col-md-12 text-center my-5">
+                <h5>No comments</h5>
+            </div>
+        }
     </div>
 </div>
