@@ -1,4 +1,6 @@
-﻿@{
+﻿@model CollectionApp.WEB.ViewModels.ItemViewModel
+
+@{
     var cookies = Context.Request.Cookies;
 
 }
@@ -8,13 +10,13 @@
         <li class="breadcrumb-item">
             <a asp-controller="Collection"
                asp-action="Index"
-               asp-route-page="@Context.Request.Cookies["collectionPage"]">
+               asp-route-page="@cookies["collectionPage"]">
                 Collections
             </a>
         </li>
         <li class="breadcrumb-item">
             <a asp-action="Index"
-               asp-route-collectionId="@cookies["collectionId"]"
+               asp-route-collectionId="@Model.Collection.Id"
                asp-route-page="@cookies["itemPage"]"
                asp-route-isLiked="@cookies["isLiked"]"
                asp-route-isCommented="@cookies["isCommented"]"

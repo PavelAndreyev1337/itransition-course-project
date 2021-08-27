@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" href="~/lib/tagify/tagify.min.css" />
 
-@await Html.PartialAsync("Breadcrumb")
+@await Html.PartialAsync("Breadcrumb", Model)
 
 <div class="col-5 mx-auto">
     <form id="collectionForm" class="my-2 needs-validation" method="post" novalidate>

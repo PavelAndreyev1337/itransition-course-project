@@ -35,7 +35,7 @@
                                 <a class="nav-link d-inline"
                                    asp-controller="Item"
                                    asp-action="Create"
-                                   asp-route-collectionId="@ViewData["collectionId"]">
+                                   asp-route-collectionId="@Context.Request.RouteValues["collectionId"]">
                                     Add item
                                 </a>
                             }
@@ -47,7 +47,9 @@
                             }
                             else
                             {
-                                <a class="nav-link d-inline" asp-controller="Collection" asp-action="Index">Collections</a>
+                                <a class="nav-link d-inline" asp-controller="Collection" asp-action="Index">
+                                    Collections
+                                </a>
                             }
                             <a class="nav-link d-inline" asp-controller="Account" asp-action="Logout">Logout</a>
                         }
