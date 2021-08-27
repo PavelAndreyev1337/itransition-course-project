@@ -11,6 +11,8 @@ using CollectionApp.DAL.Repositories;
 using CollectionApp.BLL.Interfaces;
 using CollectionApp.BLL.Services;
 using Microsoft.AspNetCore.Identity;
+using CollectionApp.WEB.Hubs;
+using Microsoft.AspNetCore.Http;
 
 namespace CollectionApp.WEB
 {
@@ -51,6 +53,8 @@ namespace CollectionApp.WEB
                     redditOptions.ClientSecret = Configuration["Authentication:Reddit:ClientSecret"];
                     redditOptions.SignInScheme = IdentityConstants.ExternalScheme;
                 });
+            services.AddSignalR();
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +77,7 @@ namespace CollectionApp.WEB
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}");
+                endpoints.MapHub<MessageHub>("/comments");
             });
         }
     }

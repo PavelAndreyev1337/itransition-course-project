@@ -6,7 +6,6 @@ using CollectionApp.BLL.Interfaces;
 using CollectionApp.BLL.Utils;
 using CollectionApp.DAL.DTO;
 using CollectionApp.DAL.Entities;
-using CollectionApp.DAL.Enums;
 using CollectionApp.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -121,7 +120,10 @@ namespace CollectionApp.BLL.Services
             return UnitOfWork.Tags.Paginate(predicate: tag => tag.Name.Contains(input));
         }
 
-        public async Task<ItemDTO> GetItem(int itemId, ClaimsPrincipal claimsPrincipal=null)
+        public async Task<ItemDTO> GetItem(
+            int itemId,
+            int page = 1,
+            ClaimsPrincipal claimsPrincipal=null)
         {
             var item = await UnitOfWork.Items.Get(
                 itemId,
@@ -131,7 +133,7 @@ namespace CollectionApp.BLL.Services
                     cfg => cfg.CreateMap<Item, ItemDTO>()
                     .ForMember(item => item.Comments, opt => opt.Ignore()));
             var itemDto = MapperUtil.Map<Item, ItemDTO>(item, conf: mapperConf);
-            itemDto.Comments = UnitOfWork.Comments.Paginate(
+            itemDto.Comments = UnitOfWork.Comments.Paginate(page: page,
                 predicate: comment => item.Comments.Contains(comment));
             if (claimsPrincipal != null)
             {
@@ -190,6 +192,19 @@ namespace CollectionApp.BLL.Services
             likeDto.Count = item.Likes;
             await UnitOfWork.SaveAsync();
             return likeDto;
+        }
+
+        public async Task AddComment(ClaimsPrincipal claimsPrincipal, CommentDTO commentDto)
+        {
+            var user = await _accountService.GetCurrentUser(claimsPrincipal);
+            var item = await UnitOfWork.Items.Get(commentDto.ItemId);
+            UnitOfWork.Comments.Add(new Comment() 
+            { 
+                ItemId = item.Id,
+                Text = commentDto.Text,
+                UserId = user.Id
+            });
+            await UnitOfWork.SaveAsync();
         }
     }
 }

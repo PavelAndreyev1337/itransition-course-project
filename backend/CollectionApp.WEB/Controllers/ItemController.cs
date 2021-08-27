@@ -29,7 +29,7 @@ namespace CollectionApp.WEB.Controllers
         [Route("/Collections/{collectionId}/Items/", Name = "Items")]
         public async Task<IActionResult> Index(
             [FromRoute(Name = "collectionId")] int collectionId,
-            [FromQuery] int page=1,
+            [FromQuery] int page = 1,
             [FromQuery] ItemSort sortOrder = ItemSort.Default,
             [FromQuery] bool isLiked = false,
             [FromQuery] bool isCommented = false)
@@ -57,7 +57,7 @@ namespace CollectionApp.WEB.Controllers
         {
             var itemDto = MapperUtil.Map<ItemViewModel, ItemDTO>(model);
             await _itemService.CreateItem(User, itemDto);
-            return RedirectToAction("Index", new { collectionId = model.CollectionId, page=1});
+            return RedirectToAction("Index", new { collectionId = model.CollectionId, page = 1 });
         }
 
         [Route("/Tags")]
@@ -88,14 +88,23 @@ namespace CollectionApp.WEB.Controllers
             return RedirectToAction("Index", new { collectionId = collectionId, page = 1 });
         }
 
-        public async Task<IActionResult> GetItem(int itemId)
+        [Route("/Items/{itemId}")]
+        public async Task<IActionResult> GetItem(
+            [FromRoute(Name = "itemId")] int itemId,
+            [FromQuery] int page = 1)
         {
-            var itemDto = await _itemService.GetItem(itemId, User);
+            var itemDto = await _itemService.GetItem(itemId, page, User);
             var model = MapperUtil.Map<ItemDTO, ItemViewModel>(itemDto);
             var markdown = new Markdown();
             model.FirstText = markdown.Transform(model.FirstText ?? "");
             model.SecondText = markdown.Transform(model.SecondText ?? "");
             model.ThirdText = markdown.Transform(model.ThirdText ?? "");
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Cookies.Append("username", User.Identity.Name);
+            }
+            Response.Cookies.Append("itemId", itemId.ToString());
+            ViewData["Action"] = "GetItem";
             return View("Item", model);
         }
 

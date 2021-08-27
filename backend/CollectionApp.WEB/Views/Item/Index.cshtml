@@ -23,7 +23,7 @@
 </div>
 
 @await Html.PartialAsync("../_Items", Model)
-@if(!(bool)ViewData["pageNotExist"])
+@if(!(bool)ViewData["pageNotExist"] && Model.Page.TotalPages > 1)
 {
     @await Html.PartialAsync("../_Pagination", Model.Page)
 }

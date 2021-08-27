@@ -4,7 +4,8 @@
     <ul class="pagination justify-content-center">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
             <a class="page-link"
-               asp-action="Index"
+               asp-action="@(ViewData["Action"] ?? "Index")"
+               asp-route-itemId = "@(Context.Request.RouteValues["itemId"])"
                asp-route-page="@(Model.PageNumber-1)"
                asp-route-isLiked = "@(Context.Request.Query["isLiked"])"
                asp-route-isCommented = "@(Context.Request.Query["isCommented"])"
@@ -14,7 +15,8 @@
         </li>
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
             <a class="page-link"
-               asp-action="Index"
+               asp-action="@(ViewData["Action"] ?? "Index")"
+               asp-route-itemId = "@(Context.Request.RouteValues["itemId"])"
                asp-route-page="@(Model.PageNumber+1)"
                asp-route-isLiked = "@(Context.Request.Query["isLiked"])"
                asp-route-isCommented = "@(Context.Request.Query["isCommented"])"

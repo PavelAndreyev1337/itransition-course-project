@@ -82,6 +82,14 @@
         "tagify.min.js",
         "tagify.min.css"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@5.0.8",
+      "destination": "wwwroot/lib/microsoft/signalr/",
+      "files": [
+        "dist/browser/signalr.min.js"
+      ]
     }
   ]
 }

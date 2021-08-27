@@ -20,9 +20,10 @@ namespace CollectionApp.BLL.Interfaces
             bool isCommented = false);
         Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto);
         EntityPageDTO<Tag> GetTags(string input);
-        Task<ItemDTO> GetItem(int itemId, ClaimsPrincipal claimsPrincipal=null);
+        Task<ItemDTO> GetItem(int itemId, int page = 1, ClaimsPrincipal claimsPrincipal=null);
         Task EditItem(ClaimsPrincipal claimsPrincipal, ItemDTO itemDto);
         Task<int> DeleteItem(ClaimsPrincipal claimsPrincipal, int itemId);
         Task<LikeDTO> LikeItem(ClaimsPrincipal claimsPrincipal, int itemId);
+        Task AddComment(ClaimsPrincipal claimsPrincipal, CommentDTO commentDto);
     }
 }

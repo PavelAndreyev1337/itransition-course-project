@@ -13,7 +13,10 @@
 else
 {
     @await Html.PartialAsync("../_Collections", Model)
-    @await Html.PartialAsync("../_Pagination", Model.Page)
+    @if (Model.Page.TotalPages > 1)
+    {
+        @await Html.PartialAsync("../_Pagination", Model.Page)
+    }
 }
 
 <script src="~/js/profile.js"></script>

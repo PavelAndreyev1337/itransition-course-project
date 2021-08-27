@@ -12,8 +12,6 @@ FilePond.create(
 
 let xhr = new XMLHttpRequest();
 
-console.log(Cookies.get('collectionId'))
-
 xhr.open('GET', `/Collections/${Cookies.get('collectionId')}/Images`);
 
 xhr.send();

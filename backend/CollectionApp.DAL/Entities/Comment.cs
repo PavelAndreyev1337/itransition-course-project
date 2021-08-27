@@ -12,8 +12,9 @@ namespace CollectionApp.DAL.Entities
         [Required]
         public string Text { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
-        public ICollection<Item> Items { get; set; } = new List<Item>();
         public string UserId { get; set; }
         public User User { get; set; }
+        public int ItemId { get; set; }
+        public Item Item { get; set; }
     }
 }
