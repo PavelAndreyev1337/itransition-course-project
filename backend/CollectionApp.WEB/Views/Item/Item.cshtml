@@ -59,7 +59,7 @@
                 @foreach(var comment in Model.Comments.Entities)
                 {
                     <div class="shadow-sm p-3 my-1 bg-white rounded">
-                        <p class="my-1 text-primary">@comment.User.UserName</p>
+                        <p class="my-1 text-primary">@comment.User?.UserName</p>
                         <p class="mb-0">@comment.Text<p>
                     </div>
                 }

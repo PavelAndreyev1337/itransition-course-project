@@ -36,6 +36,7 @@ namespace CollectionApp.WEB.Controllers
         {
             var cookies = Response.Cookies;
             cookies.Append("itemPage", page.ToString());
+            ViewData["collectionId"] = collectionId.ToString();
             cookies.Append("collectionId", collectionId.ToString());
             cookies.Append("sortOrder", sortOrder.ToString());
             cookies.Append("isLiked", isLiked.ToString());

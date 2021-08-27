@@ -35,7 +35,7 @@
                                 <a class="nav-link d-inline"
                                    asp-controller="Item"
                                    asp-action="Create"
-                                   asp-route-collectionId="@Context.Request.Cookies["collectionId"]">
+                                   asp-route-collectionId="@ViewData["collectionId"]">
                                     Add item
                                 </a>
                             }

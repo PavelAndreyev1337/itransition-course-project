@@ -134,7 +134,10 @@ namespace CollectionApp.BLL.Services
                     .ForMember(item => item.Comments, opt => opt.Ignore()));
             var itemDto = MapperUtil.Map<Item, ItemDTO>(item, conf: mapperConf);
             itemDto.Comments = UnitOfWork.Comments.Paginate(page: page,
-                predicate: comment => item.Comments.Contains(comment));
+                predicate: comment => item.Comments.Contains(comment),
+                includes: new Expression<Func<Comment, object>>[] {
+                    comment => comment.User
+                });
             if (claimsPrincipal != null)
             {
                 var user = await _accountService.GetCurrentUser(claimsPrincipal);
