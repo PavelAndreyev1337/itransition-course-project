@@ -89,6 +89,7 @@
                                             </button>
                                         </form>
                                     </div>
+                                    @await Html.PartialAsync("../_Author", item.Collection.User)
                                     <p title="Tags" class="mb-0">
                                         <i class="collection-topic">
                                             Tags:
@@ -106,13 +107,11 @@
                                             @item.Collection.ThirdFieldName
                                         </i>
                                     </p>
-                                    <p class="card-text">
-                                        <a asp-controller="Item"
-                                           asp-action="GetItem"
-                                           asp-route-itemId="@item.Id">
-                                            Read more...
-                                        </a>
-                                    </p>
+                                    <a asp-controller="Item"
+                                        asp-action="GetItem"
+                                        asp-route-itemId="@item.Id">
+                                        Read more...
+                                    </a>
                                 </div>
                             </div>
                         </div>

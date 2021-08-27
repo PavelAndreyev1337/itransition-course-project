@@ -54,7 +54,11 @@ namespace CollectionApp.WEB
                     redditOptions.SignInScheme = IdentityConstants.ExternalScheme;
                 });
             services.AddSignalR();
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/");
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/";
+                options.AccessDeniedPath = "/";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

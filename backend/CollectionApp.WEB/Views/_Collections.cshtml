@@ -67,16 +67,15 @@
                                         </button>
                                     </form>
                                 </div>
-                                <p title="Topic" class="mb-0"><i class="collection-topic">Topic @collection.Topic</i></p>
-                                <p class="card-text">
-                                    @Html.Raw(collection.ShortDescription)
-                                    <a asp-controller="Item"
-                                       asp-action="Index"
-                                       asp-route-collectionId="@collection.Id"
-                                       asp-route-page="1">
-                                        View more...
-                                    </a>
-                                </p>
+                                @await Html.PartialAsync("../_Author", collection.User)
+                                <p title="Topic" class="mb-1"><i class="collection-topic">Topic @collection.Topic</i></p>
+                                @Html.Raw(collection.ShortDescription)
+                                <a asp-controller="Item"
+                                   asp-action="Index"
+                                   asp-route-collectionId="@collection.Id"
+                                   asp-route-page="1">
+                                    View more...
+                                </a>
                             </div>
                         </div>
                     </div>

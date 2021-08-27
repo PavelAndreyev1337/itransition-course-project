@@ -1,0 +1,11 @@
+﻿@model CollectionApp.DAL.Entities.User;
+
+<p class="mb-0">
+    <i class="collection-topic">Author username: @Model.UserName</i>
+</p>
+@if (Model.Email != null)
+{
+    <p class="mb-0">
+        <i class="collection-topic">Email: @Model.Email</i>
+    </p>
+}

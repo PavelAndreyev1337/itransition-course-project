@@ -30,6 +30,14 @@
                         }
                         else
                         {
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a class="nav-link d-inline"
+                                   asp-controller="Admin"
+                                   asp-action="Index">
+                                    Admin panel
+                                </a>
+                            }
                             @if (ViewContext.ActionDescriptor.AttributeRouteInfo?.Name == "Items")
                             {
                                 <a class="nav-link d-inline"
