@@ -1,6 +1,5 @@
-﻿using CollectionApp.DAL.Entities;
+﻿using CollectionApp.DAL.Enums;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace CollectionApp.DAL.Initializers
@@ -9,9 +8,10 @@ namespace CollectionApp.DAL.Initializers
     {
         public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager)
         {
-            if (await roleManager.FindByNameAsync("admin") == null)
+            var roleName = Role.Admin.ToString().ToLower();
+            if (await roleManager.FindByNameAsync(roleName) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("admin"));
+                await roleManager.CreateAsync(new IdentityRole(roleName));
             }
         }
     }

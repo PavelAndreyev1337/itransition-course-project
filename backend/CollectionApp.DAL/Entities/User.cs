@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CollectionApp.DAL.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
 namespace CollectionApp.DAL.Entities
 {
-    public class User : IdentityUser
+    public class User : IdentityUser, IEntityWithId<string>
     {
         public ICollection<Collection> Collections { get; set; } = new List<Collection>();
         public ICollection<Item> LikedItems { get; set; } = new List<Item>();

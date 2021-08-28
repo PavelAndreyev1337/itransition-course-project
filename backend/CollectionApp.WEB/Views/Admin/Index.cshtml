@@ -1,4 +1,8 @@
-﻿@{ 
+﻿@using CollectionApp.DAL.Entities
+@model CollectionApp.DAL.DTO.EntityPageDTO<User>
+
+
+@{
     Layout = "_Layout";
 }
 
@@ -12,49 +16,63 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="d-flex">
-                <th class="col-5">
-                    <a>
-                        Username
-                    </a>
-                </th>
-                <td class="col-5">Email</td>
-                <td class="col-2">
-                    <form asp-controller="Item"
-                          asp-action="Delete"
-                          class="d-inline">
-                        <button class="btn btn-success btn-sm m-1"
-                                type="submit"
-                                data-toggle="tooltip"
-                                data-placement="bottom"
-                                title="Delete">
-                            <i class="bi bi-star"></i>
-                        </button>
-                    </form>
-                    <form asp-controller="Item"
-                          asp-action="Delete"
-                          class="d-inline">
-                        <button class="btn btn-warning btn-sm m-1"
-                                type="submit"
-                                data-toggle="tooltip"
-                                data-placement="bottom"
-                                title="Block">
-                            <i class="bi bi-lock"></i>
-                        </button>
-                    </form>
-                    <form asp-controller="Item"
-                          asp-action="Delete"
-                          class="d-inline">
-                        <button class="btn btn-danger btn-sm m-1"
-                                type="submit"
-                                data-toggle="tooltip"
-                                data-placement="bottom"
-                                title="Delete">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
+            @foreach (var user in @Model.Entities)
+            {
+                <tr class="d-flex @(user.LockoutEnabled ? "table-danger": "")" 
+                    title="@(user.LockoutEnabled ? "Blocked": "")">
+                    <th class="col-5">
+                        <a>
+                            @user.UserName
+                        </a>
+                    </th>
+                    <td class="col-5">@user.Email</td>
+                    <td class="col-2">
+                        <form asp-controller="Admin"
+                                asp-action="AddAdmin"
+                                asp-route-userId="@user.Id"
+                                class="d-inline">
+                            <button class="btn btn-success btn-sm m-1"
+                                    type="submit"
+                                    data-toggle="tooltip"
+                                    data-placement="bottom"
+                                    title="Add admin">
+                                <i class="bi bi-star"></i>
+                            </button>
+                        </form>
+                        <form asp-controller="Admin"
+                                asp-action="BlockUser"
+                                asp-route-userId="@user.Id"
+                                class="d-inline">
+                            <button class="btn btn-warning btn-sm m-1"
+                                    type="submit"
+                                    data-toggle="tooltip"
+                                    data-placement="bottom"
+                                    title="Block">
+                                <i class="bi bi-lock"></i>
+                            </button>
+                        </form>
+                        <form asp-controller="Admin"
+                                asp-action="DeleteUser"
+                                asp-route-userId="@user.Id"
+                                class="d-inline">
+                            <button class="btn btn-danger btn-sm m-1 delete-btn"
+                                    type="submit"
+                                    data-toggle="tooltip"
+                                    data-placement="bottom"
+                                    title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                }
         </tbody>
     </table>
 </div>
+
+@if(Model.Page.TotalPages > 1)
+{
+    @await Html.PartialAsync("../_Pagination", Model.Page)
+}
+
+<script src="~/js/profile.js"></script>

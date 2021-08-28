@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CollectionApp.DAL.Entities
 {
-    public class Tag : IEntityWithId
+    public class Tag : IEntityWithId<int>
     {
         [Key]
         public int Id { get; set; }

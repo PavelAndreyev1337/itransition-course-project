@@ -13,6 +13,7 @@ using CollectionApp.BLL.Services;
 using Microsoft.AspNetCore.Identity;
 using CollectionApp.WEB.Hubs;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace CollectionApp.WEB
 {
@@ -35,10 +36,15 @@ namespace CollectionApp.WEB
                 options.User.AllowedUserNameCharacters = string.Empty;
             })
                 .AddEntityFrameworkStores<ApplicationContext>();
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.Zero;
+            });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICollectionService, CollectionService>();
             services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddControllersWithViews();
             services.AddAuthentication()
                 .AddCookie()
@@ -81,7 +87,7 @@ namespace CollectionApp.WEB
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}");
-                endpoints.MapHub<MessageHub>("/comments");
+                endpoints.MapHub<CommentHub>("/comments");
             });
         }
     }

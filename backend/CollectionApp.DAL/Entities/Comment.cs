@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CollectionApp.DAL.Entities
 {
-    public class Comment : IEntityWithId
+    public class Comment : IEntityWithId<int>
     {
         [Key]
         public int Id { get; set; }

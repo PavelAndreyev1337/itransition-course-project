@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CollectionApp.DAL.Entities
 {
-    public class Item : IEntityWithId
+    public class Item : IEntityWithId<int>
     {
         [Key]
         public int Id { get; set; }

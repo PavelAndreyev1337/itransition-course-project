@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace CollectionApp.DAL.Repositories
 {
-    public abstract class EfCoreRepository<TEntity, TContext> : IRepository<TEntity>
-        where TEntity : class, IEntityWithId
+    public abstract class EfCoreRepository<TEntity, TContext, TId> : IRepository<TEntity, TId>
+        where TEntity : class, IEntityWithId<TId>
         where TContext : DbContext
     {
         private readonly TContext _context;
@@ -27,7 +27,7 @@ namespace CollectionApp.DAL.Repositories
             return entity;
         }
 
-        public async Task<TEntity> Delete(int id)
+        public async Task<TEntity> Delete(TId id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
             if (entity != null)
@@ -48,12 +48,12 @@ namespace CollectionApp.DAL.Repositories
         }
 
         public async Task<TEntity> Get(
-            int id,
+            TId id,
             params Expression<Func<TEntity, object>>[] includes)
         {
             return await _context.Set<TEntity>()
                 .IncludeMultiple(includes)
-                .SingleOrDefaultAsync(entity => entity.Id == id);
+                .SingleOrDefaultAsync(entity => entity.Id.Equals(id));
         }
 
         public async Task<IEnumerable<TEntity>> GetAll(

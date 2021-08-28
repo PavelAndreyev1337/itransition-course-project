@@ -3,7 +3,7 @@ using CollectionApp.DAL.Entities;
 
 namespace CollectionApp.DAL.Repositories
 {
-    class ItemRepository : EfCoreRepository<Item, ApplicationContext>
+    class ItemRepository : EfCoreRepository<Item, ApplicationContext, int>
     {
         public ItemRepository(ApplicationContext context) : base(context)
         {

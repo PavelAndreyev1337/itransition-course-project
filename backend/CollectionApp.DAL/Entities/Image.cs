@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CollectionApp.DAL.Entities
 {
-    public class Image : IEntityWithId
+    public class Image : IEntityWithId<int>
     {
         [Key]
         public int Id { get; set; }

@@ -10,11 +10,12 @@ namespace CollectionApp.DAL.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private ApplicationContext _context;
-        private IRepository<Collection> _collectionRepository;
-        private IRepository<Comment> _commentRepository;
-        private IRepository<Image> _imageRepository;
-        private IRepository<Item> _itemRepository;
-        private IRepository<Tag> _tagRepository;
+        private IRepository<Collection, int> _collectionRepository;
+        private IRepository<Comment, int> _commentRepository;
+        private IRepository<Image, int> _imageRepository;
+        private IRepository<Item, int> _itemRepository;
+        private IRepository<Tag, int> _tagRepository;
+        private IRepository<User, string> _userRepository;
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole> _roleManager;
         private SignInManager<User> _signInManager;
@@ -28,7 +29,7 @@ namespace CollectionApp.DAL.Repositories
             }
         }
 
-        public IRepository<Collection> Collections
+        public IRepository<Collection, int> Collections
         {
             get
             {
@@ -38,7 +39,7 @@ namespace CollectionApp.DAL.Repositories
 
         }
 
-        public IRepository<Comment> Comments
+        public IRepository<Comment, int> Comments
         {
             get
             {
@@ -47,7 +48,7 @@ namespace CollectionApp.DAL.Repositories
             }
         }
 
-        public IRepository<Image> Images
+        public IRepository<Image, int> Images
         {
             get
             {
@@ -56,7 +57,7 @@ namespace CollectionApp.DAL.Repositories
             }
         }
 
-        public IRepository<Item> Items
+        public IRepository<Item, int> Items
         {
             get
             {
@@ -65,12 +66,21 @@ namespace CollectionApp.DAL.Repositories
             }
         }
 
-        public IRepository<Tag> Tags
+        public IRepository<Tag, int> Tags
         {
             get
             {
                 _tagRepository = _tagRepository ?? new TagRepository(_context);
                 return _tagRepository;
+            }
+        }
+
+        public IRepository<User, string> Users
+        {
+            get
+            {
+                _userRepository = _userRepository ?? new UserRepository(_context);
+                return _userRepository;
             }
         }
 

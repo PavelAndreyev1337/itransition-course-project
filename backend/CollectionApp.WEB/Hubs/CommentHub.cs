@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace CollectionApp.WEB.Hubs
 {
     [Authorize]
-    public class MessageHub : Hub
+    public class CommentHub : Hub
     {
         private readonly IItemService _itemService;
 
-        public MessageHub(IItemService itemService)
+        public CommentHub(IItemService itemService)
         {
             _itemService = itemService;
         }

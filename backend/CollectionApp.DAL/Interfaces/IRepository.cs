@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CollectionApp.DAL.Interfaces
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity, TId> where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAll(
             params Expression<Func<TEntity, object>>[] includes);
@@ -18,12 +18,12 @@ namespace CollectionApp.DAL.Interfaces
             Sort sort = Sort.Desc,
             Func<TEntity, object> sortPredicate = null,
             params Expression<Func<TEntity, object>>[] includes);
-        Task<TEntity> Get(int id, params Expression<Func<TEntity, object>>[] includes);
+        Task<TEntity> Get(TId id, params Expression<Func<TEntity, object>>[] includes);
         IEnumerable<TEntity> Find(
             Func<TEntity, bool> predicate,
             params Expression<Func<TEntity, object>>[] includes);
         TEntity Add(TEntity entity);
         TEntity Update(TEntity entity);
-        Task<TEntity> Delete(int id);
+        Task<TEntity> Delete(TId id);
     }
 }
