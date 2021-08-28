@@ -15,7 +15,6 @@ namespace CollectionApp.BLL.Interfaces
             int collectionId,
             ClaimsPrincipal userPrincipal,
             int page=1,
-            string userId = "",
             ItemSort sortState = ItemSort.Default,
             bool isLiked = false,
             bool isCommented = false);

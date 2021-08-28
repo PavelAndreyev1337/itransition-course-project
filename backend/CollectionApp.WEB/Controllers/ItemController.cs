@@ -44,7 +44,7 @@ namespace CollectionApp.WEB.Controllers
             cookies.Append("isCommented", isCommented.ToString());
             ViewData["userId"] = userId;
             return View(await _itemService
-                .GetItems(collectionId, User, page, userId, sortOrder, isLiked, isCommented));
+                .GetItems(collectionId, User, page, sortOrder, isLiked, isCommented));
         }
 
         public async Task<IActionResult> Create(

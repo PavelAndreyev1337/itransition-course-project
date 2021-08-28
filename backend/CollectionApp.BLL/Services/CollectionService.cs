@@ -175,6 +175,7 @@ namespace CollectionApp.BLL.Services
 
         public async Task DeleteCollection(ClaimsPrincipal claimsPrincipal, int collectionId)
         {
+            await CheckRights(claimsPrincipal, collectionId);
             using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
             {
                 var collection = await CheckRights(claimsPrincipal, collectionId);

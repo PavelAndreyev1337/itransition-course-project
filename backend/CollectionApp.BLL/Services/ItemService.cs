@@ -39,15 +39,14 @@ namespace CollectionApp.BLL.Services
             int collectionId,
             ClaimsPrincipal userPrincipal,
             int page= 1,
-            string userId = "",
             ItemSort sortState = ItemSort.Default,
             bool isLiked = false,
             bool isCommented = false)
         {
-            var currentUser = await _accountService.GetCurrentUser(userPrincipal, userId);
+            var currentUser = await _accountService.GetCurrentUser(userPrincipal);
             var collection = await UnitOfWork.Collections.Get(collectionId);
             Func<Item, bool> predicate = item => item.CollectionId == collection.Id;
-            if (currentUser != null && isLiked || isCommented)
+            if (currentUser != null && (isLiked || isCommented))
             {
                 predicate = item =>
                 {
