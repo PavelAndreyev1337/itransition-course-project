@@ -12,7 +12,8 @@
                 <li class="breadcrumb-item">
                     <a asp-controller="Collection"
                        asp-action="Index"
-                       asp-route-page="@Context.Request.Cookies["collectionPage"]">
+                       asp-route-page="@Context.Request.Cookies["collectionPage"]"
+                       asp-route-userId="@ViewData["userId"]">
                         Collections
                     </a>
                 </li>

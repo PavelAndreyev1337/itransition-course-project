@@ -3,6 +3,7 @@ using CollectionApp.BLL.Exceptions;
 using CollectionApp.BLL.Interfaces;
 using CollectionApp.DAL.Entities;
 using CollectionApp.DAL.Interfaces;
+using CollectionApp.DAL.Utils;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -62,8 +63,12 @@ namespace CollectionApp.BLL.Services
             }
         }
 
-        public async Task<User> GetCurrentUser(ClaimsPrincipal userPrincipal)
+        public async Task<User> GetCurrentUser(ClaimsPrincipal userPrincipal, string userId = "")
         {
+            if (!string.IsNullOrEmpty(userId) && RoleUtil.IsAdmin(userPrincipal))
+            {
+                return await Database.UserManager.FindByIdAsync(userId);
+            }
             return await Database.UserManager.GetUserAsync(userPrincipal);
         }
 

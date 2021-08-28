@@ -9,7 +9,7 @@ namespace CollectionApp.BLL.Interfaces
     public interface IAccountService
     {
         AuthenticationProperties GetAuthenticationProperties(string provider, string redirectUrl);
-        Task<User> GetCurrentUser(ClaimsPrincipal userPrincipal);
+        Task<User> GetCurrentUser(ClaimsPrincipal userPrincipal, string userId = "");
         Task<AccountDTO> Login();
         Task Logout();
     }

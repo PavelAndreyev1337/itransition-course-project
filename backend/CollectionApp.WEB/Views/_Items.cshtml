@@ -71,6 +71,7 @@
                                            asp-controller="Item"
                                            asp-action="Edit"
                                            asp-route-itemId="@item.Id"
+                                           asp-route-userId="@ViewData["userId"]"
                                            data-toggle="tooltip"
                                            data-placement="bottom"
                                            title="Edit">
@@ -79,6 +80,7 @@
                                         <form asp-controller="Item"
                                               asp-action="Delete"
                                               asp-route-itemId="@item.Id"
+                                              asp-route-userId="@ViewData["userId"]"
                                               class="d-inline">
                                             <button class="btn btn-danger btn-sm delete-btn"
                                                     type="submit"
@@ -109,7 +111,8 @@
                                     </p>
                                     <a asp-controller="Item"
                                         asp-action="GetItem"
-                                        asp-route-itemId="@item.Id">
+                                        asp-route-itemId="@item.Id"
+                                        asp-route-userId="@ViewData["userId"]">
                                         Read more...
                                     </a>
                                 </div>

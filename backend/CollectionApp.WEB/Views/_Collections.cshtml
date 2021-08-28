@@ -50,6 +50,7 @@
                                        asp-controller="Collection"
                                        asp-action="Edit"
                                        asp-route-collectionId="@collection.Id"
+                                       asp-route-userId="@ViewData["userId"]"
                                        data-toggle="tooltip"
                                        data-placement="bottom"
                                        title="Edit">
@@ -58,6 +59,7 @@
                                     <form asp-controller="Collection"
                                           asp-action="Delete"
                                           asp-route-collectionId="@collection.Id"
+                                          asp-route-userId="@ViewData["userId"]"
                                           class="d-inline"
                                           data-toggle="tooltip"
                                           data-placement="bottom"
@@ -73,6 +75,7 @@
                                 <a asp-controller="Item"
                                    asp-action="Index"
                                    asp-route-collectionId="@collection.Id"
+                                   asp-route-userId ="@ViewData["userId"]"
                                    asp-route-page="1">
                                     View more...
                                 </a>

@@ -10,7 +10,8 @@
         <li class="breadcrumb-item">
             <a asp-controller="Collection"
                asp-action="Index"
-               asp-route-page="@cookies["collectionPage"]">
+               asp-route-page="@cookies["collectionPage"]"
+               asp-route-userId="@ViewData["userId"]">
                 Collections
             </a>
         </li>
@@ -20,7 +21,8 @@
                asp-route-page="@cookies["itemPage"]"
                asp-route-isLiked="@cookies["isLiked"]"
                asp-route-isCommented="@cookies["isCommented"]"
-               asp-route-sortOrder="@cookies["sortOrder"]">
+               asp-route-sortOrder="@cookies["sortOrder"]"
+               asp-route-userId="@ViewData["userId"]">
                 Items
             </a>
         </li>

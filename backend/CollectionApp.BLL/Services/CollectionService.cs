@@ -14,6 +14,9 @@ using Microsoft.Extensions.Configuration;
 using CollectionApp.DAL.DTO;
 using CollectionApp.BLL.Exceptions;
 using CollectionApp.BLL.Utils;
+using CollectionApp.DAL.Utils;
+using System.Linq.Expressions;
+using System;
 
 namespace CollectionApp.BLL.Services
 {
@@ -88,22 +91,29 @@ namespace CollectionApp.BLL.Services
             }
         }
 
-        public async Task<Collection> CheckRights(ClaimsPrincipal claimsPrincipal, int collectionId)
+        public async Task<Collection> CheckRights(
+            ClaimsPrincipal claimsPrincipal,
+            int collectionId,
+            string userId = "")
         {
-            var collection = await UnitOfWork.Collections.Get(collectionId);
-            var user = await _accountService.GetCurrentUser(claimsPrincipal);
-            if (!(collection.User.Id == user.Id))
+            var collection = await UnitOfWork.Collections
+                .Get(collectionId, collection => collection.User);
+            var user = await _accountService.GetCurrentUser(claimsPrincipal, userId);
+            if (user.Id != collection.User.Id && !RoleUtil.IsAdmin(claimsPrincipal))
             {
                 throw new UserNoRightsException();
             }
             return collection;
         }
 
-        public async Task CreateCollection(ClaimsPrincipal userPrincipal, CollectionDTO collectionDto)
+        public async Task CreateCollection(
+            ClaimsPrincipal userPrincipal,
+            CollectionDTO collectionDto,
+            string userId = "")
         {
             using (var transaction = UnitOfWork.Context.Database.BeginTransaction())
             {
-                collectionDto.User = await _accountService.GetCurrentUser(userPrincipal);
+                collectionDto.User = await _accountService.GetCurrentUser(userPrincipal, userId);
                 var collection = UnitOfWork.Collections
                     .Add(MapperUtil.Map<CollectionDTO, Collection>(collectionDto));
                 UnitOfWork.Collections.Add(collection);
@@ -113,14 +123,20 @@ namespace CollectionApp.BLL.Services
             }
         }
 
-        public async Task<EntityPageDTO<Collection>> GetUserCollections(ClaimsPrincipal claimsPrincipal, int page = 1)
+        public async Task<EntityPageDTO<Collection>> GetUserCollections(
+            ClaimsPrincipal claimsPrincipal,
+            int page = 1,
+            string userId = "")
         {
-            var user = await _accountService.GetCurrentUser(claimsPrincipal);
+            var user = await _accountService.GetCurrentUser(claimsPrincipal, userId);
             return UnitOfWork.Collections
                 .Paginate(
                 page: page,
-                predicate: (collection) => collection.User == user,
-                includes: collection => collection.Images);
+                predicate: collection => collection.User == user,
+                includes: new Expression<Func<Collection, object>>[] {
+                    collection => collection.Images,
+                    collection => collection.User,
+                });
         }
 
         public async Task<CollectionDTO> GetCollection(int collectionId)

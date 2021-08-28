@@ -39,11 +39,12 @@ namespace CollectionApp.BLL.Services
             int collectionId,
             ClaimsPrincipal userPrincipal,
             int page= 1,
+            string userId = "",
             ItemSort sortState = ItemSort.Default,
             bool isLiked = false,
             bool isCommented = false)
         {
-            var currentUser = await _accountService.GetCurrentUser(userPrincipal);
+            var currentUser = await _accountService.GetCurrentUser(userPrincipal, userId);
             var collection = await UnitOfWork.Collections.Get(collectionId);
             Func<Item, bool> predicate = item => item.CollectionId == collection.Id;
             if (currentUser != null && isLiked || isCommented)
@@ -101,7 +102,10 @@ namespace CollectionApp.BLL.Services
             await UnitOfWork.SaveAsync();
         }
 
-        public async Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto)
+        public async Task CreateItem(
+            ClaimsPrincipal userPrincipal,
+            ItemDTO itemDto,
+            string userId = "")
         {
             await _collectionService.CheckRights(userPrincipal, (int)(itemDto.CollectionId));
             var tags = DeserializeTags(itemDto.TagsJson);
@@ -128,7 +132,8 @@ namespace CollectionApp.BLL.Services
             var item = await UnitOfWork.Items.Get(
                 itemId,
                 item => item.Collection,
-                item => item.UsersLiked);
+                item => item.UsersLiked,
+                item => item.Tags);
             var mapperConf = new MapperConfiguration(
                     cfg => cfg.CreateMap<Item, ItemDTO>()
                     .ForMember(item => item.Comments, opt => opt.Ignore()));

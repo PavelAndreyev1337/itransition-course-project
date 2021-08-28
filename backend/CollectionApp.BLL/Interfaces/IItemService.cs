@@ -15,10 +15,14 @@ namespace CollectionApp.BLL.Interfaces
             int collectionId,
             ClaimsPrincipal userPrincipal,
             int page=1,
+            string userId = "",
             ItemSort sortState = ItemSort.Default,
             bool isLiked = false,
             bool isCommented = false);
-        Task CreateItem(ClaimsPrincipal userPrincipal, ItemDTO itemDto);
+        Task CreateItem(
+            ClaimsPrincipal userPrincipal,
+            ItemDTO itemDto,
+            string userId = "");
         EntityPageDTO<Tag> GetTags(string input);
         Task<ItemDTO> GetItem(int itemId, int page = 1, ClaimsPrincipal claimsPrincipal=null);
         Task EditItem(ClaimsPrincipal claimsPrincipal, ItemDTO itemDto);

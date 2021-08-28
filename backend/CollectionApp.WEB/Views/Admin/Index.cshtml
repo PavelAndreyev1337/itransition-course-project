@@ -21,7 +21,9 @@
                 <tr class="d-flex @(user.LockoutEnabled ? "table-danger": "")" 
                     title="@(user.LockoutEnabled ? "Blocked": "")">
                     <th class="col-5">
-                        <a>
+                        <a asp-controller="Collection"
+                           asp-action="Index"
+                           asp-route-userId="@user.Id">
                             @user.UserName
                         </a>
                     </th>

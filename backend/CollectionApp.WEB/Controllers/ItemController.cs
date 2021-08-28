@@ -30,6 +30,7 @@ namespace CollectionApp.WEB.Controllers
         public async Task<IActionResult> Index(
             [FromRoute(Name = "collectionId")] int collectionId,
             [FromQuery] int page = 1,
+            [FromQuery] string userId = "",
             [FromQuery] ItemSort sortOrder = ItemSort.Default,
             [FromQuery] bool isLiked = false,
             [FromQuery] bool isCommented = false)
@@ -41,24 +42,30 @@ namespace CollectionApp.WEB.Controllers
             cookies.Append("sortOrder", sortOrder.ToString());
             cookies.Append("isLiked", isLiked.ToString());
             cookies.Append("isCommented", isCommented.ToString());
+            ViewData["userId"] = userId;
             return View(await _itemService
-                .GetItems(collectionId, User, page, sortOrder, isLiked, isCommented));
+                .GetItems(collectionId, User, page, userId, sortOrder, isLiked, isCommented));
         }
 
-        public async Task<IActionResult> Create(int collectionId)
+        public async Task<IActionResult> Create(
+            [FromQuery] int collectionId,
+            [FromQuery] string userId = "")
         {
             var item = new ItemViewModel();
             var collectionDto = await _collectionService.GetCollection(collectionId);
             item.Collection = MapperUtil.Map<CollectionDTO, Collection>(collectionDto);
+            ViewData["userId"] = userId;
             return View("Form", item);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ItemViewModel model)
+        public async Task<IActionResult> Create(ItemViewModel model, [FromQuery] string userId = "")
         {
             var itemDto = MapperUtil.Map<ItemViewModel, ItemDTO>(model);
-            await _itemService.CreateItem(User, itemDto);
-            return RedirectToAction("Index", new { collectionId = model.CollectionId, page = 1 });
+            await _itemService.CreateItem(User, itemDto, userId);
+            return RedirectToAction(
+                "Index",
+                new { collectionId = model.CollectionId, page = 1, userId = userId });
         }
 
         [Route("/Tags")]
@@ -67,31 +74,37 @@ namespace CollectionApp.WEB.Controllers
             return _itemService.GetTags(input);
         }
 
-        public async Task<IActionResult> Edit(int itemId)
+        public async Task<IActionResult> Edit(int itemId, [FromQuery] string userId = "")
         {
             var itemDto = await _itemService.GetItem(itemId);
+            ViewData["userId"] = userId;
             return View("Form", MapperUtil.Map<ItemDTO, ItemViewModel>(itemDto));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ItemViewModel model)
+        public async Task<IActionResult> Edit(ItemViewModel model, [FromQuery] string userId = "")
         {
             await _itemService.EditItem(
                 User,
                 MapperUtil.Map<ItemViewModel, ItemDTO>(model));
-            return RedirectToAction("Index", new { collectionId = model.CollectionId, page = 1 });
+            return RedirectToAction(
+                "Index",
+                new { collectionId = model.CollectionId, page = 1, userId = userId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int itemId)
+        public async Task<IActionResult> Delete(int itemId, [FromQuery] string userId = "")
         {
             var collectionId = await _itemService.DeleteItem(User, itemId);
-            return RedirectToAction("Index", new { collectionId = collectionId, page = 1 });
+            return RedirectToAction(
+                "Index",
+                new { collectionId = collectionId, page = 1, userId = userId });
         }
 
         [Route("/Items/{itemId}")]
         public async Task<IActionResult> GetItem(
             [FromRoute(Name = "itemId")] int itemId,
+            [FromQuery] string userId = "",
             [FromQuery] int page = 1)
         {
             var itemDto = await _itemService.GetItem(itemId, page, User);
@@ -106,6 +119,7 @@ namespace CollectionApp.WEB.Controllers
             }
             Response.Cookies.Append("itemId", itemId.ToString());
             ViewData["Action"] = "GetItem";
+            ViewData["userId"] = userId;
             return View("Item", model);
         }
 

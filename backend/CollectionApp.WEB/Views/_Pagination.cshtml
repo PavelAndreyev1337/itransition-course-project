@@ -9,7 +9,8 @@
                asp-route-page="@(Model.PageNumber-1)"
                asp-route-isLiked = "@(Context.Request.Query["isLiked"])"
                asp-route-isCommented = "@(Context.Request.Query["isCommented"])"
-               asp-route-sortOrder = "@(Context.Request.Query["sortOrder"])">
+               asp-route-sortOrder = "@(Context.Request.Query["sortOrder"])"
+               asp-route-userId = "@ViewData["userId"]">
                 Previous
             </a>
         </li>
@@ -20,7 +21,8 @@
                asp-route-page="@(Model.PageNumber+1)"
                asp-route-isLiked = "@(Context.Request.Query["isLiked"])"
                asp-route-isCommented = "@(Context.Request.Query["isCommented"])"
-               asp-route-sortOrder = "@(Context.Request.Query["sortOrder"])">
+               asp-route-sortOrder = "@(Context.Request.Query["sortOrder"])"
+               asp-route-userId = "@ViewData["userId"]">
                 Next
             </a>
         </li>

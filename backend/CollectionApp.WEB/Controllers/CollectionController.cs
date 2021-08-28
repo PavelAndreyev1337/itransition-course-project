@@ -21,22 +21,26 @@ namespace CollectionApp.WEB.Controllers
         }
 
         [Route("/Collections", Name = "Profile")]
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(
+            [FromQuery] int page = 1,
+            [FromQuery] string userId = "")
         {
-            var collections = await _collectionService.GetUserCollections(User, page);
+            var collections = await _collectionService.GetUserCollections(User, page, userId);
             var markdown = new Markdown();
             foreach(var entity in collections.Entities)
             {
                 entity.ShortDescription = markdown.Transform(entity.ShortDescription);
             }
+            ViewData["userId"] = userId;
             Response.Cookies.Append("collectionPage", page.ToString());
             return View(collections);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create([FromQuery] string userId = "")
         {
             Response.Cookies.Delete("collectionId");
+            ViewData["userId"] = userId;
             return View("Form", new CollectionViewModel
             {
                 Topics = _collectionService.GetTopics()
@@ -44,16 +48,19 @@ namespace CollectionApp.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CollectionViewModel model)
+        public async Task<IActionResult> Create(CollectionViewModel model, [FromQuery] string userId = "")
         {
             await _collectionService.CreateCollection(
                 User,
-                MapperUtil.Map<CollectionViewModel, CollectionDTO>(model));
-            return RedirectToAction("Index");
+                MapperUtil.Map<CollectionViewModel, CollectionDTO>(model),
+                userId);
+            return RedirectToAction("Index", new { userId = userId});
         }
 
         [HttpGet("/Collection/Edit")]
-        public async Task<IActionResult> EditCollection([FromQuery(Name = "collectionId")] int collectionId)
+        public async Task<IActionResult> EditCollection(
+            [FromQuery(Name = "collectionId")] int collectionId,
+            [FromQuery] string userId = "")
         {
             try
             {
@@ -61,7 +68,8 @@ namespace CollectionApp.WEB.Controllers
                 Response.Cookies.Append("collectionId", collectionId.ToString());
                 var collection = MapperUtil.Map<CollectionDTO, CollectionViewModel>(collectionDto);
                 await _collectionService.CheckRights(User, collectionId);
-                return View("Form",collection);
+                ViewData["userId"] = userId;
+                return View("Form", collection);
             }
             catch
             {
@@ -77,8 +85,9 @@ namespace CollectionApp.WEB.Controllers
        
         [HttpPost]
         public async Task<IActionResult> Edit(
+            CollectionViewModel model,
             [FromQuery(Name = "collectionId")] int collectionId,
-            CollectionViewModel model)
+            [FromQuery] string userId = "")
         {
             try
             {
@@ -86,7 +95,7 @@ namespace CollectionApp.WEB.Controllers
                 await _collectionService.EditCollection(
                     User,
                     MapperUtil.Map<CollectionViewModel, CollectionDTO>(model));
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { userId = userId });
             }
             catch
             {
@@ -95,12 +104,14 @@ namespace CollectionApp.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromQuery(Name = "collectionId")] int collectionId)
+        public async Task<IActionResult> Delete(
+            [FromQuery(Name = "collectionId")] int collectionId,
+            [FromQuery] string userId = "")
         {
             try
             {
                 await _collectionService.DeleteCollection(User, collectionId);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { userId = userId });
             }
             catch
             {
