@@ -1,9 +1,10 @@
 ﻿@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Collection>
+@using CollectionApp.BLL.Utils
 
 @{int i = 0;}
 @foreach (var collection in Model.Entities)
 {
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-8 mx-auto">
             <div class="card my-2">
                 <div class="row g-0">
@@ -45,30 +46,33 @@
                                 <h5 class="card-title">
                                     @collection.Name
                                 </h5>
-                                <div>
-                                    <a class="btn btn-warning btn-sm text-white"
-                                        asp-controller="Collection"
-                                        asp-action="Edit"
-                                        asp-route-collectionId="@collection.Id"
-                                        asp-route-userId="@ViewData["userId"]"
-                                        data-toggle="tooltip"
-                                        data-placement="bottom"
-                                        title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form asp-controller="Collection"
-                                            asp-action="Delete"
+                                @if (AuthUtil.CheckRights(User, collection))
+                                {
+                                    <div>
+                                        <a class="btn btn-warning btn-sm text-white"
+                                            asp-controller="Collection"
+                                            asp-action="Edit"
                                             asp-route-collectionId="@collection.Id"
                                             asp-route-userId="@ViewData["userId"]"
-                                            class="d-inline"
                                             data-toggle="tooltip"
                                             data-placement="bottom"
-                                            title="Delete">
-                                        <button class="btn btn-danger btn-sm delete-btn" type="submit">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                            title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-controller="Collection"
+                                                asp-action="Delete"
+                                                asp-route-collectionId="@collection.Id"
+                                                asp-route-userId="@ViewData["userId"]"
+                                                class="d-inline"
+                                                data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                title="Delete">
+                                            <button class="btn btn-danger btn-sm delete-btn" type="submit">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
                             </div>
                             @await Html.PartialAsync("../_Author", collection.User)
                             <p title="Topic" class="mb-1"><i class="collection-topic">Topic @collection.Topic</i></p>

@@ -16,26 +16,29 @@
     }
 }
 
-<div class="row mt-3">
-    <div class="col-12">
-        <nav class="mt-2">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a asp-controller="@(CheckBackUrl((string)ViewData["controller"], "Collection"))"
-                       asp-action="@(CheckBackUrl((string)ViewData["action"], "Index"))"
-                       asp-route-page="@Context.Request.Cookies["collectionPage"]"
-                       asp-route-userId="@ViewData["userId"]">
-                        Collections
-                    </a>
-                </li>
-                <li class="breadcrumb-item active">Items</li>
-            </ol>
-        </nav>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row mt-3">
+        <div class="col-12">
+            <nav class="mt-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="@(CheckBackUrl((string)ViewData["controller"], "Collection"))"
+                            asp-action="@(CheckBackUrl((string)ViewData["action"], "Index"))"
+                            asp-route-page="@Context.Request.Cookies["collectionPage"]"
+                            asp-route-userId="@ViewData["userId"]">
+                            Collections
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Items</li>
+                </ol>
+            </nav>
+        </div>
     </div>
-</div>
+}
 
 @await Html.PartialAsync("../_Items", Model)
-@if(!(bool)ViewData["pageNotExist"] && Model.Page.TotalPages > 1)
+@if (!(bool)ViewData["pageNotExist"] && Model.Page.TotalPages > 1)
 {
     @await Html.PartialAsync("../_Pagination", Model.Page)
 }

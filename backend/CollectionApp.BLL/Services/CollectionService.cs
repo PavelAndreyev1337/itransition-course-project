@@ -99,8 +99,7 @@ namespace CollectionApp.BLL.Services
         {
             var collection = await UnitOfWork.Collections
                 .Get(collectionId, collection => collection.User);
-            var user = await _accountService.GetCurrentUser(claimsPrincipal, userId);
-            if (user.Id != collection.User.Id && !RoleUtil.IsAdmin(claimsPrincipal))
+            if (!AuthUtil.CheckRights(claimsPrincipal, collection))
             {
                 throw new UserNoRightsException();
             }

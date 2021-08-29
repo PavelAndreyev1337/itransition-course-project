@@ -1,4 +1,5 @@
 ﻿@using CollectionApp.BLL.Enums
+@using CollectionApp.BLL.Utils
 @model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Item>
 
 @{
@@ -21,7 +22,7 @@
     </div>
 }
 
-<div class="row">
+<div class="row mt-2">
     <div class="col-3">
         @if (authenticated && isMyCollectionRoute && (count > 0 || isLiked || isCommented))
         {
@@ -69,31 +70,34 @@
                                     <h5 class="card-title">
                                         @item.Name
                                     </h5>
-                                    <div>
-                                        <a class="btn btn-warning btn-sm text-white"
-                                           asp-controller="Item"
-                                           asp-action="Edit"
-                                           asp-route-itemId="@item.Id"
-                                           asp-route-userId="@ViewData["userId"]"
-                                           data-toggle="tooltip"
-                                           data-placement="bottom"
-                                           title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <form asp-controller="Item"
-                                              asp-action="Delete"
-                                              asp-route-itemId="@item.Id"
-                                              asp-route-userId="@ViewData["userId"]"
-                                              class="d-inline">
-                                            <button class="btn btn-danger btn-sm delete-btn"
-                                                    type="submit"
-                                                    data-toggle="tooltip"
-                                                    data-placement="bottom"
-                                                    title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
+                                    @if (AuthUtil.CheckRights(User, item.Collection))
+                                    {
+                                        <div>
+                                            <a class="btn btn-warning btn-sm text-white"
+                                                asp-controller="Item"
+                                                asp-action="Edit"
+                                                asp-route-itemId="@item.Id"
+                                                asp-route-userId="@ViewData["userId"]"
+                                                data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form asp-controller="Item"
+                                                    asp-action="Delete"
+                                                    asp-route-itemId="@item.Id"
+                                                    asp-route-userId="@ViewData["userId"]"
+                                                    class="d-inline">
+                                                <button class="btn btn-danger btn-sm delete-btn"
+                                                        type="submit"
+                                                        data-toggle="tooltip"
+                                                        data-placement="bottom"
+                                                        title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
                                     @await Html.PartialAsync("../_Author", item.Collection.User)
                                     <p title="Tags" class="mb-0">
                                         <i class="collection-topic">
@@ -115,10 +119,10 @@
                                     <div class="d-flex justify-content-between align-items-center mt-auto">
                                         <div class="btn-group mt-1">
                                             <a class="btn btn-sm btn-outline-secondary d-block"
-                                               asp-controller="Item"
-                                               asp-action="GetItem"
-                                               asp-route-itemId="@item.Id"
-                                               asp-route-userId="@ViewData["userId"]">
+                                                asp-controller="Item"
+                                                asp-action="GetItem"
+                                                asp-route-itemId="@item.Id"
+                                                asp-route-userId="@ViewData["userId"]">
                                                 View
                                             </a>
                                         </div>

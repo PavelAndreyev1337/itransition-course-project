@@ -74,7 +74,7 @@
         @await Html.PartialAsync( "_GetExtraField", new ExtraFieldViewModel{Prefix = "First", Name = Model.FirstFieldName, FieldType = Model.FirstFieldType })
         @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Second", Name = Model.SecondFieldName, FieldType = Model.SecondFieldType })
         @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Third", Name = Model.ThirdFieldName, FieldType = Model.ThirdFieldType })
-        <div class="mb-5">
+        <div class="mb-5 pb-3">
             <button id="submitAll" class="btn btn-primary d-block mx-auto w-50" type="submit">Submit</button>
         </div>
     </form>

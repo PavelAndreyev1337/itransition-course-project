@@ -26,6 +26,7 @@ namespace CollectionApp.WEB.Controllers
             _collectionService = collectionService;
         }
 
+        [AllowAnonymous]
         [Route("/Collections/{collectionId}/Items/", Name = "Items")]
         public async Task<IActionResult> Index(
             [FromRoute(Name = "collectionId")] int collectionId,
@@ -106,6 +107,7 @@ namespace CollectionApp.WEB.Controllers
                 new { collectionId = collectionId, page = 1, userId = userId });
         }
 
+        [AllowAnonymous]
         [Route("/Items/{itemId}")]
         public async Task<IActionResult> GetItem(
             [FromRoute(Name = "itemId")] int itemId,
@@ -136,6 +138,7 @@ namespace CollectionApp.WEB.Controllers
             return MapperUtil.Map<LikeDTO, LikeViewModel>(likeDto);
         }
 
+        [AllowAnonymous]
         [Route("/Items")]
         public IActionResult GetItemsByTag([FromQuery] string tag)
         {

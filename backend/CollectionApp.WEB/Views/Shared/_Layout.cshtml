@@ -22,9 +22,14 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
+                        <a class="nav-link d-inline"
+                           asp-controller="Home"
+                           asp-action="GetAllCollections">
+                            Collections
+                        </a>
                         @if (!User.Identity.IsAuthenticated)
                         {
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <a class="nav-link d-inline" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Sign in / Sign up
                             </a>
                         }
@@ -57,11 +62,6 @@
                                     Add collection
                                 </a>
                             }
-                            <a class="nav-link d-inline"
-                               asp-controller="Home"
-                               asp-action="GetAllCollections">
-                               Collections
-                            </a>
                             <a class="nav-link d-inline" asp-controller="Collection" asp-action="Index">
                                 My Collections
                             </a>
