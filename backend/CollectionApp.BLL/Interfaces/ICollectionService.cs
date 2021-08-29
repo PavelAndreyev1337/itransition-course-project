@@ -27,5 +27,6 @@ namespace CollectionApp.BLL.Interfaces
         Task EditCollection(ClaimsPrincipal claimsPrincipal, CollectionDTO collectionDto);
         Task DeleteCollection(ClaimsPrincipal claimsPrincipal, int collectionId);
         IEnumerable<Collection> GetLagestNumberItems();
+        EntityPageDTO<Collection> GetAllCollections(int page = 1);
     }
 }

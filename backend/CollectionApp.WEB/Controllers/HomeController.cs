@@ -1,6 +1,4 @@
 ﻿using CollectionApp.BLL.Interfaces;
-using CollectionApp.BLL.Services;
-using CollectionApp.DAL.Repositories;
 using CollectionApp.WEB.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +21,12 @@ namespace CollectionApp.WEB.Controllers
                 LastCreatedItems = _itemService.GetLastCreatedItems(),
                 LagestNumberItems = _collectionService.GetLagestNumberItems()
             });
+        }
+
+        public IActionResult GetAllCollections(int page = 1)
+        {
+            ViewData["Action"] = "GetAllCollections";
+            return View("../Collection/Index", _collectionService.GetAllCollections(page));
         }
     }
 }

@@ -20,14 +20,14 @@
             {
                 <tr class="d-flex @(user.LockoutEnabled ? "table-danger": "")" 
                     title="@(user.LockoutEnabled ? "Blocked": "")">
-                    <th class="col-5">
+                    <th class="col-5 text-break">
                         <a asp-controller="Collection"
                            asp-action="Index"
                            asp-route-userId="@user.Id">
                             @user.UserName
                         </a>
                     </th>
-                    <td class="col-5">@user.Email</td>
+                    <td class="col-5 text-break">@user.Email</td>
                     <td class="col-2">
                         <form asp-controller="Admin"
                                 asp-action="AddAdmin"

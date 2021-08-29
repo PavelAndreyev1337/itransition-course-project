@@ -196,5 +196,16 @@ namespace CollectionApp.BLL.Services
                 .OrderByDescending(collection => collection.Items.Count())
                 .Take(6);
         }
+
+        public EntityPageDTO<Collection> GetAllCollections(int page = 1)
+        {
+            return UnitOfWork.Collections
+                .Paginate(
+                page: page,
+                includes: new Expression<Func<Collection, object>>[] {
+                    collection => collection.Images,
+                    collection => collection.User,
+                });
+        }
     }
 }

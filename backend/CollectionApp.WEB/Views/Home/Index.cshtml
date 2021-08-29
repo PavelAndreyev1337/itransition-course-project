@@ -13,7 +13,11 @@
                     Share your collections with the world
                 </p>
                 <p>
-                    <a href="#" class="btn btn-primary my-2">View collections</a>
+                    <a class="btn btn-primary my-2"
+                       asp-controller="Home"
+                       asp-action="GetAllCollections">
+                        View collections
+                    </a>
                 </p>
             </div>
         </div>
@@ -138,7 +142,7 @@
 
 </main>
 
-<footer class="text-muted py-5">
+<footer class="text-muted pt-5 pb-3">
     <div class="container text-center">
         <p>
             @@ 2021
