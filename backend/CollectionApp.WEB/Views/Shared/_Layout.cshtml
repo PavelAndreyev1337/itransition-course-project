@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/styles.css" />
     <link rel="icon" href="~/img/icon.svg" />
+    <link id="dark-theme-style" rel="stylesheet" />
     <script src="~/lib/js-cookie/js.cookie.min.js"></script>
 </head>
 <body>
@@ -21,14 +22,16 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggler">
-                <form class="d-flex w-50 mx-auto"
+                <form class="d-flex w-50 mx-auto needs-validation"
                       method="get"
                       asp-controller="Item"
-                      asp-action="GetItemsFullTextSearch">
+                      asp-action="GetItemsFullTextSearch"
+                      novalidate>
                     <input class="form-control me-2"
                            type="search"
                            placeholder="Search"
-                           name="query">
+                           name="query"
+                           required>
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav">
@@ -97,6 +100,12 @@
                             </a>
                         </li>
                     }
+                <li class="nav-item">
+                    <a href="javascript:void()"
+                       class="btn btn-outline-info ml-auto font-weight-bold"
+                       id="theme-toggler">
+                    </a>
+                </li>
                 </ul>
             </div>
         </div>

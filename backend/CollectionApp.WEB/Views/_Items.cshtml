@@ -26,27 +26,27 @@
     <div class="col-3">
         @if (authenticated && isMyCollectionRoute && (count > 0 || isLiked || isCommented))
         {
-            <div class="shadow-sm p-3 mb-1 bg-white rounded my-2">
+            <div class="card p-3 mb-1 rounded my-2">
                 <h6 class="text-break">Filters:</h6>
                 <div class="form-check">
-                    <label class="form-check-label text-break"
-                           for="isLiked">
-                        Liked
-                    </label>
                     <input class="form-check-input"
                            type="checkbox"
                            id="isLiked"
                            name="isLiked" />
+                    <label class="form-check-label text-break"
+                           for="isLiked">
+                        Liked
+                    </label>
                 </div>
                 <div class="form-check">
-                    <label class="form-check-label text-break"
-                           for="isCommented">
-                        Commented
-                    </label>
                     <input class="form-check-input"
                            type="checkbox"
                            id="isCommented"
                            name="isCommented" />
+                    <label class="form-check-label text-break"
+                           for="isCommented">
+                        Commented
+                    </label>
                 </div>
             </div>
         }
