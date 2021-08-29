@@ -1,10 +1,14 @@
 ﻿@model CollectionApp.DAL.DTO.Page
 
+@{
+    var action = string.IsNullOrEmpty((string)ViewData["Action"]) ? "Index" : ViewData["Action"];
+}
+
 <nav class="pb-3">
     <ul class="pagination justify-content-center">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
             <a class="page-link"
-               asp-action="@(ViewData["Action"] ?? "Index")"
+               asp-action="@action"
                asp-route-itemId = "@(Context.Request.RouteValues["itemId"])"
                asp-route-page="@(Model.PageNumber-1)"
                asp-route-isLiked = "@(Context.Request.Query["isLiked"])"
@@ -16,7 +20,7 @@
         </li>
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
             <a class="page-link"
-               asp-action="@(ViewData["Action"] ?? "Index")"
+               asp-action="@action"
                asp-route-itemId = "@(Context.Request.RouteValues["itemId"])"
                asp-route-page="@(Model.PageNumber+1)"
                asp-route-isLiked = "@(Context.Request.Query["isLiked"])"

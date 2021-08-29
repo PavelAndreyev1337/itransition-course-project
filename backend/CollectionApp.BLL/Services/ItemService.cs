@@ -8,6 +8,7 @@ using CollectionApp.DAL.DTO;
 using CollectionApp.DAL.Entities;
 using CollectionApp.DAL.Extensions;
 using CollectionApp.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -251,6 +252,26 @@ namespace CollectionApp.BLL.Services
                     item => item.Comments,
                     item => item.UsersLiked
                 });
+        }
+
+        public IEnumerable<Item> GetItemsFullTextSearch(string query)
+        {
+            return UnitOfWork.Context.Items.Where(
+                item => EF.Functions.FreeText(EF.Property<string>(item, "Name"), query)
+                    || EF.Functions.FreeText(EF.Property<string>(item.Collection, "Name"), query)
+                    || EF.Functions.FreeText(EF.Property<string>(item.Collection, "Topic"), query)
+                    || EF.Functions.FreeText(EF.Property<string>(item.Collection, "ShortDescription"), query)
+                    || item.Comments.Any(
+                        comment => EF.Functions.FreeText(EF.Property<string>(comment, "Text"), query))
+                    || item.Tags.Any(
+                        tag => EF.Functions.FreeText(EF.Property<string>(tag, "Name"), query))
+                    )
+                .IncludeMultiple(
+                    item => item.Collection,
+                    item => item.Tags,
+                    item => item.Comments,
+                    item => item.UsersLiked)
+                .ToList();
         }
     }
 }

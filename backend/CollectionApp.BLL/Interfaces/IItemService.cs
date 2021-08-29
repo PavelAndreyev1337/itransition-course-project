@@ -32,5 +32,6 @@ namespace CollectionApp.BLL.Interfaces
         IEnumerable<Item> GetLastCreatedItems();
         IEnumerable<TagDTO> GetTagsCloud();
         IEnumerable<Item> GetItemsByTag(string tag);
+        IEnumerable<Item> GetItemsFullTextSearch(string query);
     }
 }

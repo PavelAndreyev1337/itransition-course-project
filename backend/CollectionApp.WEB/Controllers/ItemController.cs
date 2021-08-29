@@ -144,5 +144,13 @@ namespace CollectionApp.WEB.Controllers
         {
             return View("Search", _itemService.GetItemsByTag(tag));
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("/FullTextSearch")]
+        public IActionResult GetItemsFullTextSearch([FromQuery] string query)
+        {
+            return View("Search", _itemService.GetItemsFullTextSearch(query));
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace CollectionApp.DAL.Utils
 {
-    public class RoleUtil
+    public static class RoleUtil
     {
         public static string AdminRoleName()
         {
