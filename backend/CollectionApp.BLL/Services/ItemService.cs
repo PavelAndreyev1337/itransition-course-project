@@ -6,6 +6,7 @@ using CollectionApp.BLL.Interfaces;
 using CollectionApp.BLL.Utils;
 using CollectionApp.DAL.DTO;
 using CollectionApp.DAL.Entities;
+using CollectionApp.DAL.Extensions;
 using CollectionApp.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -212,6 +213,17 @@ namespace CollectionApp.BLL.Services
                 UserId = user.Id
             });
             await UnitOfWork.SaveAsync();
+        }
+
+        public IEnumerable<Item> GetLastCreatedItems()
+        {
+            return UnitOfWork.Context.Items.IncludeMultiple(
+                item => item.UsersLiked,
+                item => item.Tags,
+                Item => Item.Collection)
+                .AsEnumerable()
+                .TakeLast(3)
+                .Reverse();
         }
     }
 }

@@ -1,16 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CollectionApp.BLL.Interfaces;
+using CollectionApp.BLL.Services;
+using CollectionApp.DAL.Repositories;
+using CollectionApp.WEB.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CollectionApp.WEB.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IItemService _itemService;
+        private readonly ICollectionService _collectionService;
+
+        public HomeController(IItemService itemService, ICollectionService collectionService)
+        {
+            _itemService = itemService;
+            _collectionService = collectionService;
+        }
         public IActionResult Index()
         {
-            return View();
+            return View(new HomeViewModel()
+            { 
+                LastCreatedItems = _itemService.GetLastCreatedItems(),
+                LagestNumberItems = _collectionService.GetLagestNumberItems()
+            });
         }
     }
 }

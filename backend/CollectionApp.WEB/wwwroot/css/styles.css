@@ -16,3 +16,9 @@ iframe {
     outline: none;
     box-shadow: none;
 }
+
+.main-bg
+{
+    /*background-image: url("../img/background.png");*/
+    background-size: cover;
+}

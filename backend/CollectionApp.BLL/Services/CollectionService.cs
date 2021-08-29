@@ -17,6 +17,7 @@ using CollectionApp.BLL.Utils;
 using CollectionApp.DAL.Utils;
 using System.Linq.Expressions;
 using System;
+using CollectionApp.DAL.Extensions;
 
 namespace CollectionApp.BLL.Services
 {
@@ -186,9 +187,14 @@ namespace CollectionApp.BLL.Services
             }
         }
 
-        public void Dispose()
+        public IEnumerable<Collection> GetLagestNumberItems()
         {
-            UnitOfWork.Dispose();
+            return UnitOfWork.Context.Collections
+                .IncludeMultiple(
+                collection => collection.Images,
+                collection => collection.User)
+                .OrderByDescending(collection => collection.Items.Count())
+                .Take(6);
         }
     }
 }

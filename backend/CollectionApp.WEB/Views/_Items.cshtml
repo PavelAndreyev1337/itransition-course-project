@@ -109,12 +109,17 @@
                                             @item.Collection.ThirdFieldName
                                         </i>
                                     </p>
-                                    <a asp-controller="Item"
-                                        asp-action="GetItem"
-                                        asp-route-itemId="@item.Id"
-                                        asp-route-userId="@ViewData["userId"]">
-                                        Read more...
-                                    </a>
+                                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                                        <div class="btn-group mt-1">
+                                            <a class="btn btn-sm btn-outline-secondary d-block"
+                                               asp-controller="Item"
+                                               asp-action="GetItem"
+                                               asp-route-itemId="@item.Id"
+                                               asp-route-userId="@ViewData["userId"]">
+                                                View
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

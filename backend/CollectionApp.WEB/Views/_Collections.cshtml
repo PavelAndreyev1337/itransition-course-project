@@ -10,13 +10,13 @@
                     <div class="col-md-4">
                         @if (collection.Images.Count > 0)
                         {
-                            <div id="carouselControls@(i)" class="carousel slide" data-interval="false">
-                                <div class="carousel-inner">
+                            <div id="carouselControls@(i)" class="carousel slide h-100" data-interval="false">
+                                <div class="carousel-inner h-100">
                                     @{int j = 0;}
                                     @foreach (var image in collection.Images)
                                     {
-                                        <div class="carousel-item @(j == 0 ? "active" : "")">
-                                            <img src="@image.ImagePath" class="img-fluid rounded-start" alt="Collection image" />
+                                        <div class="carousel-item @(j == 0 ? "active" : "") h-100">
+                                            <img src="@image.ImagePath" class="img-fluid rounded-start h-100 w-100" alt="Collection image" />
                                         </div>
                                         j++;
                                     }
@@ -40,45 +40,50 @@
                         }
                     </div>
                     <div class="col-md-8">
-                        <div class="card-body">
+                        <div class="card-body h-100 d-flex flex-column">
                             <div>
                                 <h5 class="card-title">
                                     @collection.Name
                                 </h5>
                                 <div>
                                     <a class="btn btn-warning btn-sm text-white"
-                                       asp-controller="Collection"
-                                       asp-action="Edit"
-                                       asp-route-collectionId="@collection.Id"
-                                       asp-route-userId="@ViewData["userId"]"
-                                       data-toggle="tooltip"
-                                       data-placement="bottom"
-                                       title="Edit">
+                                        asp-controller="Collection"
+                                        asp-action="Edit"
+                                        asp-route-collectionId="@collection.Id"
+                                        asp-route-userId="@ViewData["userId"]"
+                                        data-toggle="tooltip"
+                                        data-placement="bottom"
+                                        title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form asp-controller="Collection"
-                                          asp-action="Delete"
-                                          asp-route-collectionId="@collection.Id"
-                                          asp-route-userId="@ViewData["userId"]"
-                                          class="d-inline"
-                                          data-toggle="tooltip"
-                                          data-placement="bottom"
-                                          title="Delete">
+                                            asp-action="Delete"
+                                            asp-route-collectionId="@collection.Id"
+                                            asp-route-userId="@ViewData["userId"]"
+                                            class="d-inline"
+                                            data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="Delete">
                                         <button class="btn btn-danger btn-sm delete-btn" type="submit">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
                                 </div>
-                                @await Html.PartialAsync("../_Author", collection.User)
-                                <p title="Topic" class="mb-1"><i class="collection-topic">Topic @collection.Topic</i></p>
-                                @Html.Raw(collection.ShortDescription)
-                                <a asp-controller="Item"
-                                   asp-action="Index"
-                                   asp-route-collectionId="@collection.Id"
-                                   asp-route-userId ="@ViewData["userId"]"
-                                   asp-route-page="1">
-                                    View more...
-                                </a>
+                            </div>
+                            @await Html.PartialAsync("../_Author", collection.User)
+                            <p title="Topic" class="mb-1"><i class="collection-topic">Topic @collection.Topic</i></p>
+                            @Html.Raw(collection.ShortDescription)
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <div class="btn-group mt-1">
+                                    <a class="btn btn-sm btn-outline-secondary d-block"
+                                        asp-controller="Item"
+                                        asp-action="Index"
+                                        asp-route-collectionId="@collection.Id"
+                                        asp-route-userId ="@ViewData["userId"]"
+                                        asp-route-page="1">
+                                        View
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

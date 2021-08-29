@@ -3,6 +3,7 @@ using CollectionApp.BLL.Enums;
 using CollectionApp.DAL.DTO;
 using CollectionApp.DAL.Entities;
 using CollectionApp.DAL.Interfaces;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -28,5 +29,6 @@ namespace CollectionApp.BLL.Interfaces
         Task<int> DeleteItem(ClaimsPrincipal claimsPrincipal, int itemId);
         Task<LikeDTO> LikeItem(ClaimsPrincipal claimsPrincipal, int itemId);
         Task AddComment(ClaimsPrincipal claimsPrincipal, CommentDTO commentDto);
+        IEnumerable<Item> GetLastCreatedItems();
     }
 }

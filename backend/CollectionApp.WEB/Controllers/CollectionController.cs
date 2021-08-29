@@ -118,11 +118,5 @@ namespace CollectionApp.WEB.Controllers
                 return NotFound();
             }
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            _collectionService.Dispose();
-            base.Dispose(disposing);
-        }
     }
 }

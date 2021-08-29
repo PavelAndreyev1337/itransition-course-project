@@ -26,6 +26,6 @@ namespace CollectionApp.BLL.Interfaces
         IEnumerable<string> GetImages(int collectionId);
         Task EditCollection(ClaimsPrincipal claimsPrincipal, CollectionDTO collectionDto);
         Task DeleteCollection(ClaimsPrincipal claimsPrincipal, int collectionId);
-        void Dispose();
+        IEnumerable<Collection> GetLagestNumberItems();
     }
 }
