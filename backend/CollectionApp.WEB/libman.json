@@ -90,6 +90,15 @@
       "files": [
         "dist/browser/signalr.min.js"
       ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "anychart@8.10.0",
+      "destination": "wwwroot/lib/anychart/",
+      "files": [
+        "dist/js/anychart-base.min.js",
+        "dist/js/anychart-tag-cloud.min.js"
+      ]
     }
   ]
 }

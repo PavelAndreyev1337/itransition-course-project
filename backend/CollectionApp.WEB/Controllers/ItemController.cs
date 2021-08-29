@@ -33,7 +33,9 @@ namespace CollectionApp.WEB.Controllers
             [FromQuery] string userId = "",
             [FromQuery] ItemSort sortOrder = ItemSort.Default,
             [FromQuery] bool isLiked = false,
-            [FromQuery] bool isCommented = false)
+            [FromQuery] bool isCommented = false,
+            [FromQuery] string backController = "",
+            [FromQuery] string backAction = "")
         {
             var cookies = Response.Cookies;
             cookies.Append("itemPage", page.ToString());
@@ -43,8 +45,11 @@ namespace CollectionApp.WEB.Controllers
             cookies.Append("isLiked", isLiked.ToString());
             cookies.Append("isCommented", isCommented.ToString());
             ViewData["userId"] = userId;
-            return View(await _itemService
-                .GetItems(collectionId, User, page, sortOrder, isLiked, isCommented));
+            ViewData["controller"] = backController;
+            ViewData["action"] = backAction;
+            var sd = await _itemService
+                .GetItems(collectionId, User, page, sortOrder, isLiked, isCommented);
+            return View(sd);
         }
 
         public async Task<IActionResult> Create(
@@ -129,6 +134,12 @@ namespace CollectionApp.WEB.Controllers
         {
             var likeDto = await _itemService.LikeItem(User, itemId);
             return MapperUtil.Map<LikeDTO, LikeViewModel>(likeDto);
+        }
+
+        [Route("/Items")]
+        public IActionResult GetItemsByTag([FromQuery] string tag)
+        {
+            return View("Search", _itemService.GetItemsByTag(tag));
         }
     }
 }

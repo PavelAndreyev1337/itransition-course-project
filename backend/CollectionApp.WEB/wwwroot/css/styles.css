@@ -22,3 +22,10 @@ iframe {
     background-image: url("../img/background.png");
     background-size: cover;
 }
+
+html, body, #container {
+    width: 100%;
+    height: 50vh;
+    margin: 0;
+    padding: 0;
+}

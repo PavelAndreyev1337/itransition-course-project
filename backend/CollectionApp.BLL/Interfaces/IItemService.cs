@@ -30,5 +30,7 @@ namespace CollectionApp.BLL.Interfaces
         Task<LikeDTO> LikeItem(ClaimsPrincipal claimsPrincipal, int itemId);
         Task AddComment(ClaimsPrincipal claimsPrincipal, CommentDTO commentDto);
         IEnumerable<Item> GetLastCreatedItems();
+        IEnumerable<TagDTO> GetTagsCloud();
+        IEnumerable<Item> GetItemsByTag(string tag);
     }
 }

@@ -6,21 +6,24 @@
     var count = Model.Entities.Count();
     var isLiked = Context.Request.Query["isLiked"].Count() > 0;
     var isCommented = Context.Request.Query["isCommented"].Count() > 0;
+    var isMyCollectionRoute = ViewContext.ActionDescriptor.AttributeRouteInfo?.Name == "Items";
 }
 
-
-<div class="row @(count == 0 ? "d-none" : "")">
-    <div class="col-7 offset-3">
-        <select id="sortOrder" class="form-select w-25 ms-auto" name="sortOrder">
-            <option value="@ItemSort.Default" selected>By creation</option>
-            <option value="@ItemSort.LikeDesc">By likes number</option>
-        </select>
+@if (string.IsNullOrEmpty(Context.Request.Query["tag"]))
+{
+    <div class="row @(count == 0 ? "d-none" : "")">
+        <div class="col-7 offset-3">
+            <select id="sortOrder" class="form-select w-25 ms-auto" name="sortOrder">
+                <option value="@ItemSort.Default" selected>By creation</option>
+                <option value="@ItemSort.LikeDesc">By likes number</option>
+            </select>
+        </div>
     </div>
-</div>
+}
 
 <div class="row">
     <div class="col-3">
-        @if (authenticated && count > 0 || isLiked || isCommented)
+        @if (authenticated && isMyCollectionRoute && (count > 0 || isLiked || isCommented))
         {
             <div class="shadow-sm p-3 mb-1 bg-white rounded my-2">
                 <h6 class="text-break">Filters:</h6>
@@ -48,7 +51,7 @@
         }
     </div>
     <div class="col-7">
-        @if ((bool)ViewData["pageNotExist"])
+        @if (ViewData["pageNotExist"] != null && (bool)ViewData["pageNotExist"])
         {
             <div class="col-md-12 text-center mt-5">
                 <h5>No items</h5>

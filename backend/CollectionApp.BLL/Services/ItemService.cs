@@ -225,5 +225,32 @@ namespace CollectionApp.BLL.Services
                 .TakeLast(3)
                 .Reverse();
         }
+
+        public IEnumerable<TagDTO> GetTagsCloud()
+        {
+            var tags = UnitOfWork.Tags.Find(tag => tag.Items.Count() > 0, tag => tag.Items);
+            var tagsCloud = new List<TagDTO>();
+            foreach(var tag in tags)
+            {
+                tagsCloud.Add(new TagDTO()
+                {
+                    Name = tag.Name,
+                    Count = UnitOfWork.Items.Find(item => item.Tags.Contains(tag)).Count()
+                });
+            }
+            return tagsCloud;
+        }
+
+        public IEnumerable<Item> GetItemsByTag(string tag)
+        {
+            return UnitOfWork.Items.Find(
+                item => item.Tags.Where(itemTag => itemTag.Name == tag).Count() > 0,
+                includes: new Expression<Func<Item, object>>[] {
+                    item => item.Collection,
+                    item => item.Tags,
+                    item => item.Comments,
+                    item => item.UsersLiked
+                });
+        }
     }
 }

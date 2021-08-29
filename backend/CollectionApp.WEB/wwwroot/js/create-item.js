@@ -12,17 +12,19 @@
     });
     const xhr = new XMLHttpRequest();
     tagify.on('input', event => {
-        xhr.open('GET', `/Tags?input=${event.detail.value}`);
-        xhr.send();
-        xhr.onload =  () => {
-            tagify.whitelist = [];
-            if (xhr.status === 200) {
-                for (const tag of JSON.parse(xhr.response).entities) {
-                    tagify.whitelist.push(tag.name);
+        if (event.detail.value !== "") {
+            xhr.open('GET', `/Tags?input=${event.detail.value}`);
+            xhr.send();
+            xhr.onload = () => {
+                tagify.whitelist = [];
+                if (xhr.status === 200) {
+                    for (const tag of JSON.parse(xhr.response).entities) {
+                        tagify.whitelist.push(tag.name);
+                    }
                 }
+                console.log(tagify);
+                tagify.dropdown.show();
             }
-            console.log(tagify);
-            tagify.dropdown.show();
         }
     })
 });

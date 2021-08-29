@@ -79,7 +79,9 @@
                                         asp-controller="Item"
                                         asp-action="Index"
                                         asp-route-collectionId="@collection.Id"
-                                        asp-route-userId ="@ViewData["userId"]"
+                                        asp-route-userId="@ViewData["userId"]"
+                                        asp-route-backController="@ViewData["controller"]"
+                                        asp-route-backAction="@ViewData["action"]"
                                         asp-route-page="1">
                                         View
                                     </a>

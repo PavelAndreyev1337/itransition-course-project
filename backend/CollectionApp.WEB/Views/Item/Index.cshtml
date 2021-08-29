@@ -5,13 +5,24 @@
     ViewData["pageNotExist"] = Model.Entities.Count() == 0 && Model.Page.PageNumber == 1;
 }
 
+@functions{
+    public string CheckBackUrl(string back, string url)
+    {
+        if (string.IsNullOrEmpty(back))
+        {
+            return url;
+        }
+        return back;
+    }
+}
+
 <div class="row mt-3">
     <div class="col-12">
         <nav class="mt-2">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a asp-controller="Collection"
-                       asp-action="Index"
+                    <a asp-controller="@(CheckBackUrl((string)ViewData["controller"], "Collection"))"
+                       asp-action="@(CheckBackUrl((string)ViewData["action"], "Index"))"
                        asp-route-page="@Context.Request.Cookies["collectionPage"]"
                        asp-route-userId="@ViewData["userId"]">
                         Collections
