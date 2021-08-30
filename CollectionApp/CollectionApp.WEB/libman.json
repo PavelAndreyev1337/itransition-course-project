@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap@5.0.2",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "css/bootstrap.min.css",
+        "js/bootstrap.bundle.min.js"
+      ]
+    },
+    {
+      "library": "bootstrap-icons@1.5.0",
+      "destination": "wwwroot/lib/bootstrap-icons/",
+      "files": [
+        "font/fonts/bootstrap-icons.woff",
+        "font/bootstrap-icons.min.css"
+      ]
+    },
+    {
+      "library": "filepond@4.29.0",
+      "destination": "wwwroot/lib/filepond/",
+      "files": [
+        "filepond.min.js",
+        "filepond.min.css"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "filepond-plugin-file-validate-type@1.2.6",
+      "destination": "wwwroot/lib/filepond-plugin-file-validate-type/",
+      "files": [
+        "dist/filepond-plugin-file-validate-type.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "filepond-plugin-image-exif-orientation@1.0.11",
+      "destination": "wwwroot/lib/filepond-plugin-image-exif-orientation/",
+      "files": [
+        "dist/filepond-plugin-image-exif-orientation.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "filepond-plugin-image-edit@1.6.3",
+      "destination": "wwwroot/lib/filepond-plugin-image-edit/",
+      "files": [
+        "dist/filepond-plugin-image-edit.min.js",
+        "dist/filepond-plugin-image-edit.min.css"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "filepond-plugin-file-validate-size@2.2.4",
+      "destination": "wwwroot/lib/filepond-plugin-file-validate-size/",
+      "files": [
+        "dist/filepond-plugin-file-validate-size.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "filepond-plugin-image-preview@4.6.8",
+      "destination": "wwwroot/lib/filepond-plugin-image-preview/",
+      "files": [
+        "dist/filepond-plugin-image-preview.min.css",
+        "dist/filepond-plugin-image-preview.min.js"
+      ]
+    },
+    {
+      "library": "js-cookie@2.2.1",
+      "destination": "wwwroot/lib/js-cookie/",
+      "files": [
+        "js.cookie.min.js"
+      ]
+    },
+    {
+      "library": "tagify@4.7.1",
+      "destination": "wwwroot/lib/tagify/",
+      "files": [
+        "tagify.min.js",
+        "tagify.min.css"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@5.0.8",
+      "destination": "wwwroot/lib/microsoft/signalr/",
+      "files": [
+        "dist/browser/signalr.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "anychart@8.10.0",
+      "destination": "wwwroot/lib/anychart/",
+      "files": [
+        "dist/js/anychart-base.min.js",
+        "dist/js/anychart-tag-cloud.min.js"
+      ]
+    }
+  ]
+}

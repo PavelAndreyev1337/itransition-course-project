@@ -1,0 +1,11 @@
+﻿@using CollectionApp.DAL.DTO
+@using CollectionApp.DAL.Entities
+@model IEnumerable<Item>
+
+@{
+    Layout = "_Layout";
+}
+
+@await Html.PartialAsync("../_Items", new EntityPageDTO<Item> { Entities = Model})
+
+<script src="~/js/profile.js"></script>
