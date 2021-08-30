@@ -1,7 +1,10 @@
-﻿@using CollectionApp.DAL.Enums
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using CollectionApp.DAL.Enums
 @model CollectionApp.WEB.ViewModels.ExtraFieldViewModel
 
-@functions{ 
+@inject IViewLocalizer Localizer
+
+@functions{
     public int ConvertFieldType(FieldType fieldType)
     {
         return (int)fieldType;
@@ -14,29 +17,38 @@
 
 <div class="row align-baseline">
     <div class="d-inline-block mb-3 mt-1 col-6">
-        <label class="form-label">@Model.Prefix Field</label>
+        <label class="form-label">@Localizer["FieldName"]</label>
         <input type="text" class="form-control" name="@Model.Prefix.ToLower()FieldName" value="@Model.Name" required />
         <div class="valid-feedback">
-            Looks good!
+            @Localizer["LooksGood"]
         </div>
         <div class="invalid-feedback">
-            @Model.Prefix field is required
+            @Localizer["FieldIsRequired"]
         </div>
     </div>
     <div class="d-inline-block mb-3 mt-1 col-6">
-        <label class="form-label">@Model.Prefix field type</label>
+        <label class="form-label">@Localizer["FieldType"]</label>
         <select class="form-control" name="@Model.Prefix.ToLower()FieldType" required>
-            <option value="@ConvertFieldType(FieldType.Integer)" 
-                    selected="@CheckOption(Model.FieldType, FieldType.Integer)">Integer</option>
+            <option value="@ConvertFieldType(FieldType.Integer)"
+                    selected="@CheckOption(Model.FieldType, FieldType.Integer)">
+                @Localizer["Integer"]
+            </option>
             <option value="@ConvertFieldType(FieldType.String)"
-                    selected="@CheckOption(Model.FieldType, FieldType.String)">String</option>
+                    selected="@CheckOption(Model.FieldType, FieldType.String)">
+                @Localizer["String"]
+            </option>
             <option value="@ConvertFieldType(FieldType.Markdown)"
-                    selected="@CheckOption(Model.FieldType, FieldType.Markdown)">Markdown</option>
+                    selected="@CheckOption(Model.FieldType, FieldType.Markdown)">
+                @Localizer["Markdown"]
+            </option>
             <option value="@ConvertFieldType(FieldType.Date)"
-                    selected="@CheckOption(Model.FieldType, FieldType.Date)">Date</option>
+                    selected="@CheckOption(Model.FieldType, FieldType.Date)">
+                @Localizer["Date"]
+            </option>
             <option value="@ConvertFieldType(FieldType.Boolean)"
-                    selected="@CheckOption(Model.FieldType, FieldType.Boolean)">Boolean</option>
+                    selected="@CheckOption(Model.FieldType, FieldType.Boolean)">
+                @Localizer["Boolean"]
+            </option>
         </select>
-
     </div>
 </div>

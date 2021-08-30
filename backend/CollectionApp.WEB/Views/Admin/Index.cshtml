@@ -1,6 +1,8 @@
-﻿@using CollectionApp.DAL.Entities
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using CollectionApp.DAL.Entities
 @model CollectionApp.DAL.DTO.EntityPageDTO<User>
 
+@inject IViewLocalizer Localizer
 
 @{
     Layout = "_Layout";
@@ -10,8 +12,8 @@
     <table class="table mt-2">
         <thead>
             <tr class="d-flex">
-                <th class="col-5">Username</th>
-                <th class="col-5">Email</th>
+                <th class="col-5">@Localizer["Username"]</th>
+                <th class="col-5">@Localizer["Email"]</th>
                 <th class="col-2"></th>
             </tr>
         </thead>
@@ -20,13 +22,13 @@
             {
                 <tr class="d-flex @(user.LockoutEnabled ? "table-danger": "")" 
                     title="@(user.LockoutEnabled ? "Blocked": "")">
-                    <th class="col-5 text-break">
+                    <td class="col-5 text-break">
                         <a asp-controller="Collection"
                            asp-action="Index"
                            asp-route-userId="@user.Id">
                             @user.UserName
                         </a>
-                    </th>
+                    </td>
                     <td class="col-5 text-break">@user.Email</td>
                     <td class="col-2">
                         <form asp-controller="Admin"
@@ -37,7 +39,7 @@
                                     type="submit"
                                     data-toggle="tooltip"
                                     data-placement="bottom"
-                                    title="Add admin">
+                                    title="@Localizer["AddAdmin"]">
                                 <i class="bi bi-star"></i>
                             </button>
                         </form>
@@ -49,7 +51,7 @@
                                     type="submit"
                                     data-toggle="tooltip"
                                     data-placement="bottom"
-                                    title="Block">
+                                    title="@Localizer["Block"]">
                                 <i class="bi bi-lock"></i>
                             </button>
                         </form>
@@ -61,7 +63,7 @@
                                     type="submit"
                                     data-toggle="tooltip"
                                     data-placement="bottom"
-                                    title="Delete">
+                                    title="@Localizer["Delete"]">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>

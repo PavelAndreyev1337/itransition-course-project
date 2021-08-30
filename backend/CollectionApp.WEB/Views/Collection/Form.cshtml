@@ -1,5 +1,8 @@
-﻿@using CollectionApp.WEB.ViewModels
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using CollectionApp.WEB.ViewModels
 @model CollectionApp.WEB.ViewModels.CollectionViewModel
+
+@inject IViewLocalizer Localizer
 
 @{
     Layout = "_Layout";
@@ -15,44 +18,44 @@
             <a asp-controller="Collection"
                asp-action="Index"
                asp-route-page="@Context.Request.Cookies["collectionPage"]"
-               asp-route-userId ="@ViewData["userId"]">
-                Collections
+               asp-route-userId="@ViewData["userId"]">
+                @Localizer["Collections"]
             </a>
         </li>
-        <li class="breadcrumb-item active">Collection</li>
+        <li class="breadcrumb-item active">@Localizer["Collection"]</li>
     </ol>
 </nav>
 
 <div class="col-5 mt-2 mx-auto">
-    <form id="collectionForm" 
-          class="my-2 needs-validation" 
+    <form id="collectionForm"
+          class="my-2 needs-validation"
           method="post"
           asp-route-userId="@ViewData["userId"]"
           asp-route-collectionId="@Model.Id"
-          enctype="multipart/form-data" 
+          enctype="multipart/form-data"
           novalidate>
         <div class="mb-3">
-            <label class="form-label" asp-for="Name">Name</label>
+            <label class="form-label" asp-for="Name">@Localizer["Name"]</label>
             <input type="text" class="form-control" asp-for="Name" required />
             <div class="valid-feedback">
-                Looks good!
+                @Localizer["LooksGood"]
             </div>
             <div class="invalid-feedback">
-                Name is required
+                @Localizer["Required"]
             </div>
         </div>
         <div class="mb-3">
-            <label asp-for="ShortDescription">Description</label>
-            <textarea class="form-control" placeholder="Write descriptions using a Markdown" asp-for="ShortDescription" required></textarea>
+            <label asp-for="ShortDescription">@Localizer["Description"]</label>
+            <textarea class="form-control" placeholder="@Localizer["MarkdownDescription"]..." asp-for="ShortDescription" required></textarea>
             <div class="valid-feedback">
-                Looks good!
+                >@Localizer["LooksGood"]
             </div>
             <div class="invalid-feedback">
-                Description is required
+                >@Localizer["Required"]
             </div>
         </div>
         <div class="mb-3">
-            <label class="form-label" asp-for="Topic">Topic</label>
+            <label class="form-label" asp-for="Topic">@Localizer["Topic"]</label>
             <select class="form-control" asp-for="Topic" required>
                 @foreach (var topic in Model.Topics)
                 {
@@ -60,10 +63,10 @@
                 }
             </select>
             <div class="valid-feedback">
-                Looks good!
+                @Localizer["LooksGood"]
             </div>
             <div class="invalid-feedback">
-                Topic is required
+                @Localizer["Required"]
             </div>
         </div>
         <input type="file"
@@ -71,11 +74,11 @@
                asp-for="Files"
                multiple
                data-max-file-size="3MB">
-        @await Html.PartialAsync( "_GetExtraField", new ExtraFieldViewModel{Prefix = "First", Name = Model.FirstFieldName, FieldType = Model.FirstFieldType })
+        @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "First", Name = Model.FirstFieldName, FieldType = Model.FirstFieldType })
         @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Second", Name = Model.SecondFieldName, FieldType = Model.SecondFieldType })
         @await Html.PartialAsync("_GetExtraField", new ExtraFieldViewModel { Prefix = "Third", Name = Model.ThirdFieldName, FieldType = Model.ThirdFieldType })
         <div class="mb-5 pb-3">
-            <button id="submitAll" class="btn btn-primary d-block mx-auto w-50" type="submit">Submit</button>
+            <button id="submitAll" class="btn btn-primary d-block mx-auto w-50" type="submit">@Localizer["Submit"]</button>
         </div>
     </form>
 </div>

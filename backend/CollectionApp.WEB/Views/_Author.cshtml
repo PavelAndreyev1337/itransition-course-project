@@ -1,11 +1,14 @@
-﻿@model CollectionApp.DAL.Entities.User;
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.DAL.Entities.User
+
+@inject IViewLocalizer Localizer
 
 <p class="mb-0">
-    <i class="collection-topic">Author username: @Model.UserName</i>
+    <i class="collection-topic">@Localizer["AuthorUsername"]: @Model.UserName</i>
 </p>
 @if (Model.Email != null)
 {
     <p class="mb-0">
-        <i class="collection-topic">Email: @Model.Email</i>
+        <i class="collection-topic">@Localizer["Email"]: @Model.Email</i>
     </p>
 }

@@ -13,7 +13,6 @@
                 });
             }
             var chart = anychart.tagCloud(data);
-            chart.title('Navigation by tags')
 
             chart.angles([0])
             chart.container("container");

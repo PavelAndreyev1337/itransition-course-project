@@ -12,8 +12,9 @@ using CollectionApp.BLL.Interfaces;
 using CollectionApp.BLL.Services;
 using Microsoft.AspNetCore.Identity;
 using CollectionApp.WEB.Hubs;
-using Microsoft.AspNetCore.Http;
 using System;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace CollectionApp.WEB
 {
@@ -45,7 +46,9 @@ namespace CollectionApp.WEB
             services.AddScoped<ICollectionService, CollectionService>();
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<IAdminService, AdminService>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
             services.AddAuthentication()
                 .AddCookie()
                 .AddFacebook(facebookOptions =>
@@ -65,6 +68,19 @@ namespace CollectionApp.WEB
                 options.LoginPath = "/";
                 options.AccessDeniedPath = "/";
             });
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en"),
+                    new CultureInfo("ru")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("ru");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +90,14 @@ namespace CollectionApp.WEB
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("ru")
+            };
+
+            app.UseRequestLocalization();
 
             app.UseRouting();
 

@@ -1,4 +1,6 @@
-﻿@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Collection>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Collection>
+@inject IViewLocalizer Localizer
 
 @{
     Layout = "_Layout";
@@ -7,7 +9,7 @@
 @if (Model.Entities.Count() == 0 && Model.Page.PageNumber == 1)
 {
     <div class="col-md-12 text-center mt-5">
-        <h5>No collections</h5>
+        <h5>@Localizer["NoCollections"]</h5>
     </div>
 }
 else

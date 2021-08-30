@@ -1,4 +1,7 @@
-﻿@model CollectionApp.WEB.ViewModels.ItemViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.WEB.ViewModels.ItemViewModel
+
+@inject IViewLocalizer Localizer
 
 @{
     var cookies = Context.Request.Cookies;
@@ -12,7 +15,7 @@
                asp-action="Index"
                asp-route-page="@cookies["collectionPage"]"
                asp-route-userId="@ViewData["userId"]">
-                Collections
+                @Localizer["Collections"]
             </a>
         </li>
         <li class="breadcrumb-item">
@@ -23,9 +26,9 @@
                asp-route-isCommented="@cookies["isCommented"]"
                asp-route-sortOrder="@cookies["sortOrder"]"
                asp-route-userId="@ViewData["userId"]">
-                Items
+                @Localizer["Items"]
             </a>
         </li>
-        <li class="breadcrumb-item active">Item</li>
+        <li class="breadcrumb-item active">@Localizer["Item"]</li>
     </ol>
 </nav>

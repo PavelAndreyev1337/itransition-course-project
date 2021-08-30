@@ -1,5 +1,8 @@
-﻿@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Collection>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Collection>
 @using CollectionApp.BLL.Utils
+
+@inject IViewLocalizer Localizer
 
 @{int i = 0;}
 @foreach (var collection in Model.Entities)
@@ -50,23 +53,23 @@
                                 {
                                     <div>
                                         <a class="btn btn-warning btn-sm text-white"
-                                            asp-controller="Collection"
-                                            asp-action="Edit"
-                                            asp-route-collectionId="@collection.Id"
-                                            asp-route-userId="@ViewData["userId"]"
-                                            data-toggle="tooltip"
-                                            data-placement="bottom"
-                                            title="Edit">
+                                           asp-controller="Collection"
+                                           asp-action="Edit"
+                                           asp-route-collectionId="@collection.Id"
+                                           asp-route-userId="@ViewData["userId"]"
+                                           data-toggle="tooltip"
+                                           data-placement="bottom"
+                                           title="@Localizer["Edit"]">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form asp-controller="Collection"
-                                                asp-action="Delete"
-                                                asp-route-collectionId="@collection.Id"
-                                                asp-route-userId="@ViewData["userId"]"
-                                                class="d-inline"
-                                                data-toggle="tooltip"
-                                                data-placement="bottom"
-                                                title="Delete">
+                                              asp-action="Delete"
+                                              asp-route-collectionId="@collection.Id"
+                                              asp-route-userId="@ViewData["userId"]"
+                                              class="d-inline"
+                                              data-toggle="tooltip"
+                                              data-placement="bottom"
+                                              title="@Localizer["Delete"]">
                                             <button class="btn btn-danger btn-sm delete-btn" type="submit">
                                                 <i class="bi bi-trash"></i>
                                             </button>
@@ -75,19 +78,19 @@
                                 }
                             </div>
                             @await Html.PartialAsync("../_Author", collection.User)
-                            <p title="Topic" class="mb-1"><i class="collection-topic">Topic @collection.Topic</i></p>
+                            <p title="Topic" class="mb-1"><i class="collection-topic">@Localizer["Topic"] @collection.Topic</i></p>
                             @Html.Raw(collection.ShortDescription)
                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                 <div class="btn-group mt-1">
                                     <a class="btn btn-sm btn-outline-secondary d-block"
-                                        asp-controller="Item"
-                                        asp-action="Index"
-                                        asp-route-collectionId="@collection.Id"
-                                        asp-route-userId="@ViewData["userId"]"
-                                        asp-route-backController="@ViewData["controller"]"
-                                        asp-route-backAction="@ViewData["action"]"
-                                        asp-route-page="1">
-                                        View
+                                       asp-controller="Item"
+                                       asp-action="Index"
+                                       asp-route-collectionId="@collection.Id"
+                                       asp-route-userId="@ViewData["userId"]"
+                                       asp-route-backController="@ViewData["controller"]"
+                                       asp-route-backAction="@ViewData["action"]"
+                                       asp-route-page="1">
+                                        @Localizer["View"]
                                     </a>
                                 </div>
                             </div>
