@@ -15,10 +15,11 @@ namespace CollectionApp.WEB.Controllers
             _adminService = adminService;
         }
 
-        public IActionResult Index(int page = 1)
+        [Route("/UserAdmin")]
+        public async Task<IActionResult> Index(int page = 1)
         {
             Response.Cookies.Append("adminPage", page.ToString());
-            return View( _adminService.GetUsers(User, page));
+            return View(await _adminService.GetUsers(User));
         }
 
         public async Task<IActionResult> AddAdmin(string userId)

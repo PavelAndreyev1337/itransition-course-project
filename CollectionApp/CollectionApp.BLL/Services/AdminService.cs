@@ -4,6 +4,7 @@ using CollectionApp.DAL.Entities;
 using CollectionApp.DAL.Enums;
 using CollectionApp.DAL.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -18,16 +19,19 @@ namespace CollectionApp.BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public EntityPageDTO<User> GetUsers(ClaimsPrincipal claimsPrincipal, int page = 1)
+        public async Task<IEnumerable<User>> GetUsers(ClaimsPrincipal claimsPrincipal)
         {
-            return _unitOfWork.Users.Paginate(
-                page: page,
-                predicate: user =>
+            var users = await _unitOfWork.Users.GetAll();
+            var managedUsers = new List<User>();
+            foreach (var user in users)
+            {
+                var groups = await _unitOfWork.UserManager.GetRolesAsync(user);
+                if (groups.Count == 0)
                 {
-                    var task = _unitOfWork.UserManager.GetRolesAsync(user);
-                    task.Wait();
-                    return task.Result.Count == 0;
-                });
+                    managedUsers.Add(user);
+                }
+            }
+            return managedUsers;
         }
 
         public async Task AddAdmin(string userId)

@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using CollectionApp.DAL.Entities
-@model CollectionApp.DAL.DTO.EntityPageDTO<User>
+@model IEnumerable<User>
 
 @inject IViewLocalizer Localizer
 
@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in @Model.Entities)
+            @foreach (var user in @Model)
             {
                 <tr class="d-flex @(user.LockoutEnabled ? "table-danger": "")" 
                     title="@(user.LockoutEnabled ? "Blocked": "")">
@@ -73,10 +73,5 @@
         </tbody>
     </table>
 </div>
-
-@if(Model.Page.TotalPages > 1)
-{
-    @await Html.PartialAsync("../_Pagination", Model.Page)
-}
 
 <script src="~/js/profile.js"></script>
