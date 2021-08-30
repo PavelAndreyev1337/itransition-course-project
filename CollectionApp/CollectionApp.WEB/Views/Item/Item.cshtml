@@ -1,0 +1,89 @@
+﻿@using CollectionApp.WEB.Utils
+@using CollectionApp.DAL.Enums
+@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.WEB.ViewModels.ItemViewModel
+
+@inject IViewLocalizer Localizer
+
+@{
+    Layout = "_Layout";
+    var authenticated = User.Identity.IsAuthenticated;
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @await Html.PartialAsync("Breadcrumb")
+}
+
+<div class="row">
+    <div class="col-8 mx-auto">
+        <div class="card p-3 mb-1 rounded">
+            <div class="px-5 py-3 text-wrap overflow-hidden">
+                <h2 class="mb-1">@Model.Name</h2>
+                <p title="Tags" class="mb-0">
+                    <i class="collection-topic">
+                        @Localizer["Tags"]:
+                        @foreach (var tag in Model.Tags)
+                        {
+                            @(tag.Name + " ")
+                        }
+                    </i>
+                </p>
+                @foreach (var field in FieldTypeUtil.GetFields(Model, false))
+                {
+                    <h5 class="my-1">@field.Label</h5>
+                    @if (field.FieldType == FieldType.Markdown)
+                    {
+                        @Html.Raw(field.Value)
+                    }
+                    else if (field.FieldType == FieldType.Boolean)
+                    {
+                        <p class="m-0">@FieldTypeUtil.OutputBoolean(field.Value)</p>
+                    }
+                    else
+                    {
+                        <p class="m-0 text-break">@field.Value</p>
+                    }
+                }
+            </div>
+        </div>
+        <button id="likeBtn"
+                data-item-id="@Model.Id"
+                class="btn @(Model.Liked ? "btn-danger" : "btn-light") d-block me-auto my-2 btn-sm px-3 like-btn"
+                @(authenticated ? "" : "disabled")>
+            <i class="bi bi-suit-heart"></i>
+            <span id="likesCount">@Model.likes</span>
+        </button>
+        @if (authenticated)
+        {
+            <textarea id="commentInput" class="form-control mt-2" placeholder="@Localizer["WriteComment"]..." required></textarea>
+            <button id="commentBtn" class="btn btn-primary d-block ms-auto my-2 btn-sm px-5">
+                @Localizer["Send"]
+            </button>
+        }
+        <div id="commentsContainer" class="pb-5">
+            @if (Model.Comments.Entities.Count() > 0)
+            {
+                @foreach (var comment in Model.Comments.Entities)
+                {
+                    <div class="card p-3 my-1 rounded">
+                        <p class="my-1 text-primary">@comment.User?.UserName</p>
+                        <p class="mb-0">@comment.Text<p>
+                    </div>
+                }
+                @if (Model.Comments.Page.TotalPages > 1)
+                {
+                    @await Html.PartialAsync("../_Pagination", Model.Comments.Page)
+                }
+            }
+            else
+            {
+                <div id="noExistMessages" class="col-md-12 text-center my-5">
+                    <h5>@Localizer["NoComments"]</h5>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/item.js"></script>

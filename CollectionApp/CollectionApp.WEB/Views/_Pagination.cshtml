@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.DAL.DTO.Page
+
+@inject IViewLocalizer Localizer
+
+@{
+    var action = string.IsNullOrEmpty((string)ViewData["Action"]) ? "Index" : ViewData["Action"];
+}
+
+<nav class="pb-3">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link"
+               asp-action="@action"
+               asp-route-itemId="@(Context.Request.RouteValues["itemId"])"
+               asp-route-page="@(Model.PageNumber-1)"
+               asp-route-isLiked="@(Context.Request.Query["isLiked"])"
+               asp-route-isCommented="@(Context.Request.Query["isCommented"])"
+               asp-route-sortOrder="@(Context.Request.Query["sortOrder"])"
+               asp-route-userId="@ViewData["userId"]">
+                @Localizer["Previous"]
+            </a>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link"
+               asp-action="@action"
+               asp-route-itemId="@(Context.Request.RouteValues["itemId"])"
+               asp-route-page="@(Model.PageNumber+1)"
+               asp-route-isLiked="@(Context.Request.Query["isLiked"])"
+               asp-route-isCommented="@(Context.Request.Query["isCommented"])"
+               asp-route-sortOrder="@(Context.Request.Query["sortOrder"])"
+               asp-route-userId="@ViewData["userId"]">
+                @Localizer["Next"]
+            </a>
+        </li>
+    </ul>
+</nav>

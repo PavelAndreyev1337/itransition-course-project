@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.WEB.ViewModels.ItemViewModel
+
+@inject IViewLocalizer Localizer
+
+@{
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/lib/tagify/tagify.min.css" />
+
+@await Html.PartialAsync("Breadcrumb", Model)
+
+<div class="col-5 mx-auto">
+    <form id="collectionForm"
+          asp-route-userId="@ViewData["userId"]"
+          class="my-2 needs-validation"
+          method="post"
+          novalidate>
+        <div class="mb-3">
+            <label class="form-label" asp-for="Name">@Localizer["Name"]</label>
+            <input type="text" class="form-control" asp-for="Name" required />
+            <div class="valid-feedback">
+                @Localizer["LooksGood"]
+            </div>
+            <div class="invalid-feedback">
+                @Localizer["Required"]
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="TagsJson">@Localizer["Tags"]</label>
+            <input id="tagsInput" asp-for="TagsJson" value="@Model.TagsJson" required />
+            <div class="valid-feedback">
+                @Localizer["LooksGood"]
+            </div>
+            <div class="invalid-feedback">
+                @Localizer["Required"]
+            </div>
+        </div>
+        @using CollectionApp.WEB.Helpers
+        @ItemHelper.AddExtraFields(Html, Model)
+        <div class="mb-3 pb-3">
+            <button class="btn btn-primary d-block mx-auto w-50" type="submit">@Localizer["Submit"]</button>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/tagify/tagify.min.js"></script>
+<script src="~/js/create-item.js"></script>

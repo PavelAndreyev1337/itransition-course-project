@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Collection>
+@using CollectionApp.BLL.Utils
+
+@inject IViewLocalizer Localizer
+
+@{int i = 0;}
+@foreach (var collection in Model.Entities)
+{
+    <div class="row mt-2">
+        <div class="col-8 mx-auto">
+            <div class="card my-2">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        @if (collection.Images.Count > 0)
+                        {
+                            <div id="carouselControls@(i)" class="carousel slide h-100" data-interval="false">
+                                <div class="carousel-inner h-100">
+                                    @{int j = 0;}
+                                    @foreach (var image in collection.Images)
+                                    {
+                                        <div class="carousel-item @(j == 0 ? "active" : "") h-100">
+                                            <img src="@image.ImagePath" class="img-fluid rounded-start h-100 w-100" alt="Collection image" />
+                                        </div>
+                                        j++;
+                                    }
+                                </div>
+                                @if (collection.Images.Count > 1)
+                                {
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls@(i)" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselControls@(i)" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/300?text=No photo" class="img-fluid rounded-start" alt="Image placeholder" />
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body h-100 d-flex flex-column">
+                            <div>
+                                <h5 class="card-title">
+                                    @collection.Name
+                                </h5>
+                                @if (AuthUtil.CheckRights(User, collection))
+                                {
+                                    <div>
+                                        <a class="btn btn-warning btn-sm text-white"
+                                           asp-controller="Collection"
+                                           asp-action="Edit"
+                                           asp-route-collectionId="@collection.Id"
+                                           asp-route-userId="@ViewData["userId"]"
+                                           data-toggle="tooltip"
+                                           data-placement="bottom"
+                                           title="@Localizer["Edit"]">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-controller="Collection"
+                                              asp-action="Delete"
+                                              asp-route-collectionId="@collection.Id"
+                                              asp-route-userId="@ViewData["userId"]"
+                                              class="d-inline"
+                                              data-toggle="tooltip"
+                                              data-placement="bottom"
+                                              title="@Localizer["Delete"]">
+                                            <button class="btn btn-danger btn-sm delete-btn" type="submit">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                            @await Html.PartialAsync("../_Author", collection.User)
+                            <p title="Topic" class="mb-1"><i class="collection-topic">@Localizer["Topic"] @collection.Topic</i></p>
+                            @Html.Raw(collection.ShortDescription)
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <div class="btn-group mt-1">
+                                    <a class="btn btn-sm btn-outline-secondary d-block"
+                                       asp-controller="Item"
+                                       asp-action="Index"
+                                       asp-route-collectionId="@collection.Id"
+                                       asp-route-userId="@ViewData["userId"]"
+                                       asp-route-backController="@ViewData["controller"]"
+                                       asp-route-backAction="@ViewData["action"]"
+                                       asp-route-page="1">
+                                        @Localizer["View"]
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    i++;
+}

@@ -1,0 +1,143 @@
+﻿@using CollectionApp.BLL.Enums
+@using CollectionApp.BLL.Utils
+@using Microsoft.AspNetCore.Mvc.Localization
+@model CollectionApp.DAL.DTO.EntityPageDTO<CollectionApp.DAL.Entities.Item>
+
+@inject IViewLocalizer Localizer
+
+@{
+    var authenticated = User.Identity.IsAuthenticated;
+    var count = Model.Entities.Count();
+    var isLiked = Context.Request.Query["isLiked"].Count() > 0;
+    var isCommented = Context.Request.Query["isCommented"].Count() > 0;
+    var isMyCollectionRoute = ViewContext.ActionDescriptor.AttributeRouteInfo?.Name == "Items";
+}
+
+@if (isMyCollectionRoute)
+{
+    <div class="row @(count == 0 ? "d-none" : "")">
+        <div class="col-7 offset-3">
+            <select id="sortOrder" class="form-select w-25 ms-auto" name="sortOrder">
+                <option value="@ItemSort.Default" selected>@Localizer["ByCreation"]</option>
+                <option value="@ItemSort.LikeDesc">@Localizer["ByLikes"]</option>
+            </select>
+        </div>
+    </div>
+}
+
+<div class="row mt-2">
+    <div class="col-3">
+        @if (authenticated && isMyCollectionRoute && (count > 0 || isLiked || isCommented))
+        {
+            <div class="card p-3 mb-1 rounded my-2">
+                <h6 class="text-break">@Localizer["Filters"]:</h6>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           id="isLiked"
+                           name="isLiked" />
+                    <label class="form-check-label text-break"
+                           for="isLiked">
+                        @Localizer["Liked"]
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           id="isCommented"
+                           name="isCommented" />
+                    <label class="form-check-label text-break"
+                           for="isCommented">
+                        @Localizer["Commented"]
+                    </label>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-7">
+        @if (ViewData["pageNotExist"] != null && (bool)ViewData["pageNotExist"])
+        {
+            <div class="col-md-12 text-center mt-5">
+                <h5>@Localizer["NoItems"]</h5>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.Entities)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <div>
+                                    <h5 class="card-title">
+                                        @item.Name
+                                    </h5>
+                                    @if (AuthUtil.CheckRights(User, item.Collection))
+                                    {
+                                        <div>
+                                            <a class="btn btn-warning btn-sm text-white"
+                                               asp-controller="Item"
+                                               asp-action="Edit"
+                                               asp-route-itemId="@item.Id"
+                                               asp-route-userId="@ViewData["userId"]"
+                                               data-toggle="tooltip"
+                                               data-placement="bottom"
+                                               title="@Localizer["Edit"]">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form asp-controller="Item"
+                                                  asp-action="Delete"
+                                                  asp-route-itemId="@item.Id"
+                                                  asp-route-userId="@ViewData["userId"]"
+                                                  class="d-inline">
+                                                <button class="btn btn-danger btn-sm delete-btn"
+                                                        type="submit"
+                                                        data-toggle="tooltip"
+                                                        data-placement="bottom"
+                                                        title="@Localizer["Delete"]">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                    @await Html.PartialAsync("../_Author", item.Collection.User)
+                                    <p title="Tags" class="mb-0">
+                                        <i class="collection-topic">
+                                            @Localizer["Tags"]:
+                                            @foreach (var tag in item.Tags)
+                                            {
+                                                @(tag.Name + " ")
+                                            }
+                                        </i>
+                                    </p>
+                                    <p title="Sections" class="mb-0">
+                                        <i class="collection-topic">
+                                            @Localizer["Sections"]:
+                                            @item.Collection.FirstFieldName,
+                                            @item.Collection.SecondFieldName,
+                                            @item.Collection.ThirdFieldName
+                                        </i>
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                                        <div class="btn-group mt-1">
+                                            <a class="btn btn-sm btn-outline-secondary d-block"
+                                               asp-controller="Item"
+                                               asp-action="GetItem"
+                                               asp-route-itemId="@item.Id"
+                                               asp-route-userId="@ViewData["userId"]">
+                                                @Localizer["View"]
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<script src="~/js/items.js"></script>

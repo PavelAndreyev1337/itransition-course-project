@@ -1,0 +1,159 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model CollectionApp.WEB.ViewModels.HomeViewModel; 
+
+@{
+    Layout = "_Layout";
+}
+
+<main>
+    <section class="py-5 text-center container main-bg">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto text-white">
+                <h1 class="fw-bold ">@Localizer["Name"]</h1>
+                <p class="lead">
+                    @Localizer["Message"]
+                </p>
+                <p>
+                    <a class="btn btn-primary my-2"
+                       asp-controller="Home"
+                       asp-action="GetAllCollections">
+                        @Localizer["MessageButton"]
+                    </a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-3 bg-light">
+        <div class="container">
+            <h3 class="py-3">@Localizer["MessageLargestItems"]</h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                @{int i = 0;}
+                @foreach (var collection in Model.LagestNumberItems)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            @if (collection.Images.Count > 0)
+                            {
+                                <div id="carouselControls@(i)" class="carousel slide h-50" data-interval="false">
+                                    <div class="carousel-inner h-100">
+                                        @{int j = 0;}
+                                        @foreach (var image in collection.Images)
+                                        {
+                                            <div class="carousel-item @(j == 0 ? "active" : "") h-100">
+                                                <img src="@image.ImagePath"
+                                                     class="img-fluid rounded-start h-100 w-100"
+                                                     alt="Collection image" />
+                                            </div>
+                                            j++;
+                                        }
+                                    </div>
+                                    @if (collection.Images.Count > 1)
+                                    {
+                                        <button class="carousel-control-prev"
+                                                type="button"
+                                                data-bs-target="#carouselControls@(i)"
+                                                data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">@Localizer["Previous"]</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                                data-bs-target="#carouselControls@(i)"
+                                                data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">@Localizer["Next"]</span>
+                                        </button>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/300?text=No photo" class="img-fluid rounded-start h-50" alt="Image placeholder" />
+                            }
+                            <div class="card-body d-flex flex-column">
+                                <div>
+                                    <h5 class="card-title">
+                                        @collection.Name
+                                    </h5>
+                                    @await Html.PartialAsync("../_Author", collection.User)
+                                    <p title="Topic" class="mb-1"><i class="collection-topic">@Localizer["Topic"] @collection.Topic</i></p>
+                                    <div>@Html.Raw(collection.ShortDescription)</div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <div class="btn-group mt-1">
+                                        <a class="btn btn-sm btn-outline-secondary d-block"
+                                           asp-controller="Item"
+                                           asp-action="Index"
+                                           asp-route-collectionId="@collection.Id"
+                                           asp-route-userId="@ViewData["userId"]"
+                                           asp-route-page="1">
+                                            @Localizer["View"]
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <h3 class="py-3">@Localizer["MessageLastCreated"]</h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                @foreach (var item in Model.LastCreatedItems)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    @item.Name
+                                </h5>
+                                @await Html.PartialAsync("../_Author", item.Collection.User)
+                                <p title="Tags" class="mb-0">
+                                    <i class="collection-topic">
+                                        @Localizer["Tags"]
+                                        @foreach (var tag in item.Tags)
+                                        {
+                                            @(tag.Name + " ")
+                                        }
+                                    </i>
+                                </p>
+                                <p title="Sections" class="mb-0">
+                                    <i class="collection-topic">
+                                        @Localizer["Sections"]
+                                        @item.Collection.FirstFieldName,
+                                        @item.Collection.SecondFieldName,
+                                        @item.Collection.ThirdFieldName
+                                    </i>
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-outline-secondary mt-1"
+                                           asp-controller="Item"
+                                           asp-action="GetItem"
+                                           asp-route-itemId="@item.Id">
+                                            @Localizer["View"]
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div id="container" class="mt-3"></div>
+        </div>
+        </div>
+
+</main>
+
+<footer class="text-muted pt-5 pb-3">
+    <div class="container text-center">
+        <p>
+            @@ 2021
+        </p>
+    </div>
+</footer>
+
+<script src="~/lib/anychart/dist/js/anychart-base.min.js"></script>
+<script src="~/lib/anychart/dist/js/anychart-tag-cloud.min.js"></script>
+<script src="~/js/tag-cloud.js"></script>

@@ -1,0 +1,31 @@
+.collection-topic {
+    font-size: 0.9rem;
+}
+
+iframe {
+    display: block;
+    width: 100%;
+}
+
+.tagify {
+    overflow: auto;
+    flex-wrap: unset;
+}
+
+.like-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.main-bg
+{
+    background-image: url("../img/background.png");
+    background-size: cover;
+}
+
+html, body, #container {
+    width: 100%;
+    height: 50vh;
+    margin: 0;
+    padding: 0;
+}
